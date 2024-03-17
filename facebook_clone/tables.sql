@@ -21,9 +21,28 @@ CREATE TABLE IF NOT EXISTS group_user_relation (
 );
 
 CREATE TABLE IF NOT EXISTS friend_relation (
-    id uuid NOT NULL DEFAULT uuid_generate_v4(),
     user_id uuid NOT NULL,
     friend_id uuid NOT NULL,
     CONSTRAINT pk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id),
     CONSTRAINT pk_friend_id FOREIGN KEY (friend_id) REFERENCES user_table(id)
 );
+
+CREATE TABLE IF NOT EXISTS post (
+    id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+    content TEXT NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    user_id uuid NOT NULL,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id)
+);
+
+CREATE TABLE IF NOT EXISTS comment (
+    content TEXT NOT NULL,
+    post_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id),
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id)
+);
+
