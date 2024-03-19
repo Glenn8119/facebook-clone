@@ -1,6 +1,7 @@
 from passlib.context import CryptContext
 from facebook_clone.business_model import get_facebook_clone_dao_factory
 from facebook_clone.data_access_object.user import UserDao
+from facebook_clone.schema.user import User
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
@@ -15,3 +16,15 @@ class UserBo:
         hashed_password = self.hash_password(password)
         async with get_facebook_clone_dao_factory().create_dao(UserDao) as dao:
             await dao.create_user(account, hashed_password)
+
+    async def login(self, account: str, password: str):
+        async with get_facebook_clone_dao_factory().create_dao(UserDao) as dao:
+            user = await dao.get_user(account)
+            account = user.get('account')
+            print(account)
+            # print(user, User(account=user.account))
+        # get user from db
+        # not match -> 401
+        # compare hashed_password with hashed password
+        # not match -> 401
+        # match -> jwt token
