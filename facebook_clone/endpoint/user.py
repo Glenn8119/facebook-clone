@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from facebook_clone.schema.user import User
+from facebook_clone.schema.user import User, Token
 from facebook_clone.business_model.user import UserBo
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
@@ -14,6 +14,7 @@ async def sign_up(user: User):
     return {'user': user}
 
 
-@router.post('/login')
+@router.post('/login', response_model=Token)
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    await UserBo().login(account=form_data.username, password=form_data.password)
+    token = await UserBo().login(account=form_data.username, password=form_data.password)
+    print(token)
