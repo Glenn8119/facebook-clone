@@ -5,12 +5,6 @@ app = FastAPI()
 
 app.include_router(user.router, prefix='/user', tags=['user'])
 
-
-@app.get('/')
-async def greet():
-    return {'hello': 'world'}
-
-
 if __name__ == '__main__':
     import uvicorn
 

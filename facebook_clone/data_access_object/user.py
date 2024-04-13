@@ -2,13 +2,13 @@ from facebook_clone.data_access_object import BaseDao
 
 
 class UserDao(BaseDao):
-    async def create_user(self, account, password):
+    async def create_user(self, account, name, password):
         return await self.connection.execute(
             '''
-            INSERT INTO user_table (account, hashed_password)
-            VALUES($1, $2)
+            INSERT INTO user_table (account, name, hashed_password)
+            VALUES($1, $2, $3)
             RETURNING *
-            ''', account, password
+            ''', account, name, password
         )
 
     async def get_user(self, account):
