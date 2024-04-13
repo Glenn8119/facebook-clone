@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS user_table (
     id uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
     account VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
     hashed_password VARCHAR(128) NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now()
@@ -16,9 +17,16 @@ CREATE TABLE IF NOT EXISTS group_user_relation (
     id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id uuid NOT NULL,
     group_id uuid NOT NULL,
+    role_id INTEGER NOT NULL,
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id),
-    CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES group_table(id)
+    CONSTRAINT fk_group_id FOREIGN KEY (group_id) REFERENCES group_table(id),
+    CONSTRAINT fk_role_id FOREIGN KEY (role_id) REFERENCES group_role(id),
 );
+
+CREATE TABLE IF NOT EXISTS group_role (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+)
 
 CREATE TABLE IF NOT EXISTS friend_relation (
     user_id uuid NOT NULL,
@@ -46,3 +54,17 @@ CREATE TABLE IF NOT EXISTS comment (
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id)
 );
 
+CREATE TABLE IF NOT EXISTS comment_like (
+    id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+    comment_id uuid NOT NULL,
+    user_id uuid NOT NULL,
+    CONSTRAINT fk_comment_id FOREIGN KEY (comment_id) REFERENCES comment(id),
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id)
+)
+
+CREATE TABLE IF NOT EXISTS post_like (
+    id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+    post_id uuid NOT NULL,
+    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id)
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id)
+)
