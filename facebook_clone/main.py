@@ -4,6 +4,7 @@ from facebook_clone.endpoint import user, post, group, comment
 app = FastAPI()
 
 app.include_router(user.router, prefix='/user', tags=['user'])
+app.include_router(post.router, prefix='/post', tags=['post'])
 
 if __name__ == '__main__':
     import uvicorn
