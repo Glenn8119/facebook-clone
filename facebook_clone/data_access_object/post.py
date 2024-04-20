@@ -15,7 +15,16 @@ class PostDao(BaseDao):
             WHERE user_id = $1
         ''', user_id)
 
-    async def delete_post(self, post_id: UUID, user_id):
+    async def update_post_by_id(self, post_id: UUID, user_id: str, content: str):
+        return await self.connection.fetchrow('''
+            UPDATE post
+            SET content = $1, updated_at = now()
+            WHERE id = $2
+            and user_id = $3
+            RETURNING *
+        ''', content, post_id, user_id)
+
+    async def delete_post(self, post_id: UUID, user_id: UUID):
         return await self.connection.fetchrow('''
             DELETE FROM post
             where id = $1

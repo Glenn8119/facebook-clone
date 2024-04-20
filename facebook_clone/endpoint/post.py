@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from facebook_clone.schema.post import Post, PostPostRequestBody
+from facebook_clone.schema.post import Post, PostPostRequestBody, PutPostRequestBody
 from facebook_clone.business_model.post import PostBo
 from typing import List
 from facebook_clone.depend import depend_user
@@ -19,6 +19,12 @@ async def create_post(post: PostPostRequestBody, user: depend_user):
 async def get_post_list(user: depend_user):
     post_list = await PostBo(user=user).get_post_list()
     return to_json_response(post_list)
+
+
+@router.put('/', response_model=Post)
+async def update_post(post: PutPostRequestBody, user: depend_user):
+    post = await PostBo(user=user).update_post_by_id(post_id=post.id, content=post.content)
+    return to_json_response(post)
 
 
 @router.delete('/{post_id}', response_model=Post)

@@ -7,6 +7,11 @@ class PostPostRequestBody(BaseModel):
     content: str
 
 
+class PutPostRequestBody(BaseModel):
+    id: UUID
+    content: str
+
+
 class Post(BaseModel):
     id: UUID
     content: str
