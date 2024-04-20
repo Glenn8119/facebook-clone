@@ -1,7 +1,6 @@
 from passlib.context import CryptContext
 from facebook_clone.business_model import get_facebook_clone_dao_factory
 from facebook_clone.data_access_object.user import UserDao
-from facebook_clone.schema.user import User
 from jose import jwt
 from datetime import timedelta, datetime
 from fastapi import HTTPException

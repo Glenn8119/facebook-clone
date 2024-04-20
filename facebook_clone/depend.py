@@ -1,5 +1,5 @@
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from typing import Annotated
 from facebook_clone.config import get_settings
 from starlette import status
