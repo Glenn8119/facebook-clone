@@ -33,7 +33,7 @@ class UserBo:
             raise HTTPException(status_code=401, detail='Invalid user.')
 
         token = self.create_access_token(account, user['id'], timedelta(minutes=20))
-        return {'access_token': token, 'token_type': 'bearer'}
+        return token
 
     @staticmethod
     async def authenticate_user(account: str, password: str):
