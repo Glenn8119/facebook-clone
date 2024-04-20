@@ -4,6 +4,7 @@ from facebook_clone.business_model.post import PostBo
 from typing import List
 from facebook_clone.depend import depend_user
 from facebook_clone.response import to_json_response
+from uuid import UUID
 
 router = APIRouter()
 
@@ -18,3 +19,9 @@ async def create_post(post: PostPostRequestBody, user: depend_user):
 async def get_post_list(user: depend_user):
     post_list = await PostBo(user=user).get_post_list()
     return to_json_response(post_list)
+
+
+@router.delete('/{post_id}', response_model=Post)
+async def delete_post(post_id: UUID, user: depend_user):
+    post = await PostBo(user=user).delete_post(post_id)
+    return to_json_response(post)

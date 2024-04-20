@@ -1,5 +1,6 @@
 from facebook_clone.data_access_object.post import PostDao
 from facebook_clone.business_model import get_facebook_clone_dao_factory, BaseBo
+from uuid import UUID
 
 
 class PostBo(BaseBo):
@@ -12,3 +13,8 @@ class PostBo(BaseBo):
         post_dao: PostDao
         async with get_facebook_clone_dao_factory().create_dao(PostDao) as post_dao:
             return await post_dao.get_post_list(self.user.get('id'))
+
+    async def delete_post(self, post_id: UUID):
+        post_dao: PostDao
+        async with get_facebook_clone_dao_factory().create_dao(PostDao) as post_dao:
+            return await post_dao.delete_post(post_id, self.user.get('id'))
