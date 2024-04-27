@@ -1,5 +1,11 @@
+import LoginForm from '@/components/login/LoginForm'
+
 const Login = () => {
-  return <div>Login</div>
+  return (
+    <div className='flex justify-center items-center h-dvh bg-slate-100'>
+      <LoginForm />
+    </div>
+  )
 }
 
 export default Login

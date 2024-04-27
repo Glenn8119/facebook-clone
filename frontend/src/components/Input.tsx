@@ -5,7 +5,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement>
 
 const Input: FC<InputProps> = (props) => {
   const className = twMerge(
-    'w-full border-gray-300 border rounded-md h-6 p-4',
+    'w-full border-gray-300 border rounded-md h-12 p-4',
     props.className
   )
 
