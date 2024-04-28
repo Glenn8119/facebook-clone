@@ -2,7 +2,11 @@
 export default {
   content: ['./src/**/*.tsx'],
   theme: {
-    extend: {}
+    extend: {
+      spacing: {
+        108: '27rem'
+      }
+    }
   },
   plugins: []
 }

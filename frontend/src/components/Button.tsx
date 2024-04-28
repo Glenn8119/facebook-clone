@@ -2,11 +2,11 @@ import { ButtonVariant } from '@/types/component/input'
 import { ButtonHTMLAttributes, FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-type InputProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant
 }
 
-const Button: FC<InputProps> = ({
+const Button: FC<ButtonProps> = ({
   variant = ButtonVariant.PRIMARY,
   ...props
 }) => {
