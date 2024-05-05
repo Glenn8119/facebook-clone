@@ -18,15 +18,11 @@ services:
       - ./backend/facebook_clone:/code/facebook_clone
 
   postgres_db:
-    image: postgres:16.2-alpine
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=facebook_clone
+    build:
+      context: ./backend
+      dockerfile: db.Dockerfile
     ports:
       - '5432:5432'
-    volumes:
-        - db_data:/var/lib/postgresql/data/
 
 volumes:
     db_data:
