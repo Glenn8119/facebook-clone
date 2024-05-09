@@ -1,10 +1,12 @@
-import Input from '@/components/Input'
-import Button from '@/components/Button'
+import Input from '@/components/form/Input'
+import Button from '@/components/form/Button'
 import { ButtonVariant } from '@/types/component/input'
 import { SetStateType } from '@/types/common'
 import { ChangeEvent, FC } from 'react'
 import { LoginFormType, loginFormSchema } from '@/schema/validation/login'
 import useForm from '@/hooks/useForm'
+import ErrorMessage from '@/components/form/ErrorMessage'
+import FormGroup from '@/components/form/FormGroup'
 
 type LoginFormProps = {
   setShowSignUp: SetStateType<boolean>
@@ -37,24 +39,30 @@ const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
     })
   }
 
+  console.log({ error })
+
   return (
     <div className='w-96 p-5 shadow-lg rounded-lg bg-white flex flex-col items-center'>
-      <Input
-        value={formData.account}
-        name='account'
-        placeholder='帳號'
-        className='mb-3 text-lg'
-        onChange={onInputChange}
-      />
-      <div>{error?.account?._errors}</div>
-      <Input
-        value={formData.password}
-        name='password'
-        placeholder='密碼'
-        className='mb-4 text-lg'
-        onChange={onInputChange}
-      />
-      <div>{error?.password?._errors}</div>
+      <FormGroup className='mb-3'>
+        <Input
+          value={formData.account}
+          name='account'
+          placeholder='帳號'
+          className='text-lg'
+          onChange={onInputChange}
+        />
+        <ErrorMessage messageList={error?.account?._errors} />
+      </FormGroup>
+      <FormGroup className='mb-3'>
+        <Input
+          value={formData.password}
+          name='password'
+          placeholder='密碼'
+          className='text-lg'
+          onChange={onInputChange}
+        />
+        <ErrorMessage messageList={error?.password?._errors} />
+      </FormGroup>
       <Button className='text-lg mb-8' onClick={() => submit()}>
         登入
       </Button>

@@ -1,10 +1,12 @@
 import { SetStateType } from '@/types/common'
 import { ChangeEvent, FC } from 'react'
-import Input from '@/components/Input'
-import Button from '@/components/Button'
+import Input from '@/components/form/Input'
+import Button from '@/components/form/Button'
 import { ButtonVariant } from '@/types/component/input'
 import useForm from '@/hooks/useForm'
 import { SignUpFormType, signUpFormSchema } from '@/schema/validation/login'
+import FormGroup from '@/components/form/FormGroup'
+import ErrorMessage from '@/components/form/ErrorMessage'
 
 type SignUpFormProps = {
   setShowSignUp: SetStateType<boolean>
@@ -51,30 +53,33 @@ const SignUp: FC<SignUpFormProps> = ({ setShowSignUp }) => {
           <p className='text-gray-600'>快速又簡單。</p>
         </div>
         <form className='p-4 pb-6'>
-          <Input
-            onChange={onInputChange}
-            value={formData.username}
-            name='username'
-            className='mb-3'
-            placeholder='姓名'
-          />
-          {error?.username?._errors}
-          <Input
-            onChange={onInputChange}
-            value={formData.account}
-            name='account'
-            className='mb-3'
-            placeholder='帳號'
-          />
-          {error?.account?._errors}
-          <Input
-            onChange={onInputChange}
-            value={formData.password}
-            name='password'
-            className='mb-4'
-            placeholder='密碼'
-          />
-          {error?.password?._errors}
+          <FormGroup className='mb-3'>
+            <Input
+              onChange={onInputChange}
+              value={formData.username}
+              name='username'
+              placeholder='姓名'
+            />
+            <ErrorMessage messageList={error?.username?._errors} />
+          </FormGroup>
+          <FormGroup className='mb-3'>
+            <Input
+              onChange={onInputChange}
+              value={formData.account}
+              name='account'
+              placeholder='帳號'
+            />
+            <ErrorMessage messageList={error?.account?._errors} />
+          </FormGroup>
+          <FormGroup className='mb-4'>
+            <Input
+              onChange={onInputChange}
+              value={formData.password}
+              name='password'
+              placeholder='密碼'
+            />
+            <ErrorMessage messageList={error?.account?._errors} />
+          </FormGroup>
           <p className='text-xs text-gray-500 mb-6'>
             點擊「註冊」即表示你同意我們的《服務條款》、《隱私政策》和《Cookie
             政策》。你可能會收到我們的簡訊通知，而且可以隨時選擇停止接收。
