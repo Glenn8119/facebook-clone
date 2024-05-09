@@ -1,14 +1,41 @@
 import { SetStateType } from '@/types/common'
-import { FC } from 'react'
+import { ChangeEvent, FC } from 'react'
 import Input from '@/components/Input'
 import Button from '@/components/Button'
 import { ButtonVariant } from '@/types/component/input'
+import useForm from '@/hooks/useForm'
+import { SignUpFormType, signUpFormSchema } from '@/schema/validation/login'
 
 type SignUpFormProps = {
   setShowSignUp: SetStateType<boolean>
 }
 
+const initFormData = {
+  username: '',
+  account: '',
+  password: ''
+}
+
 const SignUp: FC<SignUpFormProps> = ({ setShowSignUp }) => {
+  const onSubmit = (formData: SignUpFormType) => {
+    console.log(formData)
+  }
+
+  const { formData, setFormData, submit, error } = useForm<SignUpFormType>(
+    { ...initFormData },
+    signUpFormSchema,
+    onSubmit
+  )
+
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target as HTMLInputElement
+
+    setFormData({
+      ...formData,
+      [name]: value
+    })
+  }
+
   return (
     <div className='fixed bg-white/80 inset-0 w-dvw h-dvh flex items-center justify-center'>
       <div className='relative w-108 shadow-lg bg-white'>
@@ -24,17 +51,40 @@ const SignUp: FC<SignUpFormProps> = ({ setShowSignUp }) => {
           <p className='text-gray-600'>快速又簡單。</p>
         </div>
         <form className='p-4 pb-6'>
-          <Input className='mb-3' placeholder='姓名' />
-          <Input className='mb-3' placeholder='帳號' />
-          <Input className='mb-4' placeholder='密碼' />
+          <Input
+            onChange={onInputChange}
+            value={formData.username}
+            name='username'
+            className='mb-3'
+            placeholder='姓名'
+          />
+          {error?.username?._errors}
+          <Input
+            onChange={onInputChange}
+            value={formData.account}
+            name='account'
+            className='mb-3'
+            placeholder='帳號'
+          />
+          {error?.account?._errors}
+          <Input
+            onChange={onInputChange}
+            value={formData.password}
+            name='password'
+            className='mb-4'
+            placeholder='密碼'
+          />
+          {error?.password?._errors}
           <p className='text-xs text-gray-500 mb-6'>
             點擊「註冊」即表示你同意我們的《服務條款》、《隱私政策》和《Cookie
             政策》。你可能會收到我們的簡訊通知，而且可以隨時選擇停止接收。
           </p>
           <div className='text-center'>
             <Button
+              type='button'
               variant={ButtonVariant.SECONDARY}
               className='font-bold w-48 h-9 text-lg'
+              onClick={submit}
             >
               註冊
             </Button>

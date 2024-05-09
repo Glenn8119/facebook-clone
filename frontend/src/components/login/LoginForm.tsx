@@ -40,6 +40,7 @@ const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
   return (
     <div className='w-96 p-5 shadow-lg rounded-lg bg-white flex flex-col items-center'>
       <Input
+        value={formData.account}
         name='account'
         placeholder='帳號'
         className='mb-3 text-lg'
@@ -47,6 +48,7 @@ const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
       />
       <div>{error?.account?._errors}</div>
       <Input
+        value={formData.password}
         name='password'
         placeholder='密碼'
         className='mb-4 text-lg'
