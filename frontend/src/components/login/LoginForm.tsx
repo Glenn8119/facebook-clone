@@ -30,6 +30,10 @@ const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
       type: 'login',
       payload: { account: formData.account, token: res.access_token }
     })
+    localStorage.setItem(
+      'user',
+      JSON.stringify({ account: formData.account, token: res.access_token })
+    )
     navigate('/')
   }
 

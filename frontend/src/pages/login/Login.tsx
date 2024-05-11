@@ -1,9 +1,16 @@
 import LoginForm from '@/components/login/LoginForm'
 import SignUp from '@/components/login/SignUp'
+import useUserContext from '@/hooks/useUserContext'
 import { useState } from 'react'
+import { Navigate } from 'react-router-dom'
 
 const Login = () => {
+  const userContext = useUserContext()
   const [showSignUp, setShowSignUp] = useState(false)
+
+  if (userContext.value.token) {
+    return <Navigate to='/' />
+  }
 
   return (
     <>

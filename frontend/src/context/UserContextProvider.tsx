@@ -22,11 +22,16 @@ type UserContextProviderType = {
   children: ReactNode
 }
 
+const localStorageUser = localStorage.getItem('user')
+const initUserValue = localStorageUser
+  ? JSON.parse(localStorageUser)
+  : {
+      token: '',
+      account: ''
+    }
+
 const UserContextProvider: FC<UserContextProviderType> = ({ children }) => {
-  const [userValue, dispatch] = useReducer(userReducer, {
-    token: '',
-    account: ''
-  })
+  const [userValue, dispatch] = useReducer(userReducer, initUserValue)
 
   return (
     <UserContext.Provider value={{ value: userValue, dispatch }}>
