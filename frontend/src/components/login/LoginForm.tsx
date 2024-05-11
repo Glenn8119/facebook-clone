@@ -7,6 +7,9 @@ import { LoginFormType, loginFormSchema } from '@/schema/validation/login'
 import useForm from '@/hooks/useForm'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import FormGroup from '@/components/form/FormGroup'
+import UserApi from '@/api/user'
+import { useNavigate } from 'react-router-dom'
+import useUserContext from '@/hooks/useUserContext'
 
 type LoginFormProps = {
   setShowSignUp: SetStateType<boolean>
@@ -18,8 +21,16 @@ const initFormData = {
 }
 
 const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
-  const onSubmit = (formData: LoginFormType) => {
-    console.log(formData)
+  const { dispatch } = useUserContext()
+  const navigate = useNavigate()
+
+  const onSubmit = async (formData: LoginFormType) => {
+    const res = await UserApi.login(formData)
+    dispatch({
+      type: 'login',
+      payload: { account: formData.account, token: res.access_token }
+    })
+    navigate('/')
   }
 
   const { formData, setFormData, submit, error } = useForm<LoginFormType>(
@@ -38,8 +49,6 @@ const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
       [name]: value
     })
   }
-
-  console.log({ error })
 
   return (
     <div className='w-96 p-5 shadow-lg rounded-lg bg-white flex flex-col items-center'>

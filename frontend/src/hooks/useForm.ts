@@ -5,19 +5,19 @@ import { z } from 'zod'
 const useForm = <FormData>(
   initFormData: FormData,
   schema: z.Schema<FormData>,
-  onSubmit: (data: FormData) => void
+  onSubmit: (data: FormData) => void | Promise<void>
 ) => {
   const [formData, setFormData] = useState<FormData>(initFormData)
   const [error, setError] =
     useState<Nullable<z.ZodFormattedError<FormData>>>(null)
 
-  const submit = () => {
+  const submit = async () => {
     const parsedFormData = schema.safeParse(formData)
     if (!parsedFormData.success) {
       setError(parsedFormData.error.format())
     } else {
       setError(null)
-      onSubmit(parsedFormData.data)
+      await onSubmit(parsedFormData.data)
     }
   }
 

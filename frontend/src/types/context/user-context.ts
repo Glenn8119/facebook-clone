@@ -1,5 +1,5 @@
 export type UserContextType = {
-  username: string
+  account: string
   token: string
 }
 

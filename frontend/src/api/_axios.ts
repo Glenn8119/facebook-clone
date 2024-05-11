@@ -1,10 +1,10 @@
-import axios, { RawAxiosRequestHeaders, Method } from 'axios'
+import axios, { RawAxiosRequestHeaders, Method, AxiosResponse } from 'axios'
 
 const baseAxios = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT
 })
 
-const _axios = ({
+const _axios = async ({
   url,
   headers,
   method = 'get',
@@ -16,13 +16,15 @@ const _axios = ({
   method?: Method
   body?: unknown
   params?: Record<string, unknown>
-}) => {
-  return baseAxios(url, {
+}): Promise<AxiosResponse['data']> => {
+  const res = await baseAxios(url, {
     headers: { ...baseAxios.defaults.headers.common, ...headers },
     method,
     data: body,
     params
   })
+
+  return res.data
 }
 
 export default _axios

@@ -7,14 +7,14 @@ import {
 export const UserContext = createContext<{
   value: UserContextType
   dispatch: Dispatch<UserReducerActionType>
-}>({ value: { username: '', token: '' }, dispatch: () => {} })
+}>({ value: { account: '', token: '' }, dispatch: () => {} })
 
 const userReducer = (_: UserContextType, action: UserReducerActionType) => {
   switch (action.type) {
     case 'login':
       return action.payload
     case 'logOut':
-      return { username: '', token: '' }
+      return { account: '', token: '' }
   }
 }
 
@@ -25,7 +25,7 @@ type UserContextProviderType = {
 const UserContextProvider: FC<UserContextProviderType> = ({ children }) => {
   const [userValue, dispatch] = useReducer(userReducer, {
     token: '',
-    username: ''
+    account: ''
   })
 
   return (
