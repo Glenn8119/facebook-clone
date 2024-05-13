@@ -1,14 +1,13 @@
-import Button from '@/components/form/Button'
-import useLogout from '@/hooks/useLogout'
+import FunctionList from './FunctionList'
+import PostArea from './post-area/PostArea'
 
 const HomePage = () => {
-  const logout = useLogout()
-
   return (
-    <>
-      <div>Home Page</div>
-      <Button onClick={logout}>Logout</Button>
-    </>
+    <div className='flex'>
+      <FunctionList className='basis-1/4' />
+      <PostArea className='basis-1/2' />
+      <div className='basis-1/4'>right</div>
+    </div>
   )
 }
 
