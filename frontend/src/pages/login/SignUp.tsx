@@ -7,6 +7,7 @@ import useForm from '@/hooks/useForm'
 import { SignUpFormType, signUpFormSchema } from '@/schema/validation/login'
 import FormGroup from '@/components/form/FormGroup'
 import ErrorMessage from '@/components/form/ErrorMessage'
+import Mask from '@/components/Mask'
 
 type SignUpFormProps = {
   setShowSignUp: SetStateType<boolean>
@@ -39,7 +40,7 @@ const SignUp: FC<SignUpFormProps> = ({ setShowSignUp }) => {
   }
 
   return (
-    <div className='fixed bg-white/80 inset-0 w-dvw h-dvh flex items-center justify-center'>
+    <Mask>
       <div className='relative w-108 shadow-lg bg-white'>
         {/* TODO: replace X with real icon */}
         <div
@@ -96,7 +97,7 @@ const SignUp: FC<SignUpFormProps> = ({ setShowSignUp }) => {
           </div>
         </form>
       </div>
-    </div>
+    </Mask>
   )
 }
 

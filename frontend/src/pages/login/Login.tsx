@@ -1,5 +1,5 @@
-import LoginForm from '@/components/login/LoginForm'
-import SignUp from '@/components/login/SignUp'
+import LoginForm from '@/pages/login/LoginForm'
+import SignUp from '@/pages/login/SignUp'
 import useUserContext from '@/hooks/useUserContext'
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
