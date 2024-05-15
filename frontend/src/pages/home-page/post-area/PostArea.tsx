@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
-import AddPost from '@/pages/home-page/post-area/AddPost'
+import AddPost from '@/pages/home-page/post-area/add-post/AddPost'
 import PostList from '@/pages/home-page/post-area/post-list/PostList'
 
 interface PostAreaProps {
