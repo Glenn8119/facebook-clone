@@ -1,6 +1,7 @@
 import Avatar from '@/components/Avatar'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { MdGroup, MdGroups } from 'react-icons/md'
 
 interface FunctionListProps {
   className?: string
@@ -16,11 +17,15 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
         <span>user name</span>
       </li>
       <li className='flex items-center p-2 rounded-lg h-14 cursor-pointer hover:bg-slate-200'>
-        <span className='mr-3'>icon</span>
+        <span className='mr-3'>
+          <MdGroup color='lightblue' size={32} />
+        </span>
         <span>朋友</span>
       </li>
       <li className='flex items-center p-2 rounded-lg h-14 cursor-pointer hover:bg-slate-200'>
-        <span className='mr-3'>icon</span>
+        <span className='mr-3'>
+          <MdGroups color='gray' size={32} />
+        </span>
         <span>社團</span>
       </li>
     </ul>
