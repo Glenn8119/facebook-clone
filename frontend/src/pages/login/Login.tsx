@@ -14,8 +14,13 @@ const Login = () => {
 
   return (
     <>
-      <div className='flex flex-col justify-center items-center h-dvh'>
-        <div className='text-blue-600 text-4xl font-bold mb-6'>FaceLook</div>
+      <div className='flex justify-center items-center h-dvh'>
+        <div className='w-108 mr-20'>
+          <div className='text-blue-600 text-6xl font-bold mb-2'>FaceLook</div>
+          <div className='text-2xl'>
+            Connect with friends and the world around you on FaceLook.
+          </div>
+        </div>
         <LoginForm setShowSignUp={setShowSignUp} />
       </div>
       {showSignUp ? <SignUp setShowSignUp={setShowSignUp} /> : null}
