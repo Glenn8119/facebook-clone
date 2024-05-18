@@ -9,20 +9,33 @@ const _axios = async <T extends ZodSchema>({
   url,
   headers,
   responseSchema,
-  method = 'get',
+  isNeedToken = true,
+  method = 'GET',
   body,
   params
 }: {
   url: string
-  headers: RawAxiosRequestHeaders
   responseSchema: T
+  isNeedToken?: boolean
+  headers?: RawAxiosRequestHeaders
   method?: Method
   body?: unknown
   params?: Record<string, unknown>
 }): Promise<z.infer<T>> => {
+  const requesHeaders = {
+    ...baseAxios.defaults.headers.common,
+    ...headers
+  } as RawAxiosRequestHeaders
+
+  if (isNeedToken) {
+    const user = JSON.parse(localStorage.getItem('user') ?? 'null')
+    console.log({ user })
+    requesHeaders['Authorization'] = `Bearer ${user?.token}`
+  }
+
   // TODO: error handle
   const res = await baseAxios(url, {
-    headers: { ...baseAxios.defaults.headers.common, ...headers },
+    headers: requesHeaders,
     method,
     data: body,
     params

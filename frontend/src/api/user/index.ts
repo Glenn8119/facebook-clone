@@ -8,9 +8,9 @@ const UserApi = {
     password
   }: LoginRequestBody): Promise<LoginResponseType> {
     return await _axios({
-      responseSchema: loginResponseSchema,
-      method: 'POST',
       url: '/user/login',
+      method: 'POST',
+      responseSchema: loginResponseSchema,
       // the key 'username' of request body here comes from OAuth2PasswordRequestForm in FastApi, but actually it means user's account.
       body: {
         username: account,
@@ -18,7 +18,8 @@ const UserApi = {
       },
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
-      }
+      },
+      isNeedToken: false
     })
   }
 }

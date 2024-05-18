@@ -1,3 +1,4 @@
+import PostApi from '@/api/post'
 import Avatar from '@/components/Avatar'
 import Mask from '@/components/Mask'
 import Button from '@/components/form/Button'
@@ -15,7 +16,8 @@ interface AddPostModalProps {
 
 const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
   const onSubmit = async (formData: PostFormType) => {
-    console.log('formData', formData)
+    const post = await PostApi.createPost(formData)
+    console.log({ post })
   }
 
   const { formData, setFormData, submit, error } = useForm(
