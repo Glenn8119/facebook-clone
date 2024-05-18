@@ -1,5 +1,5 @@
-import FunctionList from './FunctionList'
-import PostArea from './post-area/PostArea'
+import FunctionList from '@/pages/home-page/FunctionList'
+import PostArea from '@/components/common/post-area/PostArea'
 
 const HomePage = () => {
   return (

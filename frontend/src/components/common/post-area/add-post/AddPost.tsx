@@ -1,6 +1,6 @@
 import Avatar from '@/components/Avatar'
 import { FC, useState } from 'react'
-import AddPostModal from '@/pages/home-page/post-area/add-post/AddPostModal'
+import AddPostModal from '@/components/common/post-area/add-post/AddPostModal'
 
 interface AddPostProps {}
 

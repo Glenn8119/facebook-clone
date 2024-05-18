@@ -11,7 +11,7 @@ const AuthRoute: FC = () => {
   }
 
   return (
-    <div className='pt-14'>
+    <div className='pt-14 w-dvw'>
       <Header />
       <Outlet />
     </div>

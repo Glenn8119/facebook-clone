@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
-import AddPost from '@/pages/home-page/post-area/add-post/AddPost'
-import PostList from '@/pages/home-page/post-area/post-list/PostList'
+import AddPost from '@/components/common/post-area/add-post/AddPost'
+import PostList from '@/components/common/post-area/post-list/PostList'
 
 interface PostAreaProps {
-  className: string
+  className?: string
 }
 
 const PostArea: FC<PostAreaProps> = ({ className }) => {

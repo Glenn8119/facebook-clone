@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import Post from '@/pages/home-page/post-area/post-list/Post'
+import Post from '@/components/common/post-area/post-list/Post'
 
 interface PostListProps {}
 
