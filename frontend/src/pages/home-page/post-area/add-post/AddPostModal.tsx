@@ -6,7 +6,7 @@ import TextArea from '@/components/form/TextArea'
 import useForm from '@/hooks/useForm'
 import { PostFormType, postFormSchema } from '@/schema/validation/add-post'
 import { ButtonSize } from '@/types/component/input'
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, MouseEvent } from 'react'
 import { MdClose } from 'react-icons/md'
 
 interface AddPostModalProps {
@@ -33,8 +33,13 @@ const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
     })
   }
 
+  const onButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    submit()
+  }
+
   return (
-    <Mask>
+    <Mask handleMaskClick={closeModal}>
       <div className='relative w-125 h-107 bg-white rounded shadow-lg'>
         <div className='h-15 p-4 text-center font-semibold text-xl border-b'>
           建立貼文
@@ -48,6 +53,7 @@ const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
             error={!!error?.content}
             value={formData.content}
             onChange={onTextAreaChange}
+            onClick={(e) => e.stopPropagation()}
             name='content'
             className='resize-none w-full text-2xl flex-grow mb-2 focus-visible:outline-none'
             placeholder='Username，在想些什麼？'
@@ -55,7 +61,7 @@ const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
           <ErrorMessage messageList={error?.content?._errors} />
           <Button
             size={ButtonSize.SMALL}
-            onClick={submit}
+            onClick={onButtonClick}
             disabled={!formData.content}
           >
             發布

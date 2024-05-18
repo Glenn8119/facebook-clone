@@ -1,12 +1,17 @@
-import { FC, ReactNode } from 'react'
+import { AnyFunction } from '@/types/common'
+import { FC, ReactNode, type MouseEvent } from 'react'
 
-interface MaskProps {
+type MaskProps = {
   children: ReactNode
+  handleMaskClick?: AnyFunction
 }
 
-const Mask: FC<MaskProps> = ({ children }) => {
+const Mask: FC<MaskProps> = ({ children, handleMaskClick }) => {
   return (
-    <div className='fixed bg-white/70 inset-0 w-dvw h-dvh flex items-center justify-center'>
+    <div
+      className='fixed bg-white/70 inset-0 w-dvw h-dvh flex items-center justify-center'
+      onClick={handleMaskClick}
+    >
       {children}
     </div>
   )
