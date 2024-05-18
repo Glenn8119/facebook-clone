@@ -8,6 +8,7 @@ import { SignUpFormType, signUpFormSchema } from '@/schema/validation/login'
 import FormGroup from '@/components/form/FormGroup'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import Mask from '@/components/Mask'
+import { MdClose } from 'react-icons/md'
 
 type SignUpFormProps = {
   setShowSignUp: SetStateType<boolean>
@@ -42,13 +43,11 @@ const SignUp: FC<SignUpFormProps> = ({ setShowSignUp }) => {
   return (
     <Mask>
       <div className='relative w-108 shadow-lg bg-white'>
-        {/* TODO: replace X with real icon */}
-        <div
+        <MdClose
           className='absolute top-3 right-3 cursor-pointer'
+          size={24}
           onClick={() => setShowSignUp(false)}
-        >
-          X
-        </div>
+        />
         <div className=' p-3 border-b border-gray-200'>
           <div className='text-4xl font-bold'>註冊</div>
           <p className='text-gray-600'>快速又簡單。</p>

@@ -17,7 +17,7 @@ const Button: FC<ButtonProps> = ({
   const sizeClass = size === ButtonSize.NORMAL ? 'h-12' : 'h-9'
 
   const className = twMerge(
-    'w-full rounded-md text-white',
+    'w-full rounded-md text-white disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed',
     bgClass,
     sizeClass,
     props.className
