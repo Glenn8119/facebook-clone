@@ -6,7 +6,7 @@ import ErrorMessage from '@/components/form/ErrorMessage'
 import TextArea from '@/components/form/TextArea'
 import useForm from '@/hooks/useForm'
 import { PostFormType, postFormSchema } from '@/schema/validation/add-post'
-import { ButtonSize } from '@/types/component/input'
+import { ButtonSize } from '@/types/component/button'
 import { ChangeEvent, FC, MouseEvent } from 'react'
 import { MdClose } from 'react-icons/md'
 
