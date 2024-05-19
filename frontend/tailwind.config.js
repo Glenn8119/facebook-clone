@@ -1,3 +1,5 @@
+import colors from 'tailwindcss/colors'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.tsx'],
@@ -9,6 +11,9 @@ export default {
         107: '26.75rem',
         108: '27rem',
         125: '31.25rem'
+      },
+      backgroundColor: {
+        main: colors.slate[100]
       }
     }
   },
