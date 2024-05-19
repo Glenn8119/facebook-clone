@@ -1,6 +1,7 @@
 import Avatar from '@/components/Avatar'
 import { FC, useState } from 'react'
 import AddPostModal from '@/components/common/post-area/add-post/AddPostModal'
+import Card from '@/components/layout/Card'
 
 interface AddPostProps {}
 
@@ -10,7 +11,7 @@ const AddPost: FC<AddPostProps> = () => {
 
   return (
     <>
-      <div className='flex items-center h-14 py-2 px-4 rounded-lg bg-white'>
+      <Card className='h-14'>
         <Avatar className='mr-2' />
         <div
           className='flex items-center flex-grow cursor-pointer p-4 h-full rounded-full bg-slate-100 text-slate-500'
@@ -18,7 +19,7 @@ const AddPost: FC<AddPostProps> = () => {
         >
           {userName}，在想些什麼？
         </div>
-      </div>
+      </Card>
       {showModal ? (
         <AddPostModal closeModal={() => setShowModal(false)} />
       ) : null}
