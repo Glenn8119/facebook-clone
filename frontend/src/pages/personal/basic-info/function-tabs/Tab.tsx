@@ -3,9 +3,9 @@ import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type TabProps = {
+  isActive: boolean
   label: string
   onClick: AnyFunction
-  isActive?: boolean
 }
 
 const Tab: FC<TabProps> = ({ label, isActive, ...props }) => {
