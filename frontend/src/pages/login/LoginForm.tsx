@@ -1,6 +1,6 @@
 import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
-import { ButtonVariant } from '@/types/component/input'
+import { ButtonVariant } from '@/types/component/button'
 import { SetStateType } from '@/types/common'
 import { ChangeEvent, FC } from 'react'
 import { LoginFormType, loginFormSchema } from '@/schema/validation/login'
