@@ -8,7 +8,7 @@ interface PostAreaProps {
 }
 
 const PostArea: FC<PostAreaProps> = ({ className }) => {
-  const cn = twMerge('p-4', className)
+  const cn = twMerge('basis-3/5 pt-4', className)
 
   return (
     <div className={cn}>

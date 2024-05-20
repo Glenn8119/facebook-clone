@@ -6,7 +6,7 @@ interface PersonalPostProps {}
 
 const PersonalPost: FC<PersonalPostProps> = () => {
   return (
-    <div className='flex gap-4 w-4/5 m-auto'>
+    <div className='flex gap-4 w-10/12 m-auto'>
       <FriendArea />
       <PostArea />
     </div>

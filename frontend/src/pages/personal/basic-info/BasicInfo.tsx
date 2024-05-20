@@ -10,10 +10,10 @@ const BasicInfo: FC<BasicInfoProps> = () => {
     <div className='w-full bg-white shadow'>
       <div className='w-11/12 mx-auto'>
         <Cover />
-        <div className='w-11/12 mx-auto'>
-          <Detail />
-          <FunctionTabs />
-        </div>
+      </div>
+      <div className='w-10/12 mx-auto'>
+        <Detail />
+        <FunctionTabs />
       </div>
     </div>
   )
