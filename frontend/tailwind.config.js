@@ -14,6 +14,10 @@ export default {
       },
       backgroundColor: {
         main: colors.slate[100]
+      },
+      fontSize: {
+        15: '15px',
+        13: '13px'
       }
     }
   },

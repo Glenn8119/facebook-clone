@@ -3,15 +3,13 @@ import { FC, useState } from 'react'
 import AddPostModal from '@/components/common/post-area/add-post/AddPostModal'
 import Card from '@/components/layout/Card'
 
-interface AddPostProps {}
-
-const AddPost: FC<AddPostProps> = () => {
+const AddPost = () => {
   const userName = 'User Name'
   const [showModal, setShowModal] = useState(false)
 
   return (
     <>
-      <Card className='h-14'>
+      <Card className='flex items-center h-14 mb-3'>
         <Avatar className='mr-2' />
         <div
           className='flex items-center flex-grow cursor-pointer p-4 h-full rounded-full bg-slate-100 text-slate-500'
