@@ -1,14 +1,14 @@
 import Card from '@/components/layout/Card'
 import { FC, useRef } from 'react'
-
-import PostUserInfo from './PostUserInfo'
+import PostUserInfo from '@/components/common/post-area/post-list/post/PostUserInfo'
+import Comment from '@/components/common/post-area/post-list/post/Comment'
+import CommentAction from '@/components/common/post-area/post-list/post/CommentAction'
 import {
   MdThumbUp,
   MdOutlineThumbUp,
   MdOutlineModeComment
 } from 'react-icons/md'
-import Comment from './Comment'
-import CommentAction from './CommentAction'
+import scrollCenterElement from '@/utils/scrollCenterElement'
 
 type PostProps = {
   className: string
@@ -19,7 +19,9 @@ const Post: FC<PostProps> = ({ className }) => {
 
   const commentClick = () => {
     if (commentInputRef.current) {
-      commentInputRef.current.focus()
+      const input = commentInputRef.current
+      scrollCenterElement(input)
+      input.focus()
     }
   }
 

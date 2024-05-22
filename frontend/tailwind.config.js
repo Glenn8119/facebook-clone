@@ -18,6 +18,9 @@ export default {
       fontSize: {
         15: '15px',
         13: '13px'
+      },
+      zIndex: {
+        header: '1000'
       }
     }
   },

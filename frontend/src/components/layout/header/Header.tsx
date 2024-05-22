@@ -9,7 +9,7 @@ const Header = () => {
   const navigate = useNavigate()
 
   return (
-    <header className='py-2 px-4 flex items-center w-full fixed top-0 h-14 shadow-lg  bg-white'>
+    <header className='py-2 px-4 flex items-center w-full fixed top-0 h-14 shadow-lg  bg-white z-header'>
       <MdFacebook
         className='mr-2 cursor-pointer'
         size={40}

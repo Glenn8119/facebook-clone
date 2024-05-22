@@ -1,5 +1,5 @@
 import Avatar from '@/components/Avatar'
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import AddPostModal from '@/components/common/post-area/add-post/AddPostModal'
 import Card from '@/components/layout/Card'
 
