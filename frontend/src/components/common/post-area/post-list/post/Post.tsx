@@ -1,5 +1,5 @@
 import Card from '@/components/layout/Card'
-import { FC } from 'react'
+import { FC, useRef } from 'react'
 
 import PostUserInfo from './PostUserInfo'
 import {
@@ -15,6 +15,14 @@ type PostProps = {
 }
 
 const Post: FC<PostProps> = ({ className }) => {
+  const commentInputRef = useRef<HTMLInputElement>(null)
+
+  const commentClick = () => {
+    if (commentInputRef.current) {
+      commentInputRef.current.focus()
+    }
+  }
+
   return (
     <Card className={className}>
       <PostUserInfo />
@@ -35,13 +43,16 @@ const Post: FC<PostProps> = ({ className }) => {
           <MdOutlineThumbUp size='20' className='mr-2' />
           <span>讚</span>
         </div>
-        <div className='flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main'>
+        <div
+          className='flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main'
+          onClick={commentClick}
+        >
           <MdOutlineModeComment size='20' className='mr-2' />
           <span>留言</span>
         </div>
       </div>
       <Comment className='mb-2' />
-      <CommentAction />
+      <CommentAction ref={commentInputRef} />
     </Card>
   )
 }
