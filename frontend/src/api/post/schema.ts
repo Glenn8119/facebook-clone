@@ -1,7 +1,10 @@
 import { z } from 'zod'
 
-export const postResponseSchema = z.object({
+export const createPostResponseSchema = z.object({
   content: z.string()
 })
 
-export type PostResponseType = z.infer<typeof postResponseSchema>
+export const getPostResponseSchema = z.array(createPostResponseSchema)
+
+export type CreatePostResponseType = z.infer<typeof createPostResponseSchema>
+export type GetPostResponseType = z.infer<typeof getPostResponseSchema>
