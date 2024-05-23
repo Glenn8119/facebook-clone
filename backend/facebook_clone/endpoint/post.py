@@ -9,19 +9,19 @@ from uuid import UUID
 router = APIRouter()
 
 
-@router.post('/', response_model=Post)
+@router.post('', response_model=Post)
 async def create_post(post: PostPostRequestBody, user: depend_user):
     post = await PostBo(user=user).create_post(post.content)
     return to_json_response(post)
 
 
-@router.get('/', response_model=List[Post])
+@router.get('', response_model=List[Post])
 async def get_post_list(user: depend_user):
     post_list = await PostBo(user=user).get_post_list()
     return to_json_response(post_list)
 
 
-@router.put('/', response_model=Post)
+@router.put('', response_model=Post)
 async def update_post(post: PutPostRequestBody, user: depend_user):
     post = await PostBo(user=user).update_post_by_id(post_id=post.id, content=post.content)
     return to_json_response(post)
