@@ -9,26 +9,28 @@ import {
   MdOutlineModeComment
 } from 'react-icons/md'
 import scrollCenterElement from '@/utils/scrollCenterElement'
+import { type Post as PostType } from '@/types/pages/home-page'
 
 type PostProps = {
   className: string
+  post: PostType
 }
 
-const Post: FC<PostProps> = ({ className }) => {
+const Post: FC<PostProps> = ({ className, post }) => {
   const commentInputRef = useRef<HTMLInputElement>(null)
 
   const commentClick = () => {
     if (commentInputRef.current) {
       const input = commentInputRef.current
-      scrollCenterElement(input)
       input.focus()
+      scrollCenterElement(input)
     }
   }
 
   return (
     <Card className={className}>
       <PostUserInfo />
-      <div className='py-4'>Content</div>
+      <div className='py-4'>{post.content}</div>
       <div className='flex items-center mb-3'>
         <div className='w-5 h-5 flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full mr-1'>
           <MdThumbUp color='white' size={12} />
