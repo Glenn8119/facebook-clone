@@ -31,7 +31,8 @@ class UserBo:
         if not user:
             raise HTTPException(status_code=401, detail='Invalid user.')
 
-        token = self.create_access_token(account, user['id'], timedelta(minutes=20))
+        token = self.create_access_token(
+            account, user['id'], timedelta(hours=24))
         return token
 
     @staticmethod
