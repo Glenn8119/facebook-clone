@@ -16,8 +16,10 @@ interface AddPostModalProps {
 
 const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
   const onSubmit = async (formData: PostFormType) => {
-    const post = await PostApi.createPost(formData)
-    console.log({ post })
+    await PostApi.createPost(formData)
+    closeModal()
+    const postList = await PostApi.getPostList()
+    console.log({ postList })
   }
 
   const { formData, setFormData, submit, error } = useForm(
