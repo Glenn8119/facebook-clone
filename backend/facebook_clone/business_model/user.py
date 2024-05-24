@@ -52,9 +52,3 @@ class UserBo:
         encode.update({'exp': expires})
 
         return jwt.encode(encode, self.secret_key, algorithm=self.algorithm)
-
-    async def get_recommendation_user_list(self):
-        async with get_facebook_clone_dao_factory().create_dao(UserDao) as dao:
-            user_list = await dao.get_all_user_list()
-
-            return [User.model_validate({'id': user.get('id'), 'name': user.get('name')}) for user in user_list]
