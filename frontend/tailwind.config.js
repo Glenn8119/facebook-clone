@@ -20,7 +20,8 @@ export default {
         13: '13px'
       },
       zIndex: {
-        header: '1000'
+        header: '1000',
+        mask: '1001'
       }
     }
   },
