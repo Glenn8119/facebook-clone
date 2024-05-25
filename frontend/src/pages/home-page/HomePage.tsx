@@ -6,6 +6,7 @@ import PostApi from '@/api/post'
 import RecommendationFriendList from './recommendation-friend-list/RecommendationFriendList'
 
 const HomePage = () => {
+  // use react query to load post
   const { dispatch } = useContext(PostContext)
 
   useEffect(() => {

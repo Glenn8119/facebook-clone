@@ -9,8 +9,10 @@ type LoadingProps = {
 const FullScreenLoading: FC<LoadingProps> = ({ text }) => {
   return (
     <Mask>
-      <Spin />
-      {text ? <div>{text}</div> : null}
+      <div className='flex flex-col justify-center items-center'>
+        <Spin className='mb-3' />
+        {text ? <div className='text-xl'>{text}</div> : null}
+      </div>
     </Mask>
   )
 }
