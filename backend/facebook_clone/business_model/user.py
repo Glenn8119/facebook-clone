@@ -24,7 +24,7 @@ class UserBo:
     async def create_account(self, account, name, password):
         hashed_password = self.hash_password(password)
         async with get_facebook_clone_dao_factory().create_dao(UserDao) as dao:
-            await dao.create_user(account, name, hashed_password)
+            return await dao.create_user(account, name, hashed_password)
 
     async def login(self, account: str, password: str):
         user = await self.authenticate_user(account, password)
