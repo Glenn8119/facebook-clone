@@ -5,8 +5,8 @@ import AuthRoute from '@/components/AuthRoute'
 import PersonalPage from '@/pages/personal/Personal'
 import PersonalPost from '@/pages/personal/personal-post/PersonalPost'
 import PersonalFriends from '@/pages/personal/personal-friends/PersonalFriends'
-import FullScreenLoading from './components/FullScreenLoading'
-import useLoadingContext from './hooks/useLoading'
+import FullScreenLoading from '@/components/FullScreenLoading'
+import useLoadingContext from '@/hooks/useLoading'
 
 const router = createBrowserRouter([
   {

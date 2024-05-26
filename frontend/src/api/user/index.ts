@@ -1,6 +1,10 @@
 import _axios from '@/api/_axios'
-import { LoginRequestBody } from '@/types/api/user'
-import { loginResponseSchema, type LoginResponseType } from '@/api/user/schema'
+import { LoginRequestBody, SignUpRequestBody } from '@/types/api/user'
+import {
+  loginResponseSchema,
+  signUpResponseSchema,
+  type LoginResponseType
+} from '@/api/user/schema'
 
 const UserApi = {
   async login({
@@ -19,6 +23,16 @@ const UserApi = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
+      isNeedToken: false
+    })
+  },
+
+  async signUp(signUpRequestBody: SignUpRequestBody) {
+    return _axios({
+      url: '/user/sign_up',
+      method: 'POST',
+      responseSchema: signUpResponseSchema,
+      body: signUpRequestBody,
       isNeedToken: false
     })
   }
