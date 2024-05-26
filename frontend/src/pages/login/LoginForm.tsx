@@ -7,9 +7,8 @@ import { LoginFormType, loginFormSchema } from '@/schema/validation/login'
 import useForm from '@/hooks/useForm'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import FormGroup from '@/components/form/FormGroup'
-import UserApi from '@/api/user'
-import { useNavigate } from 'react-router-dom'
-import useUserContext from '@/hooks/useUserContext'
+import useLogin from '@/hooks/api/useLogin'
+import FullScreenLoading from '@/components/FullScreenLoading'
 
 type LoginFormProps = {
   setShowSignUp: SetStateType<boolean>
@@ -21,20 +20,10 @@ const initFormData = {
 }
 
 const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
-  const { dispatch } = useUserContext()
-  const navigate = useNavigate()
+  const { mutateAsync: login, isPending } = useLogin()
 
   const onSubmit = async (formData: LoginFormType) => {
-    const res = await UserApi.login(formData)
-    dispatch({
-      type: 'login',
-      payload: { account: formData.account, token: res.access_token }
-    })
-    localStorage.setItem(
-      'user',
-      JSON.stringify({ account: formData.account, token: res.access_token })
-    )
-    navigate('/')
+    await login(formData)
   }
 
   const { formData, setFormData, submit, error } = useForm<LoginFormType>(
@@ -55,39 +44,42 @@ const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
   }
 
   return (
-    <div className='w-96 p-5 shadow-lg rounded-lg bg-white flex flex-col items-center'>
-      <FormGroup className='mb-3'>
-        <Input
-          value={formData.account}
-          name='account'
-          placeholder='帳號'
-          className='text-lg'
-          onChange={onInputChange}
-        />
-        <ErrorMessage messageList={error?.account?._errors} />
-      </FormGroup>
-      <FormGroup className='mb-3'>
-        <Input
-          value={formData.password}
-          name='password'
-          placeholder='密碼'
-          className='text-lg'
-          onChange={onInputChange}
-        />
-        <ErrorMessage messageList={error?.password?._errors} />
-      </FormGroup>
-      <Button className='text-lg mb-8' onClick={() => submit()}>
-        登入
-      </Button>
-      <div className='border self-stretch mb-8'></div>
-      <Button
-        variant={ButtonVariant.SECONDARY}
-        className='text-lg w-32'
-        onClick={() => setShowSignUp(true)}
-      >
-        建立新帳號
-      </Button>
-    </div>
+    <>
+      <div className='w-96 p-5 shadow-lg rounded-lg bg-white flex flex-col items-center'>
+        <FormGroup className='mb-3'>
+          <Input
+            value={formData.account}
+            name='account'
+            placeholder='帳號'
+            className='text-lg'
+            onChange={onInputChange}
+          />
+          <ErrorMessage messageList={error?.account?._errors} />
+        </FormGroup>
+        <FormGroup className='mb-3'>
+          <Input
+            value={formData.password}
+            name='password'
+            placeholder='密碼'
+            className='text-lg'
+            onChange={onInputChange}
+          />
+          <ErrorMessage messageList={error?.password?._errors} />
+        </FormGroup>
+        <Button className='text-lg mb-8' onClick={() => submit()}>
+          登入
+        </Button>
+        <div className='border self-stretch mb-8'></div>
+        <Button
+          variant={ButtonVariant.SECONDARY}
+          className='text-lg w-32'
+          onClick={() => setShowSignUp(true)}
+        >
+          建立新帳號
+        </Button>
+      </div>
+      {isPending ? <FullScreenLoading /> : null}
+    </>
   )
 }
 
