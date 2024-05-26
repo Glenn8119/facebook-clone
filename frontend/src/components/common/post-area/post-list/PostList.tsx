@@ -1,12 +1,13 @@
-import { FC } from 'react'
 import Post from '@/components/common/post-area/post-list/post/Post'
-import { type Post as PostType } from '@/types/pages/home-page'
+import useGetPostList from '@/hooks/api/useGetPostList'
 
-interface PostListProps {
-  postList: PostType[]
-}
+const PostList = () => {
+  const { postList } = useGetPostList()
 
-const PostList: FC<PostListProps> = ({ postList }) => {
+  if (!postList) {
+    return null
+  }
+
   return (
     <div>
       {postList.map((post) => (
