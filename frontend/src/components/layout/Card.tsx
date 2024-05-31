@@ -7,7 +7,7 @@ type CardProps = {
 }
 
 const Card: FC<CardProps> = ({ children, className }) => {
-  const cn = twMerge('p-2 px-4 rounded-lg bg-white shadow', className)
+  const cn = twMerge('p-2 px-4 rounded-lg bg-white shadow-lg', className)
 
   return <div className={cn}>{children}</div>
 }

@@ -22,6 +22,10 @@ export default {
       zIndex: {
         header: '1000',
         mask: '1001'
+      },
+      boxShadow: {
+        popover:
+          '0 1px 8px 1px rgb(0 0 0 / 0.1), 0 1px 8px 1px rgb(0 0 0 / 0.1);'
       }
     }
   },
