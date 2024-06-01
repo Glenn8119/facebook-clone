@@ -1,7 +1,10 @@
 import Avatar from '@/components/Avatar'
+import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import Button from '@/components/form/Button'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { MdEdit } from 'react-icons/md'
+
+const mockAvatarInfoList = [{}, {}, {}, {}, {}, {}, {}]
 
 const Detail = () => {
   return (
@@ -13,13 +16,7 @@ const Detail = () => {
       <div className='flex-grow py-2'>
         <div className='font-bold text-4xl mb-1'>Username</div>
         <div className='text-slate-600 mb-1'>222 位朋友</div>
-        <div className='flex'>
-          <Avatar className='border-white border-2 z-50 rounded-full ' />
-          <Avatar className='border-white border-2 z-40 rounded-full -ml-2' />
-          <Avatar className='border-white border-2 z-30 rounded-full -ml-2' />
-          <Avatar className='border-white border-2 z-20 rounded-full -ml-2' />
-          <Avatar className='border-white border-2 z-10 rounded-full -ml-2' />
-        </div>
+        <CollapsingAvatarList avatarInfoList={mockAvatarInfoList} />
       </div>
       <div className='flex-grow py-2'>
         <Button
