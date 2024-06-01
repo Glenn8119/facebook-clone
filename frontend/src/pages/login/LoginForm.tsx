@@ -2,7 +2,7 @@ import Input from '@/components/form/Input'
 import Button from '@/components/form/Button'
 import { ButtonVariant } from '@/types/component/button'
 import { SetStateType } from '@/types/common'
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, KeyboardEvent } from 'react'
 import { LoginFormType, loginFormSchema } from '@/schema/validation/login'
 import useForm from '@/hooks/useForm'
 import ErrorMessage from '@/components/form/ErrorMessage'
@@ -43,11 +43,18 @@ const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
     })
   }
 
+  const onKeyup = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      submit()
+    }
+  }
+
   return (
     <>
       <div className='w-96 p-5 shadow-lg rounded-lg bg-white flex flex-col items-center'>
         <FormGroup className='mb-3'>
           <Input
+            onKeyUp={onKeyup}
             value={formData.account}
             name='account'
             placeholder='帳號'
@@ -58,15 +65,17 @@ const LoginForm: FC<LoginFormProps> = ({ setShowSignUp }) => {
         </FormGroup>
         <FormGroup className='mb-3'>
           <Input
+            onKeyUp={onKeyup}
             value={formData.password}
+            type='password'
             name='password'
             placeholder='密碼'
-            className='text-lg'
+            className='text-lg font-[caption]'
             onChange={onInputChange}
           />
           <ErrorMessage messageList={error?.password?._errors} />
         </FormGroup>
-        <Button className='text-lg mb-8' onClick={() => submit()}>
+        <Button className='text-lg mb-8' onClick={submit}>
           登入
         </Button>
         <div className='border self-stretch mb-8'></div>

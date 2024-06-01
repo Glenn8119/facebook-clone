@@ -29,7 +29,6 @@ const _axios = async <T extends ZodSchema>({
 
   if (isNeedToken) {
     const user = JSON.parse(localStorage.getItem('user') ?? 'null')
-    console.log({ user })
     requesHeaders['Authorization'] = `Bearer ${user?.token}`
   }
 
