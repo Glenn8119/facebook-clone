@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from uuid import UUID
+from typing import List
 
 
 class SignUpRequestBody(BaseModel):
@@ -16,3 +17,8 @@ class Token(BaseModel):
 class User(BaseModel):
     id: UUID
     name: str
+
+
+class UserOverviewItem(User):
+    common_friend_list: List[User]
+    is_friend: bool

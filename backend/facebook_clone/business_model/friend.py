@@ -10,3 +10,8 @@ class FriendBo(BaseBo):
             user = self.user
             recommendation_user_list = await dao.get_all_user_list(user.get('id'))
             return [User.model_validate({'id': user.get('id'), 'name': user.get('name')}) for user in recommendation_user_list]
+
+    async def add_friend(self, target_user_id):
+        async with get_facebook_clone_dao_factory().create_dao(FriendDao) as dao:
+            user = self.user
+            await dao.add_friend_relation(user.get('id'), target_user_id)

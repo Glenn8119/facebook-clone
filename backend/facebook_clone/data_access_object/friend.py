@@ -9,3 +9,13 @@ class FriendDao(BaseDao):
                 WHERE NOT id = $1 
             ''', excluded_user_id
         )
+
+    async def add_friend_relation(self, user_id, target_user_id):
+        await self.connection.execute(
+            '''
+                INSERT INTO friend_relation (user_id, friend_id)
+                VALUES
+                ($1, $2),
+                ($2, $1)
+            ''', user_id, target_user_id
+        )
