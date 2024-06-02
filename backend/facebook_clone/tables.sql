@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS friend_relation (
     user_id uuid NOT NULL,
     friend_id uuid NOT NULL,
     CONSTRAINT pk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id),
-    CONSTRAINT pk_friend_id FOREIGN KEY (friend_id) REFERENCES user_table(id)
+    CONSTRAINT pk_friend_id FOREIGN KEY (friend_id) REFERENCES user_table(id),
+    CONSTRAINT unique_friend_relation UNIQUE(user_id, friend_id)
 );
 
 CREATE TABLE IF NOT EXISTS post (
