@@ -5,5 +5,3 @@ COPY ./facebook_clone/tables.sql /docker-entrypoint-initdb.d/
 ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=1234
 ENV POSTGRES_DB=facebook_clone
-
-VOLUME "db_data:/var/lib/postgresql/data/"
