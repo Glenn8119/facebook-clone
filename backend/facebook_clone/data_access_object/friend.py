@@ -19,3 +19,13 @@ class FriendDao(BaseDao):
                 ($2, $1)
             ''', user_id, target_user_id
         )
+
+    async def get_common_friend_list(self, user_id, friend_id):
+        print(user_id, friend_id)
+        return await self.connection.fetch('''
+            SELECT u.name, u.account, u.id
+            FROM user_table as u
+            INNER JOIN friend_relation as f1 ON f1.friend_id = u.id
+            INNER JOIN friend_relation as f2 ON f2.friend_id = f1.friend_id
+            WHERE f1.user_id = $1 AND f2.user_id = $2
+        ''', user_id, friend_id)

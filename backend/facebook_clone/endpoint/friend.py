@@ -19,3 +19,9 @@ async def get_recommendation_user_list(user: depend_user):
 async def add_friend(user: depend_user, user_id):
     await FriendBo(user=user).add_friend(target_user_id=user_id)
     return to_json_response({'user_id': user_id})
+
+
+@router.get('/common/{friend_id}')
+async def get_common_friend_list(user: depend_user, friend_id):
+    user_list = await FriendBo(user=user).get_common_friend_list(friend_id=friend_id)
+    return to_json_response(user_list)
