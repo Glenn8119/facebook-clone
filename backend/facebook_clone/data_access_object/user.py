@@ -18,10 +18,3 @@ class UserDao(BaseDao):
                 WHERE account = $1
             ''', account
         )
-
-    async def get_all_user_list(self):
-        return await self.connection.fetch(
-            '''
-                SELECT * FROM user_table
-            '''
-        )

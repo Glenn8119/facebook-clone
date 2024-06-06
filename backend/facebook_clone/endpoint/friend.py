@@ -10,8 +10,8 @@ router = APIRouter()
 
 
 @router.get('/recommendation', response_model=List[UserOverviewItem])
-async def get_recommendation_user_list(user: depend_user):
-    user_list = await FriendBo(user=user).get_recommendation_user_list()
+async def get_recommendation_friend_list(user: depend_user):
+    user_list = await FriendBo(user=user).get_recommendation_friend_list()
     return to_json_response(user_list)
 
 
@@ -25,3 +25,9 @@ async def add_friend(user: depend_user, user_id):
 async def get_common_friend_list(user: depend_user, friend_id):
     user_list = await FriendBo(user=user).get_common_friend_list(friend_id=friend_id)
     return to_json_response(user_list)
+
+
+@router.get('/list')
+async def get_friend_list(user: depend_user):
+    friend_list = await FriendBo(user=user).get_friend_list()
+    return to_json_response(friend_list)
