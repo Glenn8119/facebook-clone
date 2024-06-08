@@ -3,15 +3,16 @@ import { LoginRequestBody, SignUpRequestBody } from '@/types/api/user'
 import {
   loginResponseSchema,
   signUpResponseSchema,
-  type LoginResponseType
+  type FELoginResponseType
 } from '@/api/user/schema'
+import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
 
 const UserApi = {
   async login({
     account,
     password
-  }: LoginRequestBody): Promise<LoginResponseType> {
-    return await _axios({
+  }: LoginRequestBody): Promise<FELoginResponseType> {
+    const res = await _axios({
       url: '/user/login',
       method: 'POST',
       responseSchema: loginResponseSchema,
@@ -25,10 +26,12 @@ const UserApi = {
       },
       isNeedToken: false
     })
+
+    return transformObjectKeyFromSnakeToCamel(res)
   },
 
   async signUp(signUpRequestBody: SignUpRequestBody) {
-    return _axios({
+    return await _axios({
       url: '/user/sign_up',
       method: 'POST',
       responseSchema: signUpResponseSchema,

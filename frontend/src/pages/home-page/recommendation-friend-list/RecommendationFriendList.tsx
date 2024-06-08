@@ -15,7 +15,7 @@ const RecommendationFriendList: FC<RecommendationFriendListProps> = ({
 
   const { data: recommendationFriendList } = useQuery({
     queryKey: ['friendRecommendation'],
-    queryFn: FriendApi.getRecommendationFriend
+    queryFn: FriendApi.getRecommendationFriendList
   })
 
   if (!recommendationFriendList) {

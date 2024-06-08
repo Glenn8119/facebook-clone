@@ -1,13 +1,13 @@
+import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import Button from '@/components/form/Button'
 import { ButtonSize } from '@/types/component/button'
-import { Friend } from '@/types/pages/home-page'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type FriendItemProps = {
-  recommendationFriend: Friend
+  recommendationFriend: FERecommendationFriendSingleResponseType
   className: string
 }
 

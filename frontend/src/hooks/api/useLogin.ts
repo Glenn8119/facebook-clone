@@ -13,13 +13,13 @@ const useLogin = () => {
       const response = data
       dispatch({
         type: 'login',
-        payload: { account: formData.account, token: response.access_token }
+        payload: { account: formData.account, token: response.accessToken }
       })
       localStorage.setItem(
         'user',
         JSON.stringify({
           account: formData.account,
-          token: response.access_token
+          token: response.accessToken
         })
       )
       navigate('/')

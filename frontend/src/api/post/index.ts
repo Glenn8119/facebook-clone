@@ -2,14 +2,17 @@ import _axios from '@/api/_axios'
 import {
   createPostResponseSchema,
   getPostResponseSchema,
-  type CreatePostResponseType,
-  type GetPostResponseType
+  type FECreatePostResponseType,
+  type FEGetPostResponseType
 } from '@/api/post/schema'
 import { type PostFormType } from '@/schema/validation/add-post'
+import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
 
 const PostApi = {
-  async createPost({ content }: PostFormType): Promise<CreatePostResponseType> {
-    return await _axios({
+  async createPost({
+    content
+  }: PostFormType): Promise<FECreatePostResponseType> {
+    const res = await _axios({
       url: '/post',
       method: 'POST',
       body: {
@@ -17,13 +20,17 @@ const PostApi = {
       },
       responseSchema: createPostResponseSchema
     })
+
+    return transformObjectKeyFromSnakeToCamel(res)
   },
 
-  async getPostList(): Promise<GetPostResponseType> {
-    return _axios({
+  async getPostList(): Promise<FEGetPostResponseType> {
+    const res = await _axios({
       url: '/post',
       responseSchema: getPostResponseSchema
     })
+
+    return transformObjectKeyFromSnakeToCamel(res)
   }
 }
 

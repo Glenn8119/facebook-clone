@@ -1,3 +1,4 @@
+import { TransformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
 import { z } from 'zod'
 
 export const loginResponseSchema = z.object({
@@ -10,5 +11,7 @@ export const signUpResponseSchema = z.object({
   name: z.string()
 })
 
-export type LoginResponseType = z.infer<typeof loginResponseSchema>
-export type SignUpResponseType = z.infer<typeof signUpResponseSchema>
+type LoginResponseType = z.infer<typeof loginResponseSchema>
+
+export type FELoginResponseType =
+  TransformObjectKeyFromSnakeToCamel<LoginResponseType>

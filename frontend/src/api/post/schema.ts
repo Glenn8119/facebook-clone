@@ -1,3 +1,4 @@
+import { TransformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
 import { z } from 'zod'
 
 export const createPostResponseSchema = z.object({
@@ -6,5 +7,9 @@ export const createPostResponseSchema = z.object({
 
 export const getPostResponseSchema = z.array(createPostResponseSchema)
 
-export type CreatePostResponseType = z.infer<typeof createPostResponseSchema>
-export type GetPostResponseType = z.infer<typeof getPostResponseSchema>
+type CreatePostResponseType = z.infer<typeof createPostResponseSchema>
+type GetPostResponseType = z.infer<typeof getPostResponseSchema>
+export type FECreatePostResponseType =
+  TransformObjectKeyFromSnakeToCamel<CreatePostResponseType>
+export type FEGetPostResponseType =
+  TransformObjectKeyFromSnakeToCamel<GetPostResponseType>
