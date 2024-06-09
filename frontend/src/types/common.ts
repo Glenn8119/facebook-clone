@@ -5,4 +5,5 @@ export type PlainObject = Record<string, unknown>
 
 export type AvatarInfo = {
   imgUrl?: string
+  id: string
 }

@@ -1,7 +1,9 @@
 import _axios from '@/api/_axios'
 import {
   friendRecommendationListSchema,
-  FERecommendationFriendSingleResponseType
+  FERecommendationFriendSingleResponseType,
+  addFriendReponseSchema,
+  FEAddFriendReponseSchema
 } from '@/api/friend/schema'
 import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
 
@@ -14,9 +16,17 @@ const FriendApi = {
       responseSchema: friendRecommendationListSchema
     })
 
-    return transformObjectKeyFromSnakeToCamel(
-      res
-    ) as FERecommendationFriendSingleResponseType[]
+    return transformObjectKeyFromSnakeToCamel(res)
+  },
+
+  async addFriend(id: string): Promise<FEAddFriendReponseSchema> {
+    const res = await _axios({
+      url: `/friend/${id}`,
+      method: 'POST',
+      responseSchema: addFriendReponseSchema
+    })
+
+    return transformObjectKeyFromSnakeToCamel(res)
   }
 }
 
