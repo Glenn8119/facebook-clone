@@ -10,9 +10,17 @@ type SnakeToCamel<Str> = Str extends `${infer First}_${infer Rest}`
   ? `${First}${SnakeToCamel<Capitalize<Rest>>}`
   : Str
 
-export type TransformObjectKeyFromSnakeToCamel<T> = {
-  [K in keyof T as SnakeToCamel<K>]: TransformObjectKeyFromSnakeToCamel<T[K]>
-}
+type TransformArraySnakeToCamel<T> = T extends (infer Item)[]
+  ? TransformObjectKeyFromSnakeToCamel<Item>[]
+  : T
+
+export type TransformObjectKeyFromSnakeToCamel<T> = T extends Array<any>
+  ? TransformArraySnakeToCamel<T>
+  : {
+      [K in keyof T as SnakeToCamel<K>]: TransformObjectKeyFromSnakeToCamel<
+        T[K]
+      >
+    }
 
 export const transformObjectKeyFromSnakeToCamel = <T>(
   object: T
