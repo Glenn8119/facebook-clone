@@ -11,10 +11,18 @@ class UserDao(BaseDao):
             ''', account, name, password
         )
 
-    async def get_user(self, account):
+    async def get_user_by_account(self, account):
         return await self.connection.fetchrow(
             '''
                 SELECT * FROM user_table
                 WHERE account = $1
             ''', account
+        )
+
+    async def get_user_by_id(self, user_id):
+        return await self.connection.fetchrow(
+            '''
+                SELECT id, name, account FROM user_table
+                WHERE id = $1
+            ''', user_id
         )

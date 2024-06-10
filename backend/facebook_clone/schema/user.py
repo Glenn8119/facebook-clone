@@ -22,3 +22,7 @@ class User(BaseModel):
 class UserOverviewItem(User):
     common_friend_list: List[User]
     is_friend: bool
+
+
+class UserAuthDetail(User):
+    account: str
