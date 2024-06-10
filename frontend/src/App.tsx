@@ -7,6 +7,8 @@ import PersonalPost from '@/pages/personal/personal-post/PersonalPost'
 import PersonalFriends from '@/pages/personal/personal-friends/PersonalFriends'
 import FullScreenLoading from '@/components/FullScreenLoading'
 import useLoadingContext from '@/hooks/useLoading'
+import ToastContainer from '@/components/toast/ToastContainer'
+import { createPortal } from 'react-dom'
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,7 @@ function App() {
     <>
       {isLoading ? <FullScreenLoading text={text} /> : null}
       <RouterProvider router={router} />
+      {createPortal(<ToastContainer />, document.body)}
     </>
   )
 }

@@ -27,7 +27,7 @@ const RecommendationFriendList: FC<RecommendationFriendListProps> = ({
       <div className='mb-4 text-lg text-slate-500'>推薦的朋友</div>
       {recommendationFriendList.map((friend) => (
         <RecommendationFriendItem
-          className='mb-3'
+          className='mb-4'
           recommendationFriend={friend}
           key={friend.id}
         />

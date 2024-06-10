@@ -5,6 +5,7 @@ import '@/index.css'
 import UserContextProvider from '@/context/UserContextProvider'
 import LoadingContextProvider from '@/context/LoadingContextProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import ToastContextProvider from './context/ToastContextProvider'
 
 const queryClient = new QueryClient()
 
@@ -13,7 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <UserContextProvider>
         <LoadingContextProvider>
-          <App />
+          <ToastContextProvider>
+            <App />
+          </ToastContextProvider>
         </LoadingContextProvider>
       </UserContextProvider>
     </QueryClientProvider>
