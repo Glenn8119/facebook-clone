@@ -5,6 +5,7 @@ import Button from '@/components/form/Button'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import TextArea from '@/components/form/TextArea'
 import useForm from '@/hooks/useForm'
+import useUserContext from '@/hooks/useUserContext'
 import { PostFormType, postFormSchema } from '@/schema/validation/add-post'
 import { ButtonSize } from '@/types/component/button'
 import { ChangeEvent, FC, MouseEvent } from 'react'
@@ -15,6 +16,10 @@ interface AddPostModalProps {
 }
 
 const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
+  const {
+    value: { name }
+  } = useUserContext()
+
   const onSubmit = async (formData: PostFormType) => {
     await PostApi.createPost(formData)
     closeModal()
@@ -51,7 +56,7 @@ const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
         <div className='flex flex-col p-4 h-92'>
           <div className='flex mb-2'>
             <Avatar className='mr-2' />
-            <span>Username </span>
+            <span>{name}</span>
           </div>
           <TextArea
             error={!!error?.content}
@@ -60,7 +65,7 @@ const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
             onClick={(e) => e.stopPropagation()}
             name='content'
             className='resize-none w-full text-2xl flex-grow mb-2 focus-visible:outline-none'
-            placeholder='Username，在想些什麼？'
+            placeholder={`${name}，在想些什麼？`}
           />
           <ErrorMessage messageList={error?.content?._errors} />
           <Button

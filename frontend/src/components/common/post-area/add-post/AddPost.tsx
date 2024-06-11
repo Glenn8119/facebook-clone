@@ -2,9 +2,12 @@ import Avatar from '@/components/Avatar'
 import { useState } from 'react'
 import AddPostModal from '@/components/common/post-area/add-post/AddPostModal'
 import Card from '@/components/layout/Card'
+import useUserContext from '@/hooks/useUserContext'
 
 const AddPost = () => {
-  const userName = 'User Name'
+  const {
+    value: { name }
+  } = useUserContext()
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -15,7 +18,7 @@ const AddPost = () => {
           className='flex items-center flex-grow cursor-pointer p-4 h-full rounded-full bg-slate-100 text-slate-500'
           onClick={() => setShowModal(true)}
         >
-          {userName}，在想些什麼？
+          {name}，在想些什麼？
         </div>
       </Card>
       {showModal ? (

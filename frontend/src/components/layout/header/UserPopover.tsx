@@ -3,6 +3,7 @@ import Avatar from '@/components/Avatar'
 import { MdLogout } from 'react-icons/md'
 import useLogout from '@/hooks/useLogout'
 import { useNavigate } from 'react-router-dom'
+import useUserContext from '@/hooks/useUserContext'
 
 type UserPopoverProps = {
   closePopover?: () => void
@@ -11,6 +12,9 @@ type UserPopoverProps = {
 const UserPopover: FC<UserPopoverProps> = ({ closePopover = () => {} }) => {
   const logout = useLogout()
   const navigate = useNavigate()
+  const {
+    value: { name }
+  } = useUserContext()
   const onClickUser = () => {
     navigate('personal')
     closePopover()
@@ -23,7 +27,7 @@ const UserPopover: FC<UserPopoverProps> = ({ closePopover = () => {} }) => {
         onClick={onClickUser}
       >
         <Avatar className='mr-2 basis-9' />
-        <span>UserName</span>
+        <span>{name}</span>
       </li>
       <li
         className='flex cursor-pointer items-center hover:bg-slate-100 p-2 rounded-lg'

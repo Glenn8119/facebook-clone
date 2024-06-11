@@ -1,12 +1,17 @@
 import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import Button from '@/components/form/Button'
+import useUserContext from '@/hooks/useUserContext'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { MdEdit } from 'react-icons/md'
 
 const mockAvatarInfoList = [{}, {}, {}, {}, {}, {}, {}]
 
 const Detail = () => {
+  const {
+    value: { name }
+  } = useUserContext()
+
   return (
     <div className='flex items-end h-36 relative pb-4 border-b border-slate-300'>
       <div className='absolute bottom-4 left-0 border-white border-4 rounded-full'>
@@ -14,7 +19,7 @@ const Detail = () => {
       </div>
       <div className='basis-44' />
       <div className='flex-grow py-2'>
-        <div className='font-bold text-4xl mb-1'>Username</div>
+        <div className='font-bold text-4xl mb-1'>{name}</div>
         <div className='text-slate-600 mb-1'>222 位朋友</div>
         <CollapsingAvatarList avatarInfoList={mockAvatarInfoList} />
       </div>

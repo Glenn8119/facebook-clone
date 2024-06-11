@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { MdGroup, MdGroups } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
+import useUserContext from '@/hooks/useUserContext'
 
 interface FunctionListProps {
   className?: string
@@ -10,6 +11,9 @@ interface FunctionListProps {
 
 const FunctionList: FC<FunctionListProps> = ({ className }) => {
   const cn = twMerge('h-[calc(100dvh-56px)] p-4', className)
+  const {
+    value: { name }
+  } = useUserContext()
   const navigate = useNavigate()
 
   return (
@@ -19,7 +23,7 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
         onClick={() => navigate('/personal')}
       >
         <Avatar className='mr-3' />
-        <span>user name</span>
+        <span>{name}</span>
       </li>
       <li className='flex items-center p-2 rounded-lg h-14 cursor-pointer hover:bg-slate-200'>
         <span className='mr-3'>

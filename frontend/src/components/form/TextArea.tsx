@@ -2,8 +2,8 @@ import { FC, TextareaHTMLAttributes } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type TextAreaProps = {
-  error?: boolean
   className: string
+  error?: boolean
 } & TextareaHTMLAttributes<HTMLTextAreaElement>
 const TextArea: FC<TextAreaProps> = ({ className, error, ...props }) => {
   const errorClassName = error ? 'border border-red-500' : ''
@@ -14,9 +14,7 @@ const TextArea: FC<TextAreaProps> = ({ className, error, ...props }) => {
     errorClassName
   )
 
-  return (
-    <textarea {...props} className={cn} placeholder='Username，在想些什麼？' />
-  )
+  return <textarea {...props} className={cn} />
 }
 
 export default TextArea
