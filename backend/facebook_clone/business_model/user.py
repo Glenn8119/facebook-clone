@@ -46,7 +46,7 @@ class UserBo(BaseBo):
                 return False
             if not bcrypt_context.verify(password, user['hashed_password']):
                 return False
-            del user['hashed_password']
+
             return user
 
     def create_access_token(self, account: str, user_id: int, expires_delta: timedelta):

@@ -9,19 +9,23 @@ const useLogin = () => {
 
   return useMutation({
     mutationFn: UserApi.login,
-    onSuccess: (data, formData) => {
-      const response = data
+    onSuccess: async (data, formData) => {
+      const loginResponse = data
+      const userInfo = {
+        account: formData.account,
+        token: loginResponse.accessToken,
+        name: ''
+      }
+
+      localStorage.setItem('user', JSON.stringify(userInfo))
+      const userDetail = await UserApi.getUserDetail()
+      userInfo.name = userDetail.name
+
       dispatch({
         type: 'login',
-        payload: { account: formData.account, token: response.accessToken }
+        payload: userInfo
       })
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          account: formData.account,
-          token: response.accessToken
-        })
-      )
+      localStorage.setItem('user', JSON.stringify(userInfo))
       navigate('/')
     }
   })

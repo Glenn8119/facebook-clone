@@ -1,6 +1,7 @@
 export type UserContextType = {
   account: string
   token: string
+  name: string
 }
 
 export type UserReducerActionType =

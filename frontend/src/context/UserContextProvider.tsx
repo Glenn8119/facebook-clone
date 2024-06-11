@@ -7,14 +7,14 @@ import {
 export const UserContext = createContext<{
   value: UserContextType
   dispatch: Dispatch<UserReducerActionType>
-}>({ value: { account: '', token: '' }, dispatch: () => {} })
+}>({ value: { account: '', token: '', name: '' }, dispatch: () => {} })
 
 const userReducer = (_: UserContextType, action: UserReducerActionType) => {
   switch (action.type) {
     case 'login':
       return action.payload
     case 'logOut':
-      return { account: '', token: '' }
+      return { account: '', token: '', name: '' }
   }
 }
 
@@ -27,7 +27,8 @@ const initUserValue = localStorageUser
   ? JSON.parse(localStorageUser)
   : {
       token: '',
-      account: ''
+      account: '',
+      name: ''
     }
 
 const UserContextProvider: FC<UserContextProviderType> = ({ children }) => {

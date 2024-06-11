@@ -1,8 +1,10 @@
 import _axios from '@/api/_axios'
 import { LoginRequestBody, SignUpRequestBody } from '@/types/api/user'
 import {
+  FEUserDetailResponseSchema,
   loginResponseSchema,
   signUpResponseSchema,
+  userDetailResponseSchema,
   type FELoginResponseType
 } from '@/api/user/schema'
 import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
@@ -38,6 +40,15 @@ const UserApi = {
       body: signUpRequestBody,
       isNeedToken: false
     })
+  },
+
+  async getUserDetail(): Promise<FEUserDetailResponseSchema> {
+    const res = await _axios({
+      url: '/user/detail',
+      responseSchema: userDetailResponseSchema
+    })
+
+    return transformObjectKeyFromSnakeToCamel(res)
   }
 }
 

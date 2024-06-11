@@ -11,7 +11,15 @@ export const signUpResponseSchema = z.object({
   name: z.string()
 })
 
+export const userDetailResponseSchema = signUpResponseSchema.extend({
+  id: z.string().uuid()
+})
+
 type LoginResponseType = z.infer<typeof loginResponseSchema>
+type UserDetailResponseSchema = z.infer<typeof userDetailResponseSchema>
 
 export type FELoginResponseType =
   TransformObjectKeyFromSnakeToCamel<LoginResponseType>
+
+export type FEUserDetailResponseSchema =
+  TransformObjectKeyFromSnakeToCamel<UserDetailResponseSchema>
