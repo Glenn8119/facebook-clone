@@ -18,9 +18,10 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
   recommendationFriend,
   className
 }) => {
-  const cn = twMerge('flex items-center', className)
   const queryClient = useQueryClient()
   const { addToast } = useContext(ToastContext)
+
+  const cn = twMerge('flex items-center', className)
   const commonFriendList = recommendationFriend.commonFriendList
   const { mutate: addFriend } = useMutation({
     mutationFn: FriendApi.addFriend,

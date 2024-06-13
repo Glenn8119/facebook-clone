@@ -21,11 +21,21 @@ export default {
       },
       zIndex: {
         header: '1000',
-        mask: '1001'
+        toast: '1001',
+        mask: '1002'
       },
       boxShadow: {
         popover:
           '0 1px 8px 1px rgb(0 0 0 / 0.1), 0 1px 8px 1px rgb(0 0 0 / 0.1);'
+      },
+      keyframes: {
+        'fade-in': {
+          '0%': { transform: 'translateY(100%)', opacity: 0 },
+          '100%': { transform: 'translateY(0)', opacity: 1 }
+        }
+      },
+      animation: {
+        'fade-in': 'fade-in .4s ease-in-out'
       }
     }
   },
