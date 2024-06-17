@@ -1,16 +1,16 @@
 import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import Button from '@/components/form/Button'
+import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useUserContext from '@/hooks/useUserContext'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { MdEdit } from 'react-icons/md'
-
-const mockAvatarInfoList = [{}, {}, {}, {}, {}, {}, {}]
 
 const Detail = () => {
   const {
     value: { name }
   } = useUserContext()
+  const { friendList } = useGetFriendList()
 
   return (
     <div className='flex items-end h-36 relative pb-4 border-b border-slate-300'>
@@ -20,8 +20,10 @@ const Detail = () => {
       <div className='basis-44' />
       <div className='flex-grow py-2'>
         <div className='font-bold text-4xl mb-1'>{name}</div>
-        <div className='text-slate-600 mb-1'>222 位朋友</div>
-        <CollapsingAvatarList avatarInfoList={mockAvatarInfoList} />
+        <div className='text-slate-600 mb-1'>
+          {friendList?.length ?? ''} 位朋友
+        </div>
+        <CollapsingAvatarList avatarInfoList={friendList ?? []} />
       </div>
       <div className='flex-grow py-2'>
         <Button

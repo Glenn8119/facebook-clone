@@ -6,7 +6,9 @@ const PersonalPage: FC = () => {
   return (
     <div className='w-full'>
       <BasicInfo />
-      <Outlet />
+      <div className='w-10/12 m-auto py-4'>
+        <Outlet />
+      </div>
     </div>
   )
 }

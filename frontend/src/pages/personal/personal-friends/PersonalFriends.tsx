@@ -1,9 +1,10 @@
+import Card from '@/components/layout/Card'
 import { FC } from 'react'
 
 interface PersonalFriendsProps {}
 
 const PersonalFriends: FC<PersonalFriendsProps> = () => {
-  return <div>Personal Friends Page</div>
+  return <Card>Personal Friends Page</Card>
 }
 
 export default PersonalFriends

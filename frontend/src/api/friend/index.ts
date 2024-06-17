@@ -3,7 +3,9 @@ import {
   friendRecommendationListSchema,
   FERecommendationFriendSingleResponseType,
   addFriendReponseSchema,
-  FEAddFriendReponseSchema
+  FEAddFriendReponseSchema,
+  FEFriendSingleResponseType,
+  friendListSchema
 } from '@/api/friend/schema'
 import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
 
@@ -24,6 +26,15 @@ const FriendApi = {
       url: `/friend/${id}`,
       method: 'POST',
       responseSchema: addFriendReponseSchema
+    })
+
+    return transformObjectKeyFromSnakeToCamel(res)
+  },
+
+  async getFriendList(): Promise<FEFriendSingleResponseType[]> {
+    const res = await _axios({
+      url: `/friend/list`,
+      responseSchema: friendListSchema
     })
 
     return transformObjectKeyFromSnakeToCamel(res)
