@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
 from facebook_clone.business_model import get_facebook_clone_dao_factory
-from facebook_clone.data_access_object.user import UserDao
+from facebook_clone.data_access_object.auth import AuthDao
 from jose import jwt
 from datetime import timedelta, datetime
 from fastapi import HTTPException
@@ -13,7 +13,7 @@ bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 settings = get_settings()
 
 
-class UserBo(BaseBo):
+class AuthBo(BaseBo):
     def __init__(self, user=None, algorithm=settings.algorithm, secret_key=settings.secret_key):
         super().__init__(user=user)
         self.algorithm = algorithm
@@ -25,7 +25,7 @@ class UserBo(BaseBo):
 
     async def create_account(self, account, name, password):
         hashed_password = self.hash_password(password)
-        async with get_facebook_clone_dao_factory().create_dao(UserDao) as dao:
+        async with get_facebook_clone_dao_factory().create_dao(AuthDao) as dao:
             return await dao.create_user(account, name, hashed_password)
 
     async def login(self, account: str, password: str):
@@ -40,7 +40,7 @@ class UserBo(BaseBo):
 
     @staticmethod
     async def authenticate_user(account: str, password: str):
-        async with get_facebook_clone_dao_factory().create_dao(UserDao) as dao:
+        async with get_facebook_clone_dao_factory().create_dao(AuthDao) as dao:
             user = await dao.get_user_by_account(account)
             if not user:
                 return False
@@ -57,6 +57,6 @@ class UserBo(BaseBo):
         return jwt.encode(encode, self.secret_key, algorithm=self.algorithm)
 
     async def get_user_info(self):
-        async with get_facebook_clone_dao_factory().create_dao(UserDao) as dao:
+        async with get_facebook_clone_dao_factory().create_dao(AuthDao) as dao:
             user = await dao.get_user_by_id(self.user['id'])
             return UserAuthDetail.model_validate(dict(user))

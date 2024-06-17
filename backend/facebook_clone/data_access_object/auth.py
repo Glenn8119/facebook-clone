@@ -1,7 +1,7 @@
 from facebook_clone.data_access_object import BaseDao
 
 
-class UserDao(BaseDao):
+class AuthDao(BaseDao):
     async def create_user(self, account, name, password):
         return await self.connection.fetchrow(
             '''
