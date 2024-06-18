@@ -12,7 +12,7 @@ export default {
         108: '27rem',
         125: '31.25rem'
       },
-      backgroundColor: {
+      colors: {
         main: colors.slate[100]
       },
       fontSize: {
