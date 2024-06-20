@@ -15,7 +15,7 @@ const UserApi = {
     password
   }: LoginRequestBody): Promise<FELoginResponseType> {
     const res = await _axios({
-      url: '/user/login',
+      url: '/auth/login',
       method: 'POST',
       responseSchema: loginResponseSchema,
       // the key 'username' of request body here comes from OAuth2PasswordRequestForm in FastApi, but actually it means user's account.
@@ -34,7 +34,7 @@ const UserApi = {
 
   async signUp(signUpRequestBody: SignUpRequestBody) {
     return await _axios({
-      url: '/user/sign_up',
+      url: '/auth/sign_up',
       method: 'POST',
       responseSchema: signUpResponseSchema,
       body: signUpRequestBody,
@@ -44,7 +44,7 @@ const UserApi = {
 
   async getUserDetail(): Promise<FEUserDetailResponseSchema> {
     const res = await _axios({
-      url: '/user/detail',
+      url: '/auth/detail',
       responseSchema: userDetailResponseSchema
     })
 

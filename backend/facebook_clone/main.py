@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from facebook_clone.endpoint import auth, post, friend, group, comment
+from facebook_clone.endpoint import auth, post, friend, user, group, comment
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -17,9 +17,10 @@ app.add_middleware(
 )
 
 
-app.include_router(auth.router, prefix='/user', tags=['user'])
+app.include_router(auth.router, prefix='/auth', tags=['auth'])
 app.include_router(post.router, prefix='/post', tags=['post'])
 app.include_router(friend.router, prefix='/friend', tags=['friend'])
+app.include_router(user.router, prefix='/user', tags=['user'])
 
 if __name__ == '__main__':
     import uvicorn
