@@ -1,6 +1,6 @@
 from passlib.context import CryptContext
 from facebook_clone.business_model import get_facebook_clone_dao_factory
-from facebook_clone.data_access_object.auth import AuthDao
+from facebook_clone.data_access_object.user import UserDao
 from jose import jwt
 from datetime import timedelta, datetime
 from fastapi import HTTPException
@@ -25,8 +25,8 @@ class AuthBo(BaseBo):
 
     async def create_account(self, account, name, password):
         hashed_password = self.hash_password(password)
-        async with get_facebook_clone_dao_factory().create_dao_list(AuthDao) as [auth_dao]:
-            return await auth_dao.create_user(account, name, hashed_password)
+        async with get_facebook_clone_dao_factory().create_dao_list(UserDao) as [user_dao]:
+            return await user_dao.create_user(account, name, hashed_password)
 
     async def login(self, account: str, password: str):
         user = await self.authenticate_user(account, password)
@@ -40,8 +40,8 @@ class AuthBo(BaseBo):
 
     @staticmethod
     async def authenticate_user(account: str, password: str):
-        async with get_facebook_clone_dao_factory().create_dao_list(AuthDao) as [auth_dao]:
-            user = await auth_dao.get_user_by_account(account)
+        async with get_facebook_clone_dao_factory().create_dao_list(UserDao) as [user_dao]:
+            user = await user_dao.get_user_by_account(account)
             if not user:
                 return False
             if not bcrypt_context.verify(password, user['hashed_password']):
@@ -57,6 +57,6 @@ class AuthBo(BaseBo):
         return jwt.encode(encode, self.secret_key, algorithm=self.algorithm)
 
     async def get_user_info(self):
-        async with get_facebook_clone_dao_factory().create_dao_list(AuthDao) as [auth_dao]:
-            user = await auth_dao.get_user_by_id(self.user['id'])
+        async with get_facebook_clone_dao_factory().create_dao_list(UserDao) as [user_dao]:
+            user = await user_dao.get_user_by_id(self.user['id'])
             return UserAuthDetail.model_validate(dict(user))
