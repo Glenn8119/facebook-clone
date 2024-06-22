@@ -41,3 +41,10 @@ class FriendDao(BaseDao):
             INNER JOIN friend_relation as f ON f.friend_id = u.id
             WHERE f.user_id = $1
         ''', user_id)
+
+    async def get_friend_relation(self, user_id, friend_id):
+        return await self.connection.fetchrow('''
+            SELECT *
+            FROM friend_relation
+            WHERE user_id = $1 AND friend_id = $2                                
+        ''', user_id, friend_id)
