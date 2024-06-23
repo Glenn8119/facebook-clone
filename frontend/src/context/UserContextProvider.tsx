@@ -3,18 +3,19 @@ import {
   UserContextType,
   UserReducerActionType
 } from '@/types/context/user-context'
+import { userContextInitialValue } from '@/constants/userContext'
 
 export const UserContext = createContext<{
   value: UserContextType
   dispatch: Dispatch<UserReducerActionType>
-}>({ value: { account: '', token: '', name: '' }, dispatch: () => {} })
+}>({ value: { ...userContextInitialValue }, dispatch: () => {} })
 
 const userReducer = (_: UserContextType, action: UserReducerActionType) => {
   switch (action.type) {
     case 'login':
       return action.payload
     case 'logOut':
-      return { account: '', token: '', name: '' }
+      return { ...userContextInitialValue }
   }
 }
 
@@ -25,11 +26,7 @@ type UserContextProviderType = {
 const localStorageUser = localStorage.getItem('user')
 const initUserValue = localStorageUser
   ? JSON.parse(localStorageUser)
-  : {
-      token: '',
-      account: '',
-      name: ''
-    }
+  : { ...userContextInitialValue }
 
 const UserContextProvider: FC<UserContextProviderType> = ({ children }) => {
   const [userValue, dispatch] = useReducer(userReducer, initUserValue)

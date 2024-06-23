@@ -1,10 +1,10 @@
 import FriendApi from '@/api/friend'
 import { useQuery } from '@tanstack/react-query'
 
-const useGetFriendList = () => {
+const useGetFriendList = (id: string) => {
   const { isPending, data } = useQuery({
     queryKey: ['getFriendList'],
-    queryFn: FriendApi.getFriendList
+    queryFn: () => FriendApi.getFriendList(id)
   })
 
   return { friendList: data, isPending }

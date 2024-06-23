@@ -2,12 +2,11 @@ import Avatar from '@/components/Avatar'
 import Input from '@/components/form/Input'
 import Card from '@/components/layout/Card'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
-import { FC } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
-interface PersonalFriendsProps {}
-
-const PersonalFriends: FC<PersonalFriendsProps> = () => {
-  const { friendList } = useGetFriendList()
+const PersonalFriends = () => {
+  const [searchParams] = useSearchParams()
+  const { friendList } = useGetFriendList(searchParams.get('id') as string)
 
   if (!friendList) return null
 

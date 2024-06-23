@@ -2,7 +2,7 @@ import Avatar from '@/components/Avatar'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { MdGroup, MdGroups } from 'react-icons/md'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import useUserContext from '@/hooks/useUserContext'
 
 interface FunctionListProps {
@@ -12,7 +12,7 @@ interface FunctionListProps {
 const FunctionList: FC<FunctionListProps> = ({ className }) => {
   const cn = twMerge('h-[calc(100dvh-56px)] p-4', className)
   const {
-    value: { name }
+    value: { name, id }
   } = useUserContext()
   const navigate = useNavigate()
 
@@ -20,7 +20,12 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
     <ul className={cn}>
       <li
         className='flex items-center p-2 rounded-lg h-14 cursor-pointer hover:bg-slate-200'
-        onClick={() => navigate('/personal')}
+        onClick={() =>
+          navigate({
+            pathname: 'personal',
+            search: createSearchParams({ id }).toString()
+          })
+        }
       >
         <Avatar className='mr-3' />
         <span>{name}</span>

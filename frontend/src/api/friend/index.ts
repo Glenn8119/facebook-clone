@@ -31,9 +31,9 @@ const FriendApi = {
     return transformObjectKeyFromSnakeToCamel(res)
   },
 
-  async getFriendList(): Promise<FEFriendSingleResponseType[]> {
+  async getFriendList(id: string): Promise<FEFriendSingleResponseType[]> {
     const res = await _axios({
-      url: `/friend/list`,
+      url: `/friend/list/${id}`,
       responseSchema: friendListSchema
     })
 

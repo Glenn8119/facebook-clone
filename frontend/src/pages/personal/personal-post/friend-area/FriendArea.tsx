@@ -2,11 +2,13 @@ import Card from '@/components/layout/Card'
 import { FC } from 'react'
 import fakeAvatar from '@/assets/fake-avatar.jpeg'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
+import { useSearchParams } from 'react-router-dom'
 
 interface FriendAreaProps {}
 
 const FriendArea: FC<FriendAreaProps> = () => {
-  const { friendList } = useGetFriendList()
+  const [searchParams] = useSearchParams()
+  const { friendList } = useGetFriendList(searchParams.get('id') as string)
 
   if (!friendList) return null
 

@@ -5,12 +5,14 @@ import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useUserContext from '@/hooks/useUserContext'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { MdEdit } from 'react-icons/md'
+import { useSearchParams } from 'react-router-dom'
 
 const Detail = () => {
+  const [searchParams] = useSearchParams()
+  const { friendList } = useGetFriendList(searchParams.get('id') as string)
   const {
     value: { name }
   } = useUserContext()
-  const { friendList } = useGetFriendList()
 
   return (
     <div className='flex items-end h-36 relative pb-4 border-b border-slate-300'>

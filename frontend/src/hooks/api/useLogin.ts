@@ -14,12 +14,14 @@ const useLogin = () => {
       const userInfo = {
         account: formData.account,
         token: loginResponse.accessToken,
-        name: ''
+        name: '',
+        id: ''
       }
 
       localStorage.setItem('user', JSON.stringify(userInfo))
       const userDetail = await UserApi.getUserDetail()
       userInfo.name = userDetail.name
+      userInfo.id = userDetail.id
 
       dispatch({
         type: 'login',

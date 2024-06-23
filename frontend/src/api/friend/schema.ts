@@ -9,8 +9,7 @@ const friendSchema = z.object({
       id: z.string().uuid(),
       name: z.string()
     })
-  ),
-  is_friend: z.boolean()
+  )
 })
 
 export const friendRecommendationListSchema = z.array(friendSchema)
