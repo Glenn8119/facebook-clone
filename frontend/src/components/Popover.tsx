@@ -9,6 +9,7 @@ import {
 } from 'react'
 import Card from '@/components/layout/Card'
 import { PopoverType } from '@/types/component/popover'
+import { twMerge } from 'tailwind-merge'
 
 type PopoverProps = {
   children: ReactNode
@@ -16,7 +17,8 @@ type PopoverProps = {
     closePopover: () => void
   }>
   type?: PopoverType
-  showPopover?: 'boolean'
+  showPopover?: boolean
+  popOverClass?: string
 }
 
 const eventMap = {
@@ -28,7 +30,8 @@ const Popover: FC<PopoverProps> = ({
   children,
   popOverElement,
   type = PopoverType.CLICK,
-  showPopover = true
+  showPopover = true,
+  popOverClass
 }) => {
   const [open, setOpen] = useState<boolean>(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -55,6 +58,11 @@ const Popover: FC<PopoverProps> = ({
     closePopover: () => setOpen(false)
   })
 
+  const popoverCn = twMerge(
+    'absolute right-0 mt-0 shadow-popover p-3 z-max',
+    popOverClass
+  )
+
   const handleClick = () => {
     if (type !== 'click') return
     setOpen(!open)
@@ -71,9 +79,7 @@ const Popover: FC<PopoverProps> = ({
         {children}
       </div>
       {open && showPopover && (
-        <Card className='absolute right-0 mt-0 shadow-popover p-3'>
-          {PopovrElement}
-        </Card>
+        <Card className={popoverCn}>{PopovrElement}</Card>
       )}
     </div>
   )

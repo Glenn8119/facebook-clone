@@ -22,7 +22,8 @@ export default {
       zIndex: {
         header: '1000',
         toast: '1001',
-        mask: '1002'
+        mask: '1002',
+        max: '9999'
       },
       boxShadow: {
         popover:
@@ -30,12 +31,17 @@ export default {
       },
       keyframes: {
         'fade-in': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 }
+        },
+        'fade-in-up': {
           '0%': { transform: 'translateY(100%)', opacity: 0 },
           '100%': { transform: 'translateY(0)', opacity: 1 }
         }
       },
       animation: {
-        'fade-in': 'fade-in .4s ease-in-out'
+        'fade-in': 'fade-in .4s ease-in-out',
+        'fade-in-up': 'fade-in-up .4s ease-in-out'
       }
     }
   },

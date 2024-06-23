@@ -1,10 +1,13 @@
 import FriendApi from '@/api/friend'
 import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 import Avatar from '@/components/Avatar'
+import Popover from '@/components/Popover'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
+import UserOverviewCard from '@/components/common/user-overview-card/UserOverviewCard'
 import Button from '@/components/form/Button'
 import { ToastContext } from '@/context/ToastContextProvider'
 import { ButtonSize } from '@/types/component/button'
+import { PopoverType } from '@/types/component/popover'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FC, useContext } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -33,9 +36,23 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
 
   return (
     <div className={cn}>
-      <Avatar className='mr-2' />
+      <Popover
+        type={PopoverType.HOVER}
+        popOverElement={<UserOverviewCard />}
+        popOverClass='animate-fade-in'
+      >
+        <Avatar className='mr-2 cursor-pointer' />
+      </Popover>
       <div className='mr-auto'>
-        <div>{recommendationFriend.name}</div>
+        <Popover
+          type={PopoverType.HOVER}
+          popOverElement={<UserOverviewCard />}
+          popOverClass='animate-fade-in'
+        >
+          <div className='cursor-pointer hover:underline'>
+            {recommendationFriend.name}
+          </div>
+        </Popover>
         {commonFriendList.length ? (
           <div className='flex flex-nowrap items-center min-w-28'>
             <CollapsingAvatarList

@@ -6,7 +6,9 @@ const ToastContainer = () => {
   const { value } = useContext(ToastContext)
 
   const toastList = value.map((toast) => {
-    return <Toast className='mb-4 animate-fade-in' {...toast} key={toast.id} />
+    return (
+      <Toast className='mb-4 animate-fade-in-up' {...toast} key={toast.id} />
+    )
   })
 
   return (
