@@ -21,16 +21,12 @@ class User(BaseModel):
 
 class UserOverviewItem(User):
     common_friend_list: List[User]
-    is_friend: bool
 
 
 class UserAuthDetail(User):
     account: str
 
 
-class UserDetailFriend(User):
-    common_friend_list: List[User]
-
-
 class UserDetailItem(UserOverviewItem):
-    friend_list: List[UserDetailFriend]
+    # to be added
+    pass

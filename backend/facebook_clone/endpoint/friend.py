@@ -27,7 +27,7 @@ async def get_common_friend_list(user: depend_user, friend_id):
     return to_json_response(user_list)
 
 
-@router.get('/list')
-async def get_friend_list(user: depend_user):
-    friend_list = await FriendBo(user=user).get_friend_list()
+@router.get('/list/{user_id}')
+async def get_friend_list(user: depend_user, user_id):
+    friend_list = await FriendBo(user=user).get_friend_list(user_id)
     return to_json_response(friend_list)
