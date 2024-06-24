@@ -1,4 +1,4 @@
-import UserApi from '@/api/user'
+import AuthApi from '@/api/auth'
 import { useMutation } from '@tanstack/react-query'
 import useUserContext from '@/hooks/useUserContext'
 import { useNavigate } from 'react-router-dom'
@@ -8,7 +8,7 @@ const useLogin = () => {
   const navigate = useNavigate()
 
   return useMutation({
-    mutationFn: UserApi.login,
+    mutationFn: AuthApi.login,
     onSuccess: async (data, formData) => {
       const loginResponse = data
       const userInfo = {
@@ -19,7 +19,7 @@ const useLogin = () => {
       }
 
       localStorage.setItem('user', JSON.stringify(userInfo))
-      const userDetail = await UserApi.getUserDetail()
+      const userDetail = await AuthApi.getUserDetail()
       userInfo.name = userDetail.name
       userInfo.id = userDetail.id
 

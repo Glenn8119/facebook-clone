@@ -1,4 +1,4 @@
-import UserApi from '@/api/user'
+import AuthApi from '@/api/auth'
 import useLogin from '@/hooks/api/useLogin'
 import { useMutation } from '@tanstack/react-query'
 
@@ -6,7 +6,7 @@ const useSignUp = () => {
   const { mutateAsync: login, isPending: isLoginPending } = useLogin()
 
   const mutate = useMutation({
-    mutationFn: UserApi.signUp,
+    mutationFn: AuthApi.signUp,
     onSuccess: async (_, { account, password }) => {
       await login({
         account,

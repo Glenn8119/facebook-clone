@@ -6,10 +6,10 @@ import {
   signUpResponseSchema,
   userDetailResponseSchema,
   type FELoginResponseType
-} from '@/api/user/schema'
+} from '@/api/auth/schema'
 import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
 
-const UserApi = {
+const AuthApi = {
   async login({
     account,
     password
@@ -52,4 +52,4 @@ const UserApi = {
   }
 }
 
-export default UserApi
+export default AuthApi
