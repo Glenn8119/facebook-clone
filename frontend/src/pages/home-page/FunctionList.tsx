@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { MdGroup, MdGroups } from 'react-icons/md'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import useUserContext from '@/hooks/useUserContext'
-import { PERSONAL_TABS } from '@/constants/pages/personal'
+import { PERSONAL_QUERIES } from '@/constants/pages/personal'
 
 interface FunctionListProps {
   className?: string
@@ -38,7 +38,7 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
             pathname: 'personal',
             search: createSearchParams({
               id,
-              tab: PERSONAL_TABS.FRIENDS
+              tab: PERSONAL_QUERIES.FRIENDS
             }).toString()
           })
         }

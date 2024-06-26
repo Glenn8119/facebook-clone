@@ -3,14 +3,17 @@ import BasicInfo from '@/pages/personal/basic-info/BasicInfo'
 import { useSearchParams } from 'react-router-dom'
 import PersonalFriends from './personal-friends/PersonalFriends'
 import PersonalPost from './personal-post/PersonalPost'
-import { PERSONAL_TABS } from '@/constants/pages/personal'
+import { PERSONAL_QUERIES } from '@/constants/pages/personal'
 
 const PersonalPage: FC = () => {
   const [searchParams] = useSearchParams()
   const tab = searchParams.get('tab')
 
   const renderComponent = () => {
-    if (tab === PERSONAL_TABS.FRIENDS) {
+    if (
+      tab === PERSONAL_QUERIES.FRIENDS ||
+      tab === PERSONAL_QUERIES.FRIENDS_MUTUAL
+    ) {
       return <PersonalFriends />
     }
 

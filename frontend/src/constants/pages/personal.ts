@@ -1,3 +1,4 @@
-export const PERSONAL_TABS = {
-  FRIENDS: 'friends'
+export const PERSONAL_QUERIES = {
+  FRIENDS: 'friends',
+  FRIENDS_MUTUAL: 'friends_mutual'
 }

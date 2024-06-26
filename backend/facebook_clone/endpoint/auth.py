@@ -23,6 +23,6 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 
 
 @router.get('/detail', response_model=UserAuthDetail)
-async def get_user_info(user: depend_user):
+async def get_user_detail(user: depend_user):
     user = await AuthBo(user=user).get_user_info()
     return to_json_response(user)

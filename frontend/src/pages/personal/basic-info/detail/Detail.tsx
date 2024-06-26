@@ -1,18 +1,91 @@
 import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import Button from '@/components/form/Button'
+import { PERSONAL_QUERIES } from '@/constants/pages/personal'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
+import useGetUserDetail from '@/hooks/api/useGetUserDetail'
 import useUserContext from '@/hooks/useUserContext'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { MdEdit } from 'react-icons/md'
-import { useSearchParams } from 'react-router-dom'
+import {
+  createSearchParams,
+  useNavigate,
+  useSearchParams
+} from 'react-router-dom'
 
 const Detail = () => {
   const [searchParams] = useSearchParams()
-  const { friendList } = useGetFriendList(searchParams.get('id') as string)
+  const userId = searchParams.get('id') as string
   const {
-    value: { name }
+    value: { id: selfId }
   } = useUserContext()
+  const navigate = useNavigate()
+  const { friendList } = useGetFriendList(userId)
+  const { userDetail } = useGetUserDetail(userId)
+  const { friendList: selfFriendList } = useGetFriendList(selfId)
+  const isUserSelf = selfId === searchParams.get('id')
+
+  if (!friendList || !selfFriendList || !userDetail) {
+    return null
+  }
+
+  const isFriend = !!selfFriendList.find((friend) => friend.id === userId)
+
+  const navigateToFriendsOrMutualFriends = () => {
+    const isToMutual = !isUserSelf && !isFriend
+
+    navigate({
+      pathname: '/personal',
+      search: createSearchParams({
+        id: userId,
+        tab: isToMutual
+          ? PERSONAL_QUERIES.FRIENDS_MUTUAL
+          : PERSONAL_QUERIES.FRIENDS
+      }).toString()
+    })
+  }
+
+  const renderFriendDescription = () => {
+    if (isUserSelf) {
+      return (
+        <div
+          className='hover:underline cursor-pointer'
+          onClick={() => navigateToFriendsOrMutualFriends()}
+        >
+          {friendList?.length ?? ''} 位朋友
+        </div>
+      )
+    }
+
+    if (isFriend) {
+      return (
+        <div>
+          <span
+            className='hover:underline cursor-pointer'
+            onClick={() => navigateToFriendsOrMutualFriends()}
+          >
+            {friendList.length} 位朋友
+          </span>
+          ，
+          <span
+            className='hover:underline cursor-pointer'
+            onClick={() => navigateToFriendsOrMutualFriends()}
+          >
+            {userDetail.commonFriendList.length} 位共同朋友
+          </span>
+        </div>
+      )
+    }
+
+    return (
+      <div
+        className='hover:underline cursor-pointer'
+        onClick={() => navigateToFriendsOrMutualFriends()}
+      >
+        {userDetail.commonFriendList.length} 位共同朋友
+      </div>
+    )
+  }
 
   return (
     <div className='flex items-end h-36 relative pb-4 border-b border-slate-300'>
@@ -21,11 +94,12 @@ const Detail = () => {
       </div>
       <div className='basis-44' />
       <div className='flex-grow py-2'>
-        <div className='font-bold text-4xl mb-1'>{name}</div>
-        <div className='text-slate-600 mb-1'>
-          {friendList?.length ?? ''} 位朋友
-        </div>
-        <CollapsingAvatarList avatarInfoList={friendList ?? []} />
+        <div className='font-bold text-4xl mb-1'>{userDetail.name}</div>
+        <div className='text-slate-600 mb-1'>{renderFriendDescription()}</div>
+        <CollapsingAvatarList
+          handleClickList={navigateToFriendsOrMutualFriends}
+          avatarInfoList={friendList ?? []}
+        />
       </div>
       <div className='flex-grow py-2'>
         <Button

@@ -1,15 +1,11 @@
 import { TransformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
 import { z } from 'zod'
+import { userSchema } from '@/api/user/schema'
 
-const friendSchema = z.object({
+const friendSchema = userSchema.extend({
   id: z.string().uuid(),
   name: z.string(),
-  common_friend_list: z.array(
-    z.object({
-      id: z.string().uuid(),
-      name: z.string()
-    })
-  )
+  common_friend_list: z.array(userSchema)
 })
 
 export const friendRecommendationListSchema = z.array(friendSchema)
