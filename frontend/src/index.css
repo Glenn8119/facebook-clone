@@ -6,4 +6,8 @@
   body {
     @apply bg-main;
   }
+
+  img {
+    @apply max-w-none;
+  }
 }
