@@ -4,6 +4,9 @@ export type AnyFunction = (...args: any[]) => any
 export type PlainObject = Record<string, unknown>
 
 export type AvatarInfo = {
-  imgUrl?: string
+  isFriend: boolean
   id: string
+  name: string
+  commonFriendList?: { name: string; id: string }[]
+  imgUrl?: string
 }

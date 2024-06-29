@@ -27,7 +27,9 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
   const navigate = useNavigate()
 
   const cn = twMerge('flex items-center', className)
-  const commonFriendList = recommendationFriend.commonFriendList
+  const commonFriendList = recommendationFriend.commonFriendList.map(
+    (recommendationFriend) => ({ ...recommendationFriend, isFriend: true })
+  )
   const { mutate: addFriend } = useMutation({
     mutationFn: () => FriendApi.addFriend(recommendationFriend.id),
     onSuccess: () => {

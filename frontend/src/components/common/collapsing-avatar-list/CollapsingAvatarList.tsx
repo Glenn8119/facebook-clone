@@ -1,7 +1,15 @@
 import Avatar from '@/components/Avatar'
 import { AnyFunction, AvatarInfo } from '@/types/common'
-import { FC } from 'react'
+import { FC, useContext } from 'react'
 import { twMerge } from 'tailwind-merge'
+import UserOverviewCard from '@/components/common/user-overview-card/UserOverviewCard'
+import Popover from '@/components/Popover'
+import { PopoverType } from '@/types/component/popover'
+import useNavigateTo from '@/hooks/useNavigateTo'
+import { ROUTES } from '@/constants/common'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import FriendApi from '@/api/friend'
+import { ToastContext } from '@/context/ToastContextProvider'
 
 type CollapsingAvatarListProps = {
   avatarInfoList: AvatarInfo[]
@@ -18,7 +26,18 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
   length = 7,
   handleClickList
 }) => {
+  const { addToast } = useContext(ToastContext)
+  const queryClient = useQueryClient()
+  const { mutate: addFriend } = useMutation({
+    mutationFn: FriendApi.addFriend,
+    onSuccess: () => {
+      addToast({ type: 'SUCCESS', title: '加入好友成功！' })
+      queryClient.invalidateQueries({ queryKey: ['friendRecommendation'] })
+    }
+  })
+
   const cn = twMerge('flex', className)
+  const navigateTo = useNavigateTo()
   const finalList = avatarInfoList.slice(0, length)
   const listLength = finalList.length
 
@@ -41,12 +60,37 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
 
         // TODO: user other info as key
         return (
-          <Avatar
-            style={zIndexStyle}
-            key={idx}
-            imgUrl={avatarInfo.imgUrl}
-            className={cn}
-          />
+          <Popover
+            key={avatarInfo.id}
+            type={PopoverType.HOVER}
+            popOverElement={
+              <UserOverviewCard
+                handleClickAvatar={() =>
+                  navigateTo({
+                    pathname: ROUTES.PERSONAL,
+                    queries: { id: avatarInfo.id }
+                  })
+                }
+                addFriend={() => addFriend(avatarInfo.id)}
+                name={avatarInfo.name}
+                isFriend={avatarInfo.isFriend}
+                commonFriendList={avatarInfo.commonFriendList}
+              />
+            }
+            popOverClass='animate-fade-in'
+          >
+            <Avatar
+              style={zIndexStyle}
+              imgUrl={avatarInfo.imgUrl}
+              className={cn}
+              onClick={() =>
+                navigateTo({
+                  pathname: ROUTES.PERSONAL,
+                  queries: { id: avatarInfo.id }
+                })
+              }
+            />
+          </Popover>
         )
       })}
     </div>

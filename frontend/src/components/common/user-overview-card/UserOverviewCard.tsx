@@ -5,6 +5,7 @@ import { AnyFunction } from '@/types/common'
 import { ButtonSize } from '@/types/component/button'
 import { FC } from 'react'
 import { MdGroup } from 'react-icons/md'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 
 type UserOverviewCardProps = {
   name: string
@@ -23,6 +24,13 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
   handleClickAvatar,
   handleClickName
 }) => {
+  const navigate = useNavigate()
+  const navigateToPersonalPage = (id: string) => {
+    navigate({
+      pathname: '/personal',
+      search: createSearchParams({ id }).toString()
+    })
+  }
   const handleCommonFriendListDescription = (
     commonFriendList: FERecommendationFriendSingleResponseType['commonFriendList']
   ) => {
@@ -44,7 +52,13 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
         {commonFriendList.length} 位共同朋友，包括
         {commonFriendList.slice(0, 2).map((friend, idx) => (
           <span key={friend.id} className='font-bold'>
-            {friend.name} {idx === 0 ? '和' : null}
+            <span
+              className='hover:underline cursor-pointer'
+              onClick={() => navigateToPersonalPage(friend.id)}
+            >
+              {friend.name}
+            </span>
+            {idx === 0 ? '和' : null}
           </span>
         ))}
       </div>
@@ -79,11 +93,13 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
           onClick={handleClickAvatar}
         />
         <div>
-          <div
-            className='mb-4 font-bold text-xl cursor-pointer'
-            onClick={handleClickName}
-          >
-            {name}
+          <div className='mb-4 font-bold text-xl'>
+            <span
+              className=' cursor-pointer hover:underline'
+              onClick={handleClickName}
+            >
+              {name}
+            </span>
           </div>
           {isFriend === null || commonFriendDescription === null ? null : (
             <div className='flex items-start mb-2'>
@@ -91,6 +107,7 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
               {commonFriendDescription}
             </div>
           )}
+          {/* TODO: basic info */}
           <div>曾在 Mock 公司工作</div>
         </div>
       </div>

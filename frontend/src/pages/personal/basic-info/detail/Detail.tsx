@@ -20,16 +20,20 @@ const Detail = () => {
     value: { id: selfId }
   } = useUserContext()
   const navigate = useNavigate()
-  const { friendList } = useGetFriendList(userId)
   const { userDetail } = useGetUserDetail(userId)
+  const { friendList: userFriendList } = useGetFriendList(userId)
   const { friendList: selfFriendList } = useGetFriendList(selfId)
   const isUserSelf = selfId === searchParams.get('id')
 
-  if (!friendList || !selfFriendList || !userDetail) {
+  if (!userFriendList || !selfFriendList || !userDetail) {
     return null
   }
 
   const isFriend = !!selfFriendList.find((friend) => friend.id === userId)
+  const renderedFriendList = userFriendList.map((friend) => ({
+    ...friend,
+    isFriend: !!userFriendList.find((userFriend) => friend.id === userFriend.id)
+  }))
 
   const navigateToFriendsOrMutualFriends = () => {
     const isToMutual = !isUserSelf && !isFriend
@@ -52,7 +56,7 @@ const Detail = () => {
           className='hover:underline cursor-pointer'
           onClick={() => navigateToFriendsOrMutualFriends()}
         >
-          {friendList?.length ?? ''} 位朋友
+          {renderedFriendList?.length ?? ''} 位朋友
         </div>
       )
     }
@@ -64,7 +68,7 @@ const Detail = () => {
             className='hover:underline cursor-pointer'
             onClick={() => navigateToFriendsOrMutualFriends()}
           >
-            {friendList.length} 位朋友
+            {renderedFriendList.length} 位朋友
           </span>
           ，
           <span
@@ -98,7 +102,7 @@ const Detail = () => {
         <div className='text-slate-600 mb-1'>{renderFriendDescription()}</div>
         <CollapsingAvatarList
           handleClickList={navigateToFriendsOrMutualFriends}
-          avatarInfoList={friendList ?? []}
+          avatarInfoList={renderedFriendList ?? []}
         />
       </div>
       <div className='flex-grow py-2'>
