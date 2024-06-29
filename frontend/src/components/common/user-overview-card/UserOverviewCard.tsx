@@ -1,6 +1,7 @@
 import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/form/Button'
+import { ROUTES } from '@/constants/common'
 import { AnyFunction } from '@/types/common'
 import { ButtonSize } from '@/types/component/button'
 import { FC } from 'react'
@@ -27,7 +28,7 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
   const navigate = useNavigate()
   const navigateToPersonalPage = (id: string) => {
     navigate({
-      pathname: '/personal',
+      pathname: ROUTES.PERSONAL,
       search: createSearchParams({ id }).toString()
     })
   }

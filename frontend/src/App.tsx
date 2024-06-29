@@ -3,12 +3,11 @@ import Login from '@/pages/login/Login.tsx'
 import HomePage from '@/pages/home-page/HomePage.tsx'
 import AuthRoute from '@/components/AuthRoute'
 import PersonalPage from '@/pages/personal/Personal'
-import PersonalPost from '@/pages/personal/personal-post/PersonalPost'
-import PersonalFriends from '@/pages/personal/personal-friends/PersonalFriends'
 import FullScreenLoading from '@/components/FullScreenLoading'
 import useLoadingContext from '@/hooks/useLoading'
 import ToastContainer from '@/components/toast/ToastContainer'
 import { createPortal } from 'react-dom'
+import { ROUTES } from '@/constants/common'
 
 const router = createBrowserRouter([
   {
@@ -17,12 +16,12 @@ const router = createBrowserRouter([
       { element: <HomePage />, path: '/' },
       {
         element: <PersonalPage />,
-        path: '/personal'
+        path: ROUTES.PERSONAL
       }
     ]
   },
   {
-    path: '/login',
+    path: ROUTES.LOGIN,
     element: <Login />
   }
 ])

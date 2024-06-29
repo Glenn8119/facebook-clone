@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import BasicInfo from '@/pages/personal/basic-info/BasicInfo'
 import { useSearchParams } from 'react-router-dom'
-import PersonalFriends from './personal-friends/PersonalFriends'
-import PersonalPost from './personal-post/PersonalPost'
+import PersonalFriends from '@/pages/personal/personal-friends/PersonalFriends'
+import PersonalPost from '@/pages/personal/personal-post/PersonalPost'
 import { PERSONAL_QUERIES } from '@/constants/pages/personal'
 
 const PersonalPage: FC = () => {

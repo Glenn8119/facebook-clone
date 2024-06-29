@@ -4,6 +4,7 @@ import AddPostModal from '@/components/common/post-area/add-post/AddPostModal'
 import Card from '@/components/layout/Card'
 import useUserContext from '@/hooks/useUserContext'
 import { createSearchParams, useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/constants/common'
 
 const AddPost = () => {
   const {
@@ -13,7 +14,7 @@ const AddPost = () => {
   const [showModal, setShowModal] = useState(false)
   const handleClick = () => {
     navigate({
-      pathname: '/personal',
+      pathname: ROUTES.PERSONAL,
       search: createSearchParams({ id }).toString()
     })
   }

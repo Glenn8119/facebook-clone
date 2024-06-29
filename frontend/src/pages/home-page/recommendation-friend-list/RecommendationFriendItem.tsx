@@ -5,6 +5,7 @@ import Popover from '@/components/Popover'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import UserOverviewCard from '@/components/common/user-overview-card/UserOverviewCard'
 import Button from '@/components/form/Button'
+import { ROUTES } from '@/constants/common'
 import { ToastContext } from '@/context/ToastContextProvider'
 import { ButtonSize } from '@/types/component/button'
 import { PopoverType } from '@/types/component/popover'
@@ -40,7 +41,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
 
   const navigateToPersonalPage = () => {
     navigate({
-      pathname: '/personal',
+      pathname: ROUTES.PERSONAL,
       search: createSearchParams({
         id: recommendationFriend.id
       }).toString()

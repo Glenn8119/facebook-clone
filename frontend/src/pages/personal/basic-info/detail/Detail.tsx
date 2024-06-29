@@ -1,6 +1,7 @@
 import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import Button from '@/components/form/Button'
+import { ROUTES } from '@/constants/common'
 import { PERSONAL_QUERIES } from '@/constants/pages/personal'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useGetUserDetail from '@/hooks/api/useGetUserDetail'
@@ -39,7 +40,7 @@ const Detail = () => {
     const isToMutual = !isUserSelf && !isFriend
 
     navigate({
-      pathname: '/personal',
+      pathname: ROUTES.PERSONAL,
       search: createSearchParams({
         id: userId,
         tab: isToMutual
