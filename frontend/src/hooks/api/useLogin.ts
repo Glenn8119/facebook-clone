@@ -1,11 +1,12 @@
 import AuthApi from '@/api/auth'
 import { useMutation } from '@tanstack/react-query'
 import useUserContext from '@/hooks/useUserContext'
-import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '@/constants/common'
+import useNavigateTo from '../useNavigateTo'
 
 const useLogin = () => {
   const { dispatch } = useUserContext()
-  const navigate = useNavigate()
+  const navigate = useNavigateTo()
 
   return useMutation({
     mutationFn: AuthApi.login,
@@ -28,7 +29,7 @@ const useLogin = () => {
         payload: userInfo
       })
       localStorage.setItem('user', JSON.stringify(userInfo))
-      navigate('/')
+      navigate({ pathname: ROUTES.HOME_PAGE })
     }
   })
 }

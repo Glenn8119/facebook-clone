@@ -2,11 +2,12 @@ import Avatar from '@/components/Avatar'
 import Popover from '@/components/Popover'
 import Input from '@/components/form/Input'
 import { MdFacebook } from 'react-icons/md'
-import { useNavigate } from 'react-router-dom'
 import UserPopover from '@/components/layout/header/UserPopover'
+import useNavigateTo from '@/hooks/useNavigateTo'
+import { ROUTES } from '@/constants/common'
 
 const Header = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigateTo()
 
   return (
     <header className='py-2 px-4 flex items-center w-full fixed top-0 h-14 shadow-lg  bg-white z-header'>
@@ -14,7 +15,7 @@ const Header = () => {
         className='mr-2 cursor-pointer'
         size={40}
         color='#1E90FF'
-        onClick={() => navigate('/')}
+        onClick={() => navigate({ pathname: ROUTES.HOME_PAGE })}
       />
       <Input
         placeholder='搜尋 FaceLook'

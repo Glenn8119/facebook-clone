@@ -2,8 +2,9 @@ import { FC } from 'react'
 import Avatar from '@/components/Avatar'
 import { MdLogout } from 'react-icons/md'
 import useLogout from '@/hooks/useLogout'
-import { useNavigate } from 'react-router-dom'
 import useUserContext from '@/hooks/useUserContext'
+import useNavigateTo from '@/hooks/useNavigateTo'
+import { ROUTES } from '@/constants/common'
 
 type UserPopoverProps = {
   closePopover?: () => void
@@ -11,12 +12,12 @@ type UserPopoverProps = {
 
 const UserPopover: FC<UserPopoverProps> = ({ closePopover = () => {} }) => {
   const logout = useLogout()
-  const navigate = useNavigate()
+  const navigate = useNavigateTo()
   const {
-    value: { name }
+    value: { name, id }
   } = useUserContext()
   const onClickUser = () => {
-    navigate('personal')
+    navigate({ pathname: ROUTES.PROFILE, queries: { id } })
     closePopover()
   }
 

@@ -7,11 +7,11 @@ import UserOverviewCard from '@/components/common/user-overview-card/UserOvervie
 import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
 import { ToastContext } from '@/context/ToastContextProvider'
+import useNavigateTo from '@/hooks/useNavigateTo'
 import { ButtonSize } from '@/types/component/button'
 import { PopoverType } from '@/types/component/popover'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FC, useContext } from 'react'
-import { createSearchParams, useNavigate } from 'react-router-dom'
 import { twMerge } from 'tailwind-merge'
 
 type FriendItemProps = {
@@ -25,7 +25,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
 }) => {
   const queryClient = useQueryClient()
   const { addToast } = useContext(ToastContext)
-  const navigate = useNavigate()
+  const navigate = useNavigateTo()
 
   const cn = twMerge('flex items-center', className)
   const commonFriendList = recommendationFriend.commonFriendList.map(
@@ -41,10 +41,10 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
 
   const navigateToPersonalPage = () => {
     navigate({
-      pathname: ROUTES.PERSONAL,
-      search: createSearchParams({
+      pathname: ROUTES.PROFILE,
+      queries: {
         id: recommendationFriend.id
-      }).toString()
+      }
     })
   }
 

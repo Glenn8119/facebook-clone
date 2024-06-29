@@ -13,10 +13,10 @@ const router = createBrowserRouter([
   {
     element: <AuthRoute />,
     children: [
-      { element: <HomePage />, path: '/' },
+      { element: <HomePage />, path: ROUTES.HOME_PAGE },
       {
         element: <PersonalPage />,
-        path: ROUTES.PERSONAL
+        path: ROUTES.PROFILE
       }
     ]
   },

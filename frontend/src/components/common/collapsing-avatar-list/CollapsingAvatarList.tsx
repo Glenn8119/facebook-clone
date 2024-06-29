@@ -67,7 +67,7 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
               <UserOverviewCard
                 handleClickAvatar={() =>
                   navigateTo({
-                    pathname: ROUTES.PERSONAL,
+                    pathname: ROUTES.PROFILE,
                     queries: { id: avatarInfo.id }
                   })
                 }
@@ -85,7 +85,7 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
               className={cn}
               onClick={() =>
                 navigateTo({
-                  pathname: ROUTES.PERSONAL,
+                  pathname: ROUTES.PROFILE,
                   queries: { id: avatarInfo.id }
                 })
               }

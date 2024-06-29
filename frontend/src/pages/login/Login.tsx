@@ -3,13 +3,14 @@ import SignUp from '@/pages/login/SignUp'
 import useUserContext from '@/hooks/useUserContext'
 import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
+import { ROUTES } from '@/constants/common'
 
 const Login = () => {
   const userContext = useUserContext()
   const [showSignUp, setShowSignUp] = useState(false)
 
   if (userContext.value.token) {
-    return <Navigate to='/' />
+    return <Navigate to={ROUTES.HOME_PAGE} />
   }
 
   return (

@@ -2,9 +2,10 @@ import Avatar from '@/components/Avatar'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { MdGroup, MdGroups } from 'react-icons/md'
-import { createSearchParams, useNavigate } from 'react-router-dom'
 import useUserContext from '@/hooks/useUserContext'
 import { PERSONAL_QUERIES } from '@/constants/pages/personal'
+import { ROUTES } from '@/constants/common'
+import useNavigateTo from '@/hooks/useNavigateTo'
 
 interface FunctionListProps {
   className?: string
@@ -15,7 +16,7 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
   const {
     value: { name, id }
   } = useUserContext()
-  const navigate = useNavigate()
+  const navigate = useNavigateTo()
 
   return (
     <ul className={cn}>
@@ -23,8 +24,8 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
         className='flex items-center p-2 rounded-lg h-14 cursor-pointer hover:bg-slate-200'
         onClick={() =>
           navigate({
-            pathname: 'personal',
-            search: createSearchParams({ id }).toString()
+            pathname: ROUTES.PROFILE,
+            queries: { id }
           })
         }
       >
@@ -35,11 +36,11 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
         className='flex items-center p-2 rounded-lg h-14 cursor-pointer hover:bg-slate-200'
         onClick={() =>
           navigate({
-            pathname: 'personal',
-            search: createSearchParams({
+            pathname: ROUTES.PROFILE,
+            queries: {
               id,
               tab: PERSONAL_QUERIES.FRIENDS
-            }).toString()
+            }
           })
         }
       >

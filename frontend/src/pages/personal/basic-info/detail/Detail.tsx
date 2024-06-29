@@ -5,14 +5,11 @@ import { ROUTES } from '@/constants/common'
 import { PERSONAL_QUERIES } from '@/constants/pages/personal'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useGetUserDetail from '@/hooks/api/useGetUserDetail'
+import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { MdEdit } from 'react-icons/md'
-import {
-  createSearchParams,
-  useNavigate,
-  useSearchParams
-} from 'react-router-dom'
+import { createSearchParams, useSearchParams } from 'react-router-dom'
 
 const Detail = () => {
   const [searchParams] = useSearchParams()
@@ -20,7 +17,7 @@ const Detail = () => {
   const {
     value: { id: selfId }
   } = useUserContext()
-  const navigate = useNavigate()
+  const navigate = useNavigateTo()
   const { userDetail } = useGetUserDetail(userId)
   const { friendList: userFriendList } = useGetFriendList(userId)
   const { friendList: selfFriendList } = useGetFriendList(selfId)
@@ -40,13 +37,13 @@ const Detail = () => {
     const isToMutual = !isUserSelf && !isFriend
 
     navigate({
-      pathname: ROUTES.PERSONAL,
-      search: createSearchParams({
+      pathname: ROUTES.PROFILE,
+      queries: {
         id: userId,
         tab: isToMutual
           ? PERSONAL_QUERIES.FRIENDS_MUTUAL
           : PERSONAL_QUERIES.FRIENDS
-      }).toString()
+      }
     })
   }
 

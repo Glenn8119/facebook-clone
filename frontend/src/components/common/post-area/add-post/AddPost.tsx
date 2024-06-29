@@ -3,19 +3,19 @@ import { useState } from 'react'
 import AddPostModal from '@/components/common/post-area/add-post/AddPostModal'
 import Card from '@/components/layout/Card'
 import useUserContext from '@/hooks/useUserContext'
-import { createSearchParams, useNavigate } from 'react-router-dom'
 import { ROUTES } from '@/constants/common'
+import useNavigateTo from '@/hooks/useNavigateTo'
 
 const AddPost = () => {
   const {
     value: { name, id }
   } = useUserContext()
-  const navigate = useNavigate()
+  const navigate = useNavigateTo()
   const [showModal, setShowModal] = useState(false)
   const handleClick = () => {
     navigate({
-      pathname: ROUTES.PERSONAL,
-      search: createSearchParams({ id }).toString()
+      pathname: ROUTES.PROFILE,
+      queries: { id }
     })
   }
 

@@ -8,7 +8,7 @@ const useNavigateTo = () => {
     queries
   }: {
     pathname: string
-    queries: Record<string, string>
+    queries?: Record<string, string>
   }) => {
     navigate({
       pathname,

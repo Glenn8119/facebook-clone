@@ -2,11 +2,11 @@ import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 import Avatar from '@/components/Avatar'
 import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
+import useNavigateTo from '@/hooks/useNavigateTo'
 import { AnyFunction } from '@/types/common'
 import { ButtonSize } from '@/types/component/button'
 import { FC } from 'react'
 import { MdGroup } from 'react-icons/md'
-import { createSearchParams, useNavigate } from 'react-router-dom'
 
 type UserOverviewCardProps = {
   name: string
@@ -25,11 +25,11 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
   handleClickAvatar,
   handleClickName
 }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigateTo()
   const navigateToPersonalPage = (id: string) => {
     navigate({
-      pathname: ROUTES.PERSONAL,
-      search: createSearchParams({ id }).toString()
+      pathname: ROUTES.PROFILE,
+      queries: { id }
     })
   }
   const handleCommonFriendListDescription = (
