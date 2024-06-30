@@ -39,7 +39,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
     }
   })
 
-  const navigateToPersonalPage = () => {
+  const navigateToProfilePage = () => {
     navigate({
       pathname: ROUTES.PROFILE,
       queries: {
@@ -54,7 +54,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
         type={PopoverType.HOVER}
         popOverElement={
           <UserOverviewCard
-            handleClickAvatar={navigateToPersonalPage}
+            handleClickAvatar={navigateToProfilePage}
             addFriend={addFriend}
             name={recommendationFriend.name}
             isFriend={false}
@@ -65,7 +65,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
       >
         <Avatar
           className='mr-2 cursor-pointer'
-          onClick={navigateToPersonalPage}
+          onClick={navigateToProfilePage}
         />
       </Popover>
       <div className='mr-auto'>
@@ -73,8 +73,8 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
           type={PopoverType.HOVER}
           popOverElement={
             <UserOverviewCard
-              handleClickAvatar={navigateToPersonalPage}
-              handleClickName={navigateToPersonalPage}
+              handleClickAvatar={navigateToProfilePage}
+              handleClickName={navigateToProfilePage}
               addFriend={addFriend}
               name={recommendationFriend.name}
               isFriend={false}
@@ -85,7 +85,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
         >
           <div
             className='cursor-pointer hover:underline'
-            onClick={navigateToPersonalPage}
+            onClick={navigateToProfilePage}
           >
             {recommendationFriend.name}
           </div>

@@ -4,7 +4,7 @@ import Card from '@/components/layout/Card'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import { useSearchParams } from 'react-router-dom'
 
-const PersonalFriends = () => {
+const ProfileFriends = () => {
   const [searchParams] = useSearchParams()
   const { friendList } = useGetFriendList(searchParams.get('id') as string)
 
@@ -39,4 +39,4 @@ const PersonalFriends = () => {
   )
 }
 
-export default PersonalFriends
+export default ProfileFriends

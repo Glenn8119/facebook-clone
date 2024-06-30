@@ -2,14 +2,14 @@ import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
-import { PERSONAL_QUERIES } from '@/constants/pages/personal'
+import { PROFILE_QUERIES } from '@/constants/pages/profile'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useGetUserDetail from '@/hooks/api/useGetUserDetail'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { MdEdit } from 'react-icons/md'
-import { createSearchParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 const Detail = () => {
   const [searchParams] = useSearchParams()
@@ -41,8 +41,8 @@ const Detail = () => {
       queries: {
         id: userId,
         tab: isToMutual
-          ? PERSONAL_QUERIES.FRIENDS_MUTUAL
-          : PERSONAL_QUERIES.FRIENDS
+          ? PROFILE_QUERIES.FRIENDS_MUTUAL
+          : PROFILE_QUERIES.FRIENDS
       }
     })
   }

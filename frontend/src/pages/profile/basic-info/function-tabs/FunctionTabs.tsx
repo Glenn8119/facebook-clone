@@ -1,12 +1,12 @@
 import { useSearchParams } from 'react-router-dom'
-import Tab from '@/pages/personal/basic-info/function-tabs/Tab'
-import { PERSONAL_QUERIES } from '@/constants/pages/personal'
+import Tab from '@/pages/profile/basic-info/function-tabs/Tab'
+import { PROFILE_QUERIES } from '@/constants/pages/profile'
 
 const tabItems = [
   { label: '貼文', type: [''] },
   {
     label: '朋友',
-    type: [PERSONAL_QUERIES.FRIENDS, PERSONAL_QUERIES.FRIENDS_MUTUAL]
+    type: [PROFILE_QUERIES.FRIENDS, PROFILE_QUERIES.FRIENDS_MUTUAL]
   }
 ]
 const FunctionTabs = () => {

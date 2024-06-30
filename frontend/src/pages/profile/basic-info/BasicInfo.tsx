@@ -1,7 +1,7 @@
 import { FC } from 'react'
-import Cover from '@/pages/personal/basic-info/Cover'
-import Detail from '@/pages/personal/basic-info/detail/Detail'
-import FunctionTabs from '@/pages/personal/basic-info/function-tabs/FunctionTabs'
+import Cover from '@/pages/profile/basic-info/Cover'
+import Detail from '@/pages/profile/basic-info/detail/Detail'
+import FunctionTabs from '@/pages/profile/basic-info/function-tabs/FunctionTabs'
 
 interface BasicInfoProps {}
 

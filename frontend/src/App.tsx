@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from '@/pages/login/Login.tsx'
 import HomePage from '@/pages/home-page/HomePage.tsx'
 import AuthRoute from '@/components/AuthRoute'
-import PersonalPage from '@/pages/personal/Personal'
+import ProfilePage from '@/pages/profile/Profile'
 import FullScreenLoading from '@/components/FullScreenLoading'
 import useLoadingContext from '@/hooks/useLoading'
 import ToastContainer from '@/components/toast/ToastContainer'
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       { element: <HomePage />, path: ROUTES.HOME_PAGE },
       {
-        element: <PersonalPage />,
+        element: <ProfilePage />,
         path: ROUTES.PROFILE
       }
     ]

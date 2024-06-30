@@ -3,7 +3,7 @@ import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { MdGroup, MdGroups } from 'react-icons/md'
 import useUserContext from '@/hooks/useUserContext'
-import { PERSONAL_QUERIES } from '@/constants/pages/personal'
+import { PROFILE_QUERIES } from '@/constants/pages/profile'
 import { ROUTES } from '@/constants/common'
 import useNavigateTo from '@/hooks/useNavigateTo'
 
@@ -39,7 +39,7 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
             pathname: ROUTES.PROFILE,
             queries: {
               id,
-              tab: PERSONAL_QUERIES.FRIENDS
+              tab: PROFILE_QUERIES.FRIENDS
             }
           })
         }

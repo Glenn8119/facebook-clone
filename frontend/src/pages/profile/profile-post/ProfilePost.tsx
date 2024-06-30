@@ -1,10 +1,7 @@
-import { FC } from 'react'
 import FriendArea from './friend-area/FriendArea'
 import PostArea from '@/components/common/post-area/PostArea'
 
-interface PersonalPostProps {}
-
-const PersonalPost: FC<PersonalPostProps> = () => {
+const ProfilePost = () => {
   return (
     <div className='flex justify-center gap-4'>
       <FriendArea />
@@ -13,4 +10,4 @@ const PersonalPost: FC<PersonalPostProps> = () => {
   )
 }
 
-export default PersonalPost
+export default ProfilePost

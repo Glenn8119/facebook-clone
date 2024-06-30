@@ -26,12 +26,6 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
   handleClickName
 }) => {
   const navigate = useNavigateTo()
-  const navigateToPersonalPage = (id: string) => {
-    navigate({
-      pathname: ROUTES.PROFILE,
-      queries: { id }
-    })
-  }
   const handleCommonFriendListDescription = (
     commonFriendList: FERecommendationFriendSingleResponseType['commonFriendList']
   ) => {
@@ -55,7 +49,12 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
           <span key={friend.id} className='font-bold'>
             <span
               className='hover:underline cursor-pointer'
-              onClick={() => navigateToPersonalPage(friend.id)}
+              onClick={() =>
+                navigate({
+                  pathname: ROUTES.PROFILE,
+                  queries: { id: friend.id }
+                })
+              }
             >
               {friend.name}
             </span>
