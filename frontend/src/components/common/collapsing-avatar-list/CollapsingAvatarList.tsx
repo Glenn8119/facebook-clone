@@ -2,14 +2,10 @@ import Avatar from '@/components/Avatar'
 import { AnyFunction, AvatarInfo } from '@/types/common'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
-import UserOverviewCard from '@/components/common/user-overview-card/UserOverviewCard'
-import Popover from '@/components/Popover'
-import { PopoverType } from '@/types/component/popover'
-import useNavigateTo from '@/hooks/useNavigateTo'
-import { ROUTES } from '@/constants/common'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import FriendApi from '@/api/friend'
 import useToastContext from '@/hooks/userToastContext'
+import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 
 type CollapsingAvatarListProps = {
   avatarInfoList: AvatarInfo[]
@@ -59,26 +55,20 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
 
         // TODO: user other info as key
         return (
-          <Popover
+          <UserOverviewPopover
             key={avatarInfo.id}
-            type={PopoverType.HOVER}
-            popOverElement={
-              <UserOverviewCard
-                userId={avatarInfo.id}
-                addFriend={() => addFriend(avatarInfo.id)}
-                name={avatarInfo.name}
-                isFriend={avatarInfo.isFriend}
-                commonFriendList={avatarInfo.commonFriendList}
-              />
-            }
-            popOverClass='animate-fade-in'
+            userId={avatarInfo.id}
+            addFriend={() => addFriend(avatarInfo.id)}
+            name={avatarInfo.name}
+            isFriend={avatarInfo.isFriend}
+            commonFriendList={avatarInfo.commonFriendList}
           >
             <Avatar
               style={zIndexStyle}
               imgUrl={avatarInfo.imgUrl}
               className={cn}
             />
-          </Popover>
+          </UserOverviewPopover>
         )
       })}
     </div>

@@ -1,15 +1,13 @@
 import FriendApi from '@/api/friend'
 import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 import Avatar from '@/components/Avatar'
-import Popover from '@/components/Popover'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
-import UserOverviewCard from '@/components/common/user-overview-card/UserOverviewCard'
+import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useToastContext from '@/hooks/userToastContext'
 import { ButtonSize } from '@/types/component/button'
-import { PopoverType } from '@/types/component/popover'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -50,37 +48,26 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
 
   return (
     <div className={cn}>
-      <Popover
-        type={PopoverType.HOVER}
-        popOverElement={
-          <UserOverviewCard
-            userId={recommendationFriend.id}
-            addFriend={addFriend}
-            name={recommendationFriend.name}
-            isFriend={false}
-            commonFriendList={commonFriendList}
-          />
-        }
-        popOverClass='animate-fade-in'
+      <UserOverviewPopover
+        userId={recommendationFriend.id}
+        addFriend={addFriend}
+        name={recommendationFriend.name}
+        isFriend={false}
+        commonFriendList={commonFriendList}
       >
         <Avatar
           className='mr-2 cursor-pointer'
           onClick={navigateToProfilePage}
         />
-      </Popover>
+      </UserOverviewPopover>
+
       <div className='mr-auto'>
-        <Popover
-          type={PopoverType.HOVER}
-          popOverElement={
-            <UserOverviewCard
-              userId={recommendationFriend.id}
-              addFriend={addFriend}
-              name={recommendationFriend.name}
-              isFriend={false}
-              commonFriendList={commonFriendList}
-            />
-          }
-          popOverClass='animate-fade-in'
+        <UserOverviewPopover
+          userId={recommendationFriend.id}
+          addFriend={addFriend}
+          name={recommendationFriend.name}
+          isFriend={false}
+          commonFriendList={commonFriendList}
         >
           <div
             className='cursor-pointer hover:underline'
@@ -88,7 +75,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
           >
             {recommendationFriend.name}
           </div>
-        </Popover>
+        </UserOverviewPopover>
         {commonFriendList.length ? (
           <div className='flex flex-nowrap items-center min-w-28'>
             <CollapsingAvatarList

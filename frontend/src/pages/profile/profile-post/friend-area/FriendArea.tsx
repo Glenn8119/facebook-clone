@@ -1,18 +1,15 @@
 import Card from '@/components/layout/Card'
 import { FC } from 'react'
-import fakeAvatar from '@/assets/fake-avatar.jpeg'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import { useSearchParams } from 'react-router-dom'
 import Avatar from '@/components/Avatar'
-import Popover from '@/components/Popover'
-import { PopoverType } from '@/types/component/popover'
-import UserOverviewCard from '@/components/common/user-overview-card/UserOverviewCard'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import FriendApi from '@/api/friend'
 import useToastContext from '@/hooks/userToastContext'
 import useUserContext from '@/hooks/useUserContext'
 import { ROUTES } from '@/constants/common'
 import useNavigateTo from '@/hooks/useNavigateTo'
+import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 
 interface FriendAreaProps {}
 
@@ -50,36 +47,24 @@ const FriendArea: FC<FriendAreaProps> = () => {
 
   const friendBoxList = renderedFriendList.map((friend) => (
     <div className='flex flex-col px-2' key={friend.id}>
-      <Popover
-        type={PopoverType.HOVER}
-        popOverElement={
-          <UserOverviewCard
-            userId={friend.id}
-            addFriend={() => addFriend(friend.id)}
-            name={friend.name}
-            isFriend={friend.isFriend}
-            commonFriendList={friend.commonFriendList}
-          />
-        }
-        popOverClass='animate-fade-in'
+      <UserOverviewPopover
+        userId={friend.id}
+        addFriend={() => addFriend(friend.id)}
+        name={friend.name}
+        isFriend={friend.isFriend}
+        commonFriendList={friend.commonFriendList}
       >
         <Avatar
           className='mr-4 rounded w-20 cursor-pointer'
           onClick={() => navigateToProfilePage(friend.id)}
         />
-      </Popover>
-      <Popover
-        type={PopoverType.HOVER}
-        popOverElement={
-          <UserOverviewCard
-            userId={friend.id}
-            addFriend={() => addFriend(friend.id)}
-            name={friend.name}
-            isFriend={friend.isFriend}
-            commonFriendList={friend.commonFriendList}
-          />
-        }
-        popOverClass='animate-fade-in'
+      </UserOverviewPopover>
+      <UserOverviewPopover
+        userId={friend.id}
+        addFriend={() => addFriend(friend.id)}
+        name={friend.name}
+        isFriend={friend.isFriend}
+        commonFriendList={friend.commonFriendList}
       >
         <div
           className='cursor-pointer hover:underline'
@@ -87,7 +72,7 @@ const FriendArea: FC<FriendAreaProps> = () => {
         >
           {friend.name}
         </div>
-      </Popover>
+      </UserOverviewPopover>
     </div>
   ))
 
