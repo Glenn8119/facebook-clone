@@ -3,29 +3,32 @@ import Avatar from '@/components/Avatar'
 import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
 import useNavigateTo from '@/hooks/useNavigateTo'
-import { AnyFunction } from '@/types/common'
 import { ButtonSize } from '@/types/component/button'
 import { FC } from 'react'
 import { MdGroup } from 'react-icons/md'
 
 type UserOverviewCardProps = {
+  userId: string
   name: string
   isFriend: boolean | null
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
   addFriend?: () => void
-  handleClickAvatar?: AnyFunction
-  handleClickName?: AnyFunction
 }
 
 const UserOverviewCard: FC<UserOverviewCardProps> = ({
+  userId,
   name,
   isFriend,
   commonFriendList,
-  addFriend,
-  handleClickAvatar,
-  handleClickName
+  addFriend
 }) => {
   const navigate = useNavigateTo()
+  const navigateToProfilePage = (id: string) => {
+    navigate({
+      pathname: ROUTES.PROFILE,
+      queries: { id }
+    })
+  }
   const handleCommonFriendListDescription = (
     commonFriendList: FERecommendationFriendSingleResponseType['commonFriendList']
   ) => {
@@ -37,7 +40,14 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
       return (
         <div>
           1 位共同朋友：
-          <span className='font-bold'>{commonFriendList[0].name}</span>
+          <span
+            className='font-bold cursor-pointer hover:underline'
+            onClick={() => {
+              navigateToProfilePage(commonFriendList[0].id)
+            }}
+          >
+            {commonFriendList[0].name}
+          </span>
         </div>
       )
     }
@@ -49,12 +59,7 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
           <span key={friend.id} className='font-bold'>
             <span
               className='hover:underline cursor-pointer'
-              onClick={() =>
-                navigate({
-                  pathname: ROUTES.PROFILE,
-                  queries: { id: friend.id }
-                })
-              }
+              onClick={() => navigateToProfilePage(friend.id)}
             >
               {friend.name}
             </span>
@@ -90,13 +95,19 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
       <div className='flex mb-3'>
         <Avatar
           className='mr-2 w-24 h-24 cursor-pointer'
-          onClick={handleClickAvatar}
+          onClick={(e) => {
+            e.stopPropagation()
+            navigateToProfilePage(userId)
+          }}
         />
         <div>
           <div className='mb-4 font-bold text-xl'>
             <span
               className=' cursor-pointer hover:underline'
-              onClick={handleClickName}
+              onClick={(e) => {
+                e.stopPropagation()
+                navigateToProfilePage(userId)
+              }}
             >
               {name}
             </span>

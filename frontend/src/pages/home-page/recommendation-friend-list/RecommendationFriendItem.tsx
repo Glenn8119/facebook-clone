@@ -6,12 +6,12 @@ import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/Col
 import UserOverviewCard from '@/components/common/user-overview-card/UserOverviewCard'
 import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
-import { ToastContext } from '@/context/ToastContextProvider'
 import useNavigateTo from '@/hooks/useNavigateTo'
+import useToastContext from '@/hooks/userToastContext'
 import { ButtonSize } from '@/types/component/button'
 import { PopoverType } from '@/types/component/popover'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type FriendItemProps = {
@@ -24,7 +24,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
   className
 }) => {
   const queryClient = useQueryClient()
-  const { addToast } = useContext(ToastContext)
+  const { addToast } = useToastContext()
   const navigate = useNavigateTo()
 
   const cn = twMerge('flex items-center', className)
@@ -54,7 +54,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
         type={PopoverType.HOVER}
         popOverElement={
           <UserOverviewCard
-            handleClickAvatar={navigateToProfilePage}
+            userId={recommendationFriend.id}
             addFriend={addFriend}
             name={recommendationFriend.name}
             isFriend={false}
@@ -73,8 +73,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
           type={PopoverType.HOVER}
           popOverElement={
             <UserOverviewCard
-              handleClickAvatar={navigateToProfilePage}
-              handleClickName={navigateToProfilePage}
+              userId={recommendationFriend.id}
               addFriend={addFriend}
               name={recommendationFriend.name}
               isFriend={false}

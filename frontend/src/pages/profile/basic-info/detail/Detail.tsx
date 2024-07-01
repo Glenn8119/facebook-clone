@@ -30,12 +30,10 @@ const Detail = () => {
   const isFriend = !!selfFriendList.find((friend) => friend.id === userId)
   const renderedFriendList = userFriendList.map((friend) => ({
     ...friend,
-    isFriend: !!userFriendList.find((userFriend) => friend.id === userFriend.id)
+    isFriend: !!selfFriendList.find((selfFriend) => friend.id === selfFriend.id)
   }))
 
-  const navigateToFriendsOrMutualFriends = () => {
-    const isToMutual = !isUserSelf && !isFriend
-
+  const navigateToFriendsOrMutualFriends = (isToMutual?: boolean) => {
     navigate({
       pathname: ROUTES.PROFILE,
       queries: {
@@ -71,7 +69,7 @@ const Detail = () => {
           ，
           <span
             className='hover:underline cursor-pointer'
-            onClick={() => navigateToFriendsOrMutualFriends()}
+            onClick={() => navigateToFriendsOrMutualFriends(true)}
           >
             {userDetail.commonFriendList.length} 位共同朋友
           </span>
@@ -82,7 +80,7 @@ const Detail = () => {
     return (
       <div
         className='hover:underline cursor-pointer'
-        onClick={() => navigateToFriendsOrMutualFriends()}
+        onClick={() => navigateToFriendsOrMutualFriends(true)}
       >
         {userDetail.commonFriendList.length} 位共同朋友
       </div>

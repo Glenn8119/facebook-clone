@@ -1,6 +1,6 @@
 import Avatar from '@/components/Avatar'
 import { AnyFunction, AvatarInfo } from '@/types/common'
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 import UserOverviewCard from '@/components/common/user-overview-card/UserOverviewCard'
 import Popover from '@/components/Popover'
@@ -9,7 +9,7 @@ import useNavigateTo from '@/hooks/useNavigateTo'
 import { ROUTES } from '@/constants/common'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import FriendApi from '@/api/friend'
-import { ToastContext } from '@/context/ToastContextProvider'
+import useToastContext from '@/hooks/userToastContext'
 
 type CollapsingAvatarListProps = {
   avatarInfoList: AvatarInfo[]
@@ -26,7 +26,7 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
   length = 7,
   handleClickList
 }) => {
-  const { addToast } = useContext(ToastContext)
+  const { addToast } = useToastContext()
   const queryClient = useQueryClient()
   const { mutate: addFriend } = useMutation({
     mutationFn: FriendApi.addFriend,
@@ -37,7 +37,6 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
   })
 
   const cn = twMerge('flex', className)
-  const navigateTo = useNavigateTo()
   const finalList = avatarInfoList.slice(0, length)
   const listLength = finalList.length
 
@@ -65,12 +64,7 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
             type={PopoverType.HOVER}
             popOverElement={
               <UserOverviewCard
-                handleClickAvatar={() =>
-                  navigateTo({
-                    pathname: ROUTES.PROFILE,
-                    queries: { id: avatarInfo.id }
-                  })
-                }
+                userId={avatarInfo.id}
                 addFriend={() => addFriend(avatarInfo.id)}
                 name={avatarInfo.name}
                 isFriend={avatarInfo.isFriend}
@@ -83,12 +77,6 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
               style={zIndexStyle}
               imgUrl={avatarInfo.imgUrl}
               className={cn}
-              onClick={() =>
-                navigateTo({
-                  pathname: ROUTES.PROFILE,
-                  queries: { id: avatarInfo.id }
-                })
-              }
             />
           </Popover>
         )

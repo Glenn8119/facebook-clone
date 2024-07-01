@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 
 const useGetFriendList = (id: string) => {
   const { isPending, data } = useQuery({
-    queryKey: ['getFriendList'],
+    queryKey: ['getFriendList', id],
     queryFn: () => FriendApi.getFriendList(id)
   })
 
