@@ -1,9 +1,8 @@
-import { ToastContext } from '@/context/ToastContextProvider'
-import { useContext } from 'react'
 import Toast from '@/components/toast/Toast'
+import useToastContext from '@/hooks/userToastContext'
 
 const ToastContainer = () => {
-  const { value } = useContext(ToastContext)
+  const { value } = useToastContext()
 
   const toastList = value.map((toast) => {
     return (
