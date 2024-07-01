@@ -12,7 +12,7 @@ type UserOverviewCardProps = {
   name: string
   isFriend: boolean | null
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
-  addFriend?: () => void
+  addFriend?: (id: string) => void
 }
 
 const UserOverviewCard: FC<UserOverviewCardProps> = ({
@@ -82,7 +82,10 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
         ) : isFriend ? (
           <Button size={ButtonSize.SMALL}>朋友</Button>
         ) : (
-          <Button size={ButtonSize.SMALL} onClick={addFriend}>
+          <Button
+            size={ButtonSize.SMALL}
+            onClick={() => addFriend && addFriend(userId)}
+          >
             加朋友
           </Button>
         )}

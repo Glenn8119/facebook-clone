@@ -2,13 +2,11 @@ import Avatar from '@/components/Avatar'
 import { AnyFunction, AvatarInfo } from '@/types/common'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import FriendApi from '@/api/friend'
-import useToastContext from '@/hooks/userToastContext'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 
 type CollapsingAvatarListProps = {
   avatarInfoList: AvatarInfo[]
+  addFriend?: (id: string) => void
   handleClickList?: AnyFunction
   className?: string
   avatarClassName?: string
@@ -20,18 +18,9 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
   className,
   avatarClassName,
   length = 7,
-  handleClickList
+  handleClickList,
+  addFriend
 }) => {
-  const { addToast } = useToastContext()
-  const queryClient = useQueryClient()
-  const { mutate: addFriend } = useMutation({
-    mutationFn: FriendApi.addFriend,
-    onSuccess: () => {
-      addToast({ type: 'SUCCESS', title: '加入好友成功！' })
-      queryClient.invalidateQueries({ queryKey: ['friendRecommendation'] })
-    }
-  })
-
   const cn = twMerge('flex', className)
   const finalList = avatarInfoList.slice(0, length)
   const listLength = finalList.length
@@ -53,12 +42,11 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
           avatarClassName
         )
 
-        // TODO: user other info as key
         return (
           <UserOverviewPopover
             key={avatarInfo.id}
             userId={avatarInfo.id}
-            addFriend={() => addFriend(avatarInfo.id)}
+            addFriend={() => addFriend && addFriend(avatarInfo.id)}
             name={avatarInfo.name}
             isFriend={avatarInfo.isFriend}
             commonFriendList={avatarInfo.commonFriendList}

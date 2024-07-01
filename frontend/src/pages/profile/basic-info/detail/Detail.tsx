@@ -3,11 +3,14 @@ import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/Col
 import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
+import useAddFriend from '@/hooks/api/mutation/useAddFriend'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useGetUserDetail from '@/hooks/api/useGetUserDetail'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
+import useToastContext from '@/hooks/userToastContext'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
+import { useQueryClient } from '@tanstack/react-query'
 import { MdEdit } from 'react-icons/md'
 import { useSearchParams } from 'react-router-dom'
 
@@ -18,7 +21,15 @@ const Detail = () => {
     value: { id: selfId }
   } = useUserContext()
   const navigate = useNavigateTo()
+  const queryClient = useQueryClient()
+  const { addToast } = useToastContext()
   const { userDetail } = useGetUserDetail(userId)
+  const { addFriend } = useAddFriend({
+    onSuccess: () => {
+      addToast({ type: 'SUCCESS', title: '加入好友成功！' })
+      queryClient.invalidateQueries({ queryKey: ['getFriendList', selfId] })
+    }
+  })
   const { friendList: userFriendList } = useGetFriendList(userId)
   const { friendList: selfFriendList } = useGetFriendList(selfId)
   const isUserSelf = selfId === searchParams.get('id')
@@ -97,6 +108,7 @@ const Detail = () => {
         <div className='font-bold text-4xl mb-1'>{userDetail.name}</div>
         <div className='text-slate-600 mb-1'>{renderFriendDescription()}</div>
         <CollapsingAvatarList
+          addFriend={addFriend}
           handleClickList={navigateToFriendsOrMutualFriends}
           avatarInfoList={renderedFriendList ?? []}
         />

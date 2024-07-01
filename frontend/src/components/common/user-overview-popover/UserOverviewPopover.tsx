@@ -10,7 +10,7 @@ type UserOverviewPopoverProps = {
   name: string
   isFriend: boolean | null
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
-  addFriend?: () => void
+  addFriend?: (id: string) => void
 }
 
 const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({

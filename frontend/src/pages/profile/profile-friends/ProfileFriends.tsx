@@ -1,15 +1,15 @@
-import FriendApi from '@/api/friend'
 import Avatar from '@/components/Avatar'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 import Input from '@/components/form/Input'
 import Card from '@/components/layout/Card'
 import { ROUTES } from '@/constants/common'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
+import useAddFriend from '@/hooks/api/mutation/useAddFriend'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
 import useToastContext from '@/hooks/userToastContext'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
 
 const ProfileFriends = () => {
@@ -21,13 +21,13 @@ const ProfileFriends = () => {
     value: { id: selfId }
   } = useUserContext()
   const { friendList: selfFriendList } = useGetFriendList(selfId)
-  const { mutate: addFriend } = useMutation({
-    mutationFn: FriendApi.addFriend,
+  const { addFriend } = useAddFriend({
     onSuccess: () => {
       addToast({ type: 'SUCCESS', title: '加入好友成功！' })
       queryClient.invalidateQueries({ queryKey: ['friendRecommendation'] })
     }
   })
+
   const { friendList } = useGetFriendList(searchParams.get('id') as string)
   const navigateToProfilePage = (id: string, tab?: string) => {
     const queries = { id } as Record<string, string>
