@@ -4,6 +4,7 @@ import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
 import useAddFriend from '@/hooks/api/mutation/useAddFriend'
+import useFetchUserFriendList from '@/hooks/api/useFetchFriendList'
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useGetUserDetail from '@/hooks/api/useGetUserDetail'
 import useNavigateTo from '@/hooks/useNavigateTo'
@@ -30,19 +31,15 @@ const Detail = () => {
       queryClient.invalidateQueries({ queryKey: ['getFriendList', selfId] })
     }
   })
-  const { friendList: userFriendList } = useGetFriendList(userId)
   const { friendList: selfFriendList } = useGetFriendList(selfId)
-  const isUserSelf = selfId === searchParams.get('id')
+  const { friendList: userFriendList } = useFetchUserFriendList(userId)
 
   if (!userFriendList || !selfFriendList || !userDetail) {
     return null
   }
 
+  const isUserSelf = selfId === userId
   const isFriend = !!selfFriendList.find((friend) => friend.id === userId)
-  const renderedFriendList = userFriendList.map((friend) => ({
-    ...friend,
-    isFriend: !!selfFriendList.find((selfFriend) => friend.id === selfFriend.id)
-  }))
 
   const navigateToFriendsOrMutualFriends = (isToMutual?: boolean) => {
     navigate({
@@ -63,7 +60,7 @@ const Detail = () => {
           className='hover:underline cursor-pointer'
           onClick={() => navigateToFriendsOrMutualFriends()}
         >
-          {renderedFriendList?.length ?? ''} 位朋友
+          {userFriendList?.length ?? ''} 位朋友
         </div>
       )
     }
@@ -75,7 +72,7 @@ const Detail = () => {
             className='hover:underline cursor-pointer'
             onClick={() => navigateToFriendsOrMutualFriends()}
           >
-            {renderedFriendList.length} 位朋友
+            {userFriendList.length} 位朋友
           </span>
           ，
           <span
@@ -110,7 +107,7 @@ const Detail = () => {
         <CollapsingAvatarList
           addFriend={addFriend}
           handleClickList={navigateToFriendsOrMutualFriends}
-          avatarInfoList={renderedFriendList ?? []}
+          avatarInfoList={userFriendList ?? []}
         />
       </div>
       <div className='flex-grow py-2'>

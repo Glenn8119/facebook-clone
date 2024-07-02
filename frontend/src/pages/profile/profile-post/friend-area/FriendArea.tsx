@@ -1,15 +1,14 @@
 import Card from '@/components/layout/Card'
 import { FC } from 'react'
-import useGetFriendList from '@/hooks/api/useGetFriendList'
 import { useSearchParams } from 'react-router-dom'
 import Avatar from '@/components/Avatar'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import FriendApi from '@/api/friend'
 import useToastContext from '@/hooks/userToastContext'
-import useUserContext from '@/hooks/useUserContext'
 import { ROUTES } from '@/constants/common'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
+import useFetchUserFriendList from '@/hooks/api/useFetchFriendList'
 
 interface FriendAreaProps {}
 
@@ -18,11 +17,9 @@ const FriendArea: FC<FriendAreaProps> = () => {
   const { addToast } = useToastContext()
   const queryClient = useQueryClient()
   const navigate = useNavigateTo()
-  const { friendList } = useGetFriendList(searchParams.get('id') as string)
-  const {
-    value: { id: selfId }
-  } = useUserContext()
-  const { friendList: selfFriendList } = useGetFriendList(selfId)
+  const userId = searchParams.get('id') as string
+  const { friendList } = useFetchUserFriendList(userId)
+
   const { mutate: addFriend } = useMutation({
     mutationFn: FriendApi.addFriend,
     onSuccess: () => {
@@ -39,13 +36,9 @@ const FriendArea: FC<FriendAreaProps> = () => {
     })
   }
 
-  if (!friendList || !selfFriendList) return null
-  const renderedFriendList = friendList.map((friend) => ({
-    ...friend,
-    isFriend: !!selfFriendList.find((selfFriend) => friend.id === selfFriend.id)
-  }))
+  if (!friendList) return null
 
-  const friendBoxList = renderedFriendList.map((friend) => (
+  const friendBoxList = friendList.map((friend) => (
     <div className='flex flex-col px-2' key={friend.id}>
       <UserOverviewPopover
         userId={friend.id}

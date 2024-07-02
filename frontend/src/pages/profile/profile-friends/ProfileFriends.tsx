@@ -5,9 +5,8 @@ import Card from '@/components/layout/Card'
 import { ROUTES } from '@/constants/common'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
 import useAddFriend from '@/hooks/api/mutation/useAddFriend'
-import useGetFriendList from '@/hooks/api/useGetFriendList'
+import useFetchUserFriendList from '@/hooks/api/useFetchFriendList'
 import useNavigateTo from '@/hooks/useNavigateTo'
-import useUserContext from '@/hooks/useUserContext'
 import useToastContext from '@/hooks/userToastContext'
 import { useQueryClient } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
@@ -16,11 +15,8 @@ const ProfileFriends = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigateTo()
   const [searchParams] = useSearchParams()
+  const userId = searchParams.get('id') as string
   const { addToast } = useToastContext()
-  const {
-    value: { id: selfId }
-  } = useUserContext()
-  const { friendList: selfFriendList } = useGetFriendList(selfId)
   const { addFriend } = useAddFriend({
     onSuccess: () => {
       addToast({ type: 'SUCCESS', title: '加入好友成功！' })
@@ -28,7 +24,8 @@ const ProfileFriends = () => {
     }
   })
 
-  const { friendList } = useGetFriendList(searchParams.get('id') as string)
+  const { friendList } = useFetchUserFriendList(userId)
+
   const navigateToProfilePage = (id: string, tab?: string) => {
     const queries = { id } as Record<string, string>
     tab && (queries.tab = tab)
@@ -38,13 +35,9 @@ const ProfileFriends = () => {
     })
   }
 
-  if (!friendList || !selfFriendList) return null
-  const renderedFriendList = friendList.map((friend) => ({
-    ...friend,
-    isFriend: !!selfFriendList.find((selfFriend) => friend.id === selfFriend.id)
-  }))
+  if (!friendList) return null
 
-  const friendBoxList = renderedFriendList.map((friend) => (
+  const friendBoxList = friendList.map((friend) => (
     <div
       key={friend.id}
       className='flex items-center h-28 p-4 border border-main rounded-lg'
