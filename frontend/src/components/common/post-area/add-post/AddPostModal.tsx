@@ -1,9 +1,9 @@
-import PostApi from '@/api/post'
 import Avatar from '@/components/Avatar'
 import Mask from '@/components/Mask'
 import Button from '@/components/form/Button'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import TextArea from '@/components/form/TextArea'
+import useCreatePost from '@/hooks/api/useAddPost'
 import useForm from '@/hooks/useForm'
 import useUserContext from '@/hooks/useUserContext'
 import { PostFormType, postFormSchema } from '@/schema/validation/add-post'
@@ -11,7 +11,7 @@ import { ButtonSize } from '@/types/component/button'
 import { ChangeEvent, FC, MouseEvent } from 'react'
 import { MdClose } from 'react-icons/md'
 
-interface AddPostModalProps {
+type AddPostModalProps = {
   closeModal: () => void
 }
 
@@ -20,11 +20,11 @@ const AddPostModal: FC<AddPostModalProps> = ({ closeModal }) => {
     value: { name }
   } = useUserContext()
 
+  const { createPost } = useCreatePost()
+
   const onSubmit = async (formData: PostFormType) => {
-    await PostApi.createPost(formData)
+    await createPost(formData)
     closeModal()
-    const postList = await PostApi.getPostList()
-    console.log({ postList })
   }
 
   const { formData, setFormData, submit, error } = useForm(
