@@ -14,15 +14,8 @@ class FriendBo(BaseBo):
             user_id = self.user['id']
             recommendation_user_list = await friend_dao.get_all_not_friend_list(user_id)
             return await asyncio.gather(
-                *[self.get_recommendation_friend_single_response(dict(recommendation_friend)) for
+                *[self.append_common_friend_list_to_dict_with_user_id(dict(recommendation_friend)) for
                   recommendation_friend in recommendation_user_list])
-
-    async def get_recommendation_friend_single_response(self, recommendation_friend_dict):
-        user_id = self.user['id']
-        common_friend_list = await self.get_common_friend_list(user_id=user_id, friend_id=recommendation_friend_dict['id'])
-        combined_dict = {**recommendation_friend_dict,
-                         'common_friend_list': common_friend_list}
-        return UserOverviewItem.model_validate(combined_dict)
 
     async def add_friend(self, target_user_id):
         async with get_facebook_clone_dao_factory().create_dao_list(FriendDao) as [friend_dao]:
@@ -55,3 +48,8 @@ class FriendBo(BaseBo):
         user = self.user
         common_friend_list = await self.get_common_friend_list(user_id=user['id'], friend_id=friend['id'])
         return Friend.model_validate({**friend, 'common_friend_list': common_friend_list})
+
+    async def append_common_friend_list_to_dict_with_user_id(self, user_id_dict):
+        user_id = self.user['id']
+        common_friend_list = await self.get_common_friend_list(user_id=user_id, friend_id=user_id_dict['id'])
+        return {**user_id_dict, 'common_friend_list': common_friend_list}
