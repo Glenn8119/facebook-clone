@@ -28,12 +28,8 @@ class PostBo(BaseBo):
             post_list_response = await asyncio.gather(*[self.get_single_post_response(post=post) for post in post_list])
             sorted_post_list = sorted(post_list_response,
                                       key=lambda post: post['created_at'], reverse=True)
-            print(666, sorted_post_list)
-            v = [Post.model_validate(post) for post in
-                 sorted_post_list]
-
-            print(8888, v)
-            return v
+            return [Post.model_validate(post) for post in
+                    sorted_post_list]
 
     async def get_single_post_response(self, post):
         post_dao: PostDao
@@ -62,3 +58,18 @@ class PostBo(BaseBo):
         post_dao: PostDao
         async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
             await post_dao.unlike_post(post_id=post_id, user_id=self.user['id'])
+
+    async def create_post_comment(self, post_id: UUID, content: str):
+        post_dao: PostDao
+        async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
+            return await post_dao.add_post_comment(post_id=post_id, user_id=self.user['id'], content=content)
+
+    async def update_post_comment(self, comment_id: UUID, content: str):
+        post_dao: PostDao
+        async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
+            return await post_dao.update_post_comment(comment_id=comment_id, user_id=self.user['id'], content=content)
+
+    async def delete_post_comment(self, comment_id: UUID):
+        post_dao: PostDao
+        async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
+            return await post_dao.delete_post_comment(comment_id=comment_id, user_id=self.user['id'])

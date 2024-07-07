@@ -10,7 +10,14 @@ class PostPostRequestBody(BaseModel):
 
 
 class PutPostRequestBody(BaseModel):
-    id: UUID
+    content: str
+
+
+class PostCommentRequestBody(BaseModel):
+    content: str
+
+
+class PutCommentRequestBody(BaseModel):
     content: str
 
 

@@ -70,10 +70,27 @@ class PostDao(BaseDao):
             WHERE c.post_id = $1
         ''', post_id)
 
-    async def add_comment(self, content: str, post_id: UUID, user_id: UUID):
+    async def add_post_comment(self, content: str, post_id: UUID, user_id: UUID):
         return await self.connection.execute('''
             INSERT INTO comment (content, post_id, user_id) VALUES (
                 $1, $2, $3
             )
             RETURNING *
         ''', content, post_id, user_id)
+
+    async def update_post_comment(self, comment_id: UUID, user_id: UUID, content):
+        return await self.connection.execute('''
+            UPDATE comment
+            SET content = $1, updated_at = now()
+            WHERE id = $2
+            and user_id = $3
+            RETURNING *
+        ''', content, comment_id, user_id)
+
+    async def delete_post_comment(self, comment_id: UUID, user_id: UUID):
+        return await self.connection.execute('''
+            DELETE FROM comment
+            WHERE id = $1
+            AND user_id = $2
+            RETURNING *
+        ''', comment_id, user_id)
