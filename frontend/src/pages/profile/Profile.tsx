@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom'
 import ProfileFriends from '@/pages/profile/profile-friends/ProfileFriends'
 import ProfilePost from '@/pages/profile/profile-post/ProfilePost'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
-import useFetchUserFriendList from '@/hooks/api/useFetchFriendList'
+import useFetchFriendListWithFriendStatus from '@/hooks/api/queries/useGetFriendList/useFetchFriendListWithFriendStatus'
 import useGetUserDetail from '@/hooks/api/useGetUserDetail'
 
 const ProfilePage: FC = () => {
@@ -23,7 +23,7 @@ const ProfilePage: FC = () => {
     return <ProfilePost />
   }
 
-  const { friendList } = useFetchUserFriendList(userId)
+  const { friendList } = useFetchFriendListWithFriendStatus(userId)
   const { userDetail } = useGetUserDetail(userId)
 
   if (!friendList || !userDetail) {

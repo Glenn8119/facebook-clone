@@ -1,6 +1,6 @@
 import useGetPostList from '@/hooks/api/queries/useGetPostList'
 import useUserContext from '@/hooks/useUserContext'
-import useGetFriendList from '@/hooks/api/useGetFriendList'
+import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
 import getFriendStatus from '@/utils/freindsStatus'
 import { Post } from '@/types/api/post'
 

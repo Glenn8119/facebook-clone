@@ -5,7 +5,7 @@ import Card from '@/components/layout/Card'
 import { ROUTES } from '@/constants/common'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
 import useAddFriend from '@/hooks/api/mutation/useAddFriend'
-import useFetchUserFriendList from '@/hooks/api/useFetchFriendList'
+import useFetchFriendListWithFriendStatus from '@/hooks/api/queries/useGetFriendList/useFetchFriendListWithFriendStatus'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useToastContext from '@/hooks/userToastContext'
 import { useQueryClient } from '@tanstack/react-query'
@@ -24,7 +24,7 @@ const ProfileFriends = () => {
     }
   })
 
-  const { friendList } = useFetchUserFriendList(userId)
+  const { friendList } = useFetchFriendListWithFriendStatus(userId)
 
   const navigateToProfilePage = (id: string, tab?: string) => {
     const queries = { id } as Record<string, string>

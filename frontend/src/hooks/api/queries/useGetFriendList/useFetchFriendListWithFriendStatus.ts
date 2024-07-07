@@ -1,4 +1,4 @@
-import useGetFriendList from '@/hooks/api/useGetFriendList'
+import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
 import useUserContext from '@/hooks/useUserContext'
 import getFriendStatus from '@/utils/freindsStatus'
 

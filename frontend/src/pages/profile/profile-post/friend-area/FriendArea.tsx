@@ -8,7 +8,7 @@ import useToastContext from '@/hooks/userToastContext'
 import { ROUTES } from '@/constants/common'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
-import useFetchUserFriendList from '@/hooks/api/useFetchFriendList'
+import useFetchFriendListWithFriendStatus from '@/hooks/api/queries/useGetFriendList/useFetchFriendListWithFriendStatus'
 
 interface FriendAreaProps {}
 
@@ -18,7 +18,7 @@ const FriendArea: FC<FriendAreaProps> = () => {
   const queryClient = useQueryClient()
   const navigate = useNavigateTo()
   const userId = searchParams.get('id') as string
-  const { friendList } = useFetchUserFriendList(userId)
+  const { friendList } = useFetchFriendListWithFriendStatus(userId)
 
   const { mutate: addFriend } = useMutation({
     mutationFn: FriendApi.addFriend,

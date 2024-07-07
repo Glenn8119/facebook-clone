@@ -4,8 +4,8 @@ import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
 import useAddFriend from '@/hooks/api/mutation/useAddFriend'
-import useFetchUserFriendList from '@/hooks/api/useFetchFriendList'
-import useGetFriendList from '@/hooks/api/useGetFriendList'
+import useFetchFriendListWithFriendStatus from '@/hooks/api/queries/useGetFriendList/useFetchFriendListWithFriendStatus'
+import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
 import useGetUserDetail from '@/hooks/api/useGetUserDetail'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
@@ -34,7 +34,8 @@ const Detail = () => {
     }
   })
   const { friendList: selfFriendList } = useGetFriendList(selfId)
-  const { friendList: userFriendList } = useFetchUserFriendList(userId)
+  const { friendList: userFriendList } =
+    useFetchFriendListWithFriendStatus(userId)
 
   if (!userFriendList || !selfFriendList || !userDetail) {
     return null
