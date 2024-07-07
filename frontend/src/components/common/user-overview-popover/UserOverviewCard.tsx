@@ -75,7 +75,6 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
     ? handleCommonFriendListDescription(commonFriendList)
     : null
 
-  console.log({ friendStatus })
   const renderFunctionButtons = () => {
     return (
       <div>

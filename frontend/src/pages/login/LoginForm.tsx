@@ -7,7 +7,7 @@ import { LoginFormType, loginFormSchema } from '@/schema/validation/login'
 import useForm from '@/hooks/useForm'
 import ErrorMessage from '@/components/form/ErrorMessage'
 import FormGroup from '@/components/form/FormGroup'
-import useLogin from '@/hooks/api/useLogin'
+import useLogin from '@/hooks/api/mutation/useLogin'
 import FullScreenLoading from '@/components/FullScreenLoading'
 
 type LoginFormProps = {

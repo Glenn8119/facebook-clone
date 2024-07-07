@@ -1,5 +1,5 @@
 import AuthApi from '@/api/auth'
-import useLogin from '@/hooks/api/useLogin'
+import useLogin from '@/hooks/api/mutation/useLogin'
 import { useMutation } from '@tanstack/react-query'
 
 const useSignUp = () => {

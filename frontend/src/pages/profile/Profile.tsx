@@ -5,7 +5,7 @@ import ProfileFriends from '@/pages/profile/profile-friends/ProfileFriends'
 import ProfilePost from '@/pages/profile/profile-post/ProfilePost'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
 import useFetchFriendListWithFriendStatus from '@/hooks/api/queries/useGetFriendList/useFetchFriendListWithFriendStatus'
-import useGetUserDetail from '@/hooks/api/useGetUserDetail'
+import useGetUserDetail from '@/hooks/api/queries/useGetUserDetail'
 
 const ProfilePage: FC = () => {
   const [searchParams] = useSearchParams()

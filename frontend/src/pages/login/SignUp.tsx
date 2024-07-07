@@ -10,7 +10,7 @@ import ErrorMessage from '@/components/form/ErrorMessage'
 import Mask from '@/components/Mask'
 import { MdClose } from 'react-icons/md'
 import FullScreenLoading from '@/components/FullScreenLoading'
-import useSignUp from '@/hooks/api/useSignUp'
+import useSignUp from '@/hooks/api/mutation/useSignUp'
 
 type SignUpFormProps = {
   setShowSignUp: SetStateType<boolean>

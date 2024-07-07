@@ -2,7 +2,7 @@ import AuthApi from '@/api/auth'
 import { useMutation } from '@tanstack/react-query'
 import useUserContext from '@/hooks/useUserContext'
 import { ROUTES } from '@/constants/common'
-import useNavigateTo from '../useNavigateTo'
+import useNavigateTo from '@/hooks/useNavigateTo'
 
 const useLogin = () => {
   const { dispatch } = useUserContext()
