@@ -7,7 +7,7 @@ import {
   FEFriendSingleResponseType,
   friendListSchema
 } from '@/api/friend/schema'
-import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
+import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 
 const FriendApi = {
   async getRecommendationFriendList(): Promise<

@@ -6,7 +6,7 @@ import {
   type FEGetPostResponseType
 } from '@/api/post/schema'
 import { type PostFormType } from '@/schema/validation/add-post'
-import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
+import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 
 const PostApi = {
   async createPost({

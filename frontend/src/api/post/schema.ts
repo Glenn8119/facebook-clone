@@ -1,4 +1,4 @@
-import { TransformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
+import { TransformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 import { z } from 'zod'
 import { userOverviewSchema } from '@/api/user/schema'
 

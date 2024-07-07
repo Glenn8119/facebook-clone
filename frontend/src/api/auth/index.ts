@@ -7,7 +7,7 @@ import {
   userDetailResponseSchema,
   type FELoginResponseType
 } from '@/api/auth/schema'
-import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
+import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 
 const AuthApi = {
   async login({

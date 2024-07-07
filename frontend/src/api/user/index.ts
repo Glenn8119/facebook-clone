@@ -1,6 +1,6 @@
 import _axios from '@/api/_axios'
 import { userDetailSchema, FEUserDetailReponseType } from '@/api/user/schema'
-import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter'
+import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 
 const UserApi = {
   async getUserDetail(id: string): Promise<FEUserDetailReponseType> {
