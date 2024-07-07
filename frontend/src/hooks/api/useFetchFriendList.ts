@@ -1,5 +1,6 @@
 import useGetFriendList from '@/hooks/api/useGetFriendList'
 import useUserContext from '@/hooks/useUserContext'
+import getFriendStatus from '@/utils/freindsStatus'
 
 const useFetchUserFriendList = (userId: string) => {
   const {
@@ -15,13 +16,9 @@ const useFetchUserFriendList = (userId: string) => {
     }
   }
 
-  const isUserSelf = userId === selfId
-
   const friendList = userFriendList.map((friend) => ({
     ...friend,
-    isFriend: isUserSelf
-      ? true
-      : !!selfFriendList.find((selfFriend) => friend.id === selfFriend.id)
+    friendStatus: getFriendStatus({ selfFriendList, userId: friend.id, selfId })
   }))
 
   return { friendList }

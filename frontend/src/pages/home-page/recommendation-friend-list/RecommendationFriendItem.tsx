@@ -8,6 +8,7 @@ import useAddFriend from '@/hooks/api/mutation/useAddFriend'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
 import useToastContext from '@/hooks/userToastContext'
+import { FriendStatus } from '@/types/common'
 import { ButtonSize } from '@/types/component/button'
 import { useQueryClient } from '@tanstack/react-query'
 import { FC } from 'react'
@@ -31,7 +32,10 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
 
   const cn = twMerge('flex items-center', className)
   const commonFriendList = recommendationFriend.commonFriendList.map(
-    (recommendationFriend) => ({ ...recommendationFriend, isFriend: true })
+    (recommendationFriend) => ({
+      ...recommendationFriend,
+      friendStatus: FriendStatus.IsFriend
+    })
   )
   const { addFriend } = useAddFriend({
     onSuccess: () => {
@@ -56,7 +60,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
         userId={recommendationFriend.id}
         addFriend={addFriend}
         name={recommendationFriend.name}
-        isFriend={false}
+        friendStatus={FriendStatus.IsNotFriend}
         commonFriendList={commonFriendList}
       >
         <Avatar
@@ -70,7 +74,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
           userId={recommendationFriend.id}
           addFriend={addFriend}
           name={recommendationFriend.name}
-          isFriend={false}
+          friendStatus={FriendStatus.IsNotFriend}
           commonFriendList={commonFriendList}
         >
           <div

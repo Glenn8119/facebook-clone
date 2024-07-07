@@ -10,7 +10,9 @@ import useGetUserDetail from '@/hooks/api/useGetUserDetail'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
 import useToastContext from '@/hooks/userToastContext'
+import { FriendStatus } from '@/types/common'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
+import getFriendStatus from '@/utils/freindsStatus'
 import { useQueryClient } from '@tanstack/react-query'
 import { MdEdit } from 'react-icons/md'
 import { useSearchParams } from 'react-router-dom'
@@ -38,8 +40,7 @@ const Detail = () => {
     return null
   }
 
-  const isUserSelf = selfId === userId
-  const isFriend = !!selfFriendList.find((friend) => friend.id === userId)
+  const friendStatus = getFriendStatus({ selfFriendList, selfId, userId })
 
   const navigateToFriendsOrMutualFriends = (isToMutual?: boolean) => {
     navigate({
@@ -54,7 +55,7 @@ const Detail = () => {
   }
 
   const renderFriendDescription = () => {
-    if (isUserSelf) {
+    if (FriendStatus.IsSelf) {
       return (
         <div
           className='hover:underline cursor-pointer'
@@ -65,7 +66,7 @@ const Detail = () => {
       )
     }
 
-    if (isFriend) {
+    if (friendStatus === FriendStatus.IsFriend) {
       return (
         <div>
           <span

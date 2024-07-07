@@ -11,6 +11,7 @@ import {
 import scrollCenterElement from '@/utils/scrollCenterElement'
 import { getDayFromNow } from '@/utils/formatter/dayjs'
 import { type Post } from '@/types/api/post'
+import { FriendStatus } from '@/types/common'
 
 type PostProps = {
   className: string
@@ -34,15 +35,21 @@ const Post: FC<PostProps> = ({ className, post }) => {
 
     let text = ''
     const friendList = post.likerList.filter(
-      (liker) => liker.isFriend || liker.isFriend === null
+      (liker) =>
+        liker.friendStatus === FriendStatus.IsFriend ||
+        liker.friendStatus === FriendStatus.IsSelf
     )
     if (!friendList.length) {
       text = post.likerList.length.toString()
     }
 
-    const order = [null, true, false]
+    const order = [
+      FriendStatus.IsSelf,
+      FriendStatus.IsFriend,
+      FriendStatus.IsNotFriend
+    ]
     friendList.sort(
-      (a, b) => order.indexOf(b.isFriend) - order.indexOf(a.isFriend)
+      (a, b) => order.indexOf(b.friendStatus) - order.indexOf(a.friendStatus)
     )
 
     text = `${friendList[0].name}和其他${post.likerList.length - 1}人`

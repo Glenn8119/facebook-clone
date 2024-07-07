@@ -3,6 +3,7 @@ import Avatar from '@/components/Avatar'
 import Button from '@/components/form/Button'
 import { ROUTES } from '@/constants/common'
 import useNavigateTo from '@/hooks/useNavigateTo'
+import { FriendStatus } from '@/types/common'
 import { ButtonSize } from '@/types/component/button'
 import { FC } from 'react'
 import { MdGroup } from 'react-icons/md'
@@ -10,7 +11,7 @@ import { MdGroup } from 'react-icons/md'
 type UserOverviewCardProps = {
   userId: string
   name: string
-  isFriend: boolean | null
+  friendStatus: FriendStatus
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
   addFriend?: (id: string) => void
 }
@@ -18,7 +19,7 @@ type UserOverviewCardProps = {
 const UserOverviewCard: FC<UserOverviewCardProps> = ({
   userId,
   name,
-  isFriend,
+  friendStatus,
   commonFriendList,
   addFriend
 }) => {
@@ -74,12 +75,13 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
     ? handleCommonFriendListDescription(commonFriendList)
     : null
 
+  console.log({ friendStatus })
   const renderFunctionButtons = () => {
     return (
       <div>
-        {isFriend === null ? (
+        {friendStatus === FriendStatus.IsSelf ? (
           <Button size={ButtonSize.SMALL}>編輯個人檔案</Button>
-        ) : isFriend ? (
+        ) : friendStatus === FriendStatus.IsFriend ? (
           <Button size={ButtonSize.SMALL}>朋友</Button>
         ) : (
           <Button
@@ -115,7 +117,7 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
               {name}
             </span>
           </div>
-          {isFriend === null || commonFriendDescription === null ? null : (
+          {friendStatus === null || commonFriendDescription === null ? null : (
             <div className='flex items-start mb-2'>
               <MdGroup className='mr-2 -mt-1' color='gray' size={32} />
               {commonFriendDescription}

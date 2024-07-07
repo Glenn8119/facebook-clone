@@ -4,9 +4,15 @@ export type AnyFunction = (...args: any[]) => any
 export type PlainObject = Record<string, unknown>
 
 export type AvatarInfo = {
-  isFriend: boolean
+  friendStatus: FriendStatus
   id: string
   name: string
   commonFriendList?: { name: string; id: string }[]
   imgUrl?: string
+}
+
+export enum FriendStatus {
+  IsFriend = 'Is-friend',
+  IsNotFriend = 'Is-not-friend',
+  IsSelf = 'Is-self'
 }

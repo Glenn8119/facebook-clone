@@ -1,4 +1,6 @@
-const getFriendStatsu = ({
+import { FriendStatus } from '@/types/common'
+
+const getFriendStatus = ({
   selfId,
   userId,
   selfFriendList
@@ -8,10 +10,12 @@ const getFriendStatsu = ({
   selfFriendList: { id: string }[]
 }) => {
   if (selfId === userId) {
-    return null
+    return FriendStatus.IsSelf
   }
 
-  return !!selfFriendList.find((friend) => friend.id === selfId)
+  return selfFriendList.find((friend) => friend.id === userId)
+    ? FriendStatus.IsFriend
+    : FriendStatus.IsNotFriend
 }
 
-export default getFriendStatsu
+export default getFriendStatus

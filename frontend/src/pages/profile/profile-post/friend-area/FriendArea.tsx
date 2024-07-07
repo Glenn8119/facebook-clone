@@ -44,7 +44,7 @@ const FriendArea: FC<FriendAreaProps> = () => {
         userId={friend.id}
         addFriend={() => addFriend(friend.id)}
         name={friend.name}
-        isFriend={friend.isFriend}
+        friendStatus={friend.friendStatus}
         commonFriendList={friend.commonFriendList}
       >
         <Avatar
@@ -56,7 +56,7 @@ const FriendArea: FC<FriendAreaProps> = () => {
         userId={friend.id}
         addFriend={() => addFriend(friend.id)}
         name={friend.name}
-        isFriend={friend.isFriend}
+        friendStatus={friend.friendStatus}
         commonFriendList={friend.commonFriendList}
       >
         <div

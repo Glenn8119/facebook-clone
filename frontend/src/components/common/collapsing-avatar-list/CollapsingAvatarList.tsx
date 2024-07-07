@@ -48,7 +48,7 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
             userId={avatarInfo.id}
             addFriend={() => addFriend && addFriend(avatarInfo.id)}
             name={avatarInfo.name}
-            isFriend={avatarInfo.isFriend}
+            friendStatus={avatarInfo.friendStatus}
             commonFriendList={avatarInfo.commonFriendList}
           >
             <Avatar

@@ -3,12 +3,13 @@ import Popover from '@/components/Popover'
 import { PopoverType } from '@/types/component/popover'
 import { FC } from 'react'
 import UserOverviewCard from '@/components/common/user-overview-popover/UserOverviewCard'
+import { FriendStatus } from '@/types/common'
 
 type UserOverviewPopoverProps = {
   children: React.ReactNode
   userId: string
   name: string
-  isFriend: boolean | null
+  friendStatus: FriendStatus
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
   addFriend?: (id: string) => void
 }
@@ -18,7 +19,7 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
   userId,
   addFriend,
   name,
-  isFriend,
+  friendStatus,
   commonFriendList
 }) => {
   return (
@@ -29,7 +30,7 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
           userId={userId}
           addFriend={addFriend}
           name={name}
-          isFriend={isFriend}
+          friendStatus={friendStatus}
           commonFriendList={commonFriendList}
         />
       }
