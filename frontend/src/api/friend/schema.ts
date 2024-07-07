@@ -3,8 +3,6 @@ import { z } from 'zod'
 import { userSchema } from '@/api/user/schema'
 
 const friendSchema = userSchema.extend({
-  id: z.string().uuid(),
-  name: z.string(),
   common_friend_list: z.array(userSchema)
 })
 

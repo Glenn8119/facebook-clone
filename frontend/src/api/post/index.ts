@@ -26,7 +26,7 @@ const PostApi = {
 
   async getPostList(): Promise<FEGetPostResponseType> {
     const res = await _axios({
-      url: '/post',
+      url: '/post/list',
       responseSchema: getPostResponseSchema
     })
 
