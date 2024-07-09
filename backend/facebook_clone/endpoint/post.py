@@ -40,16 +40,16 @@ async def like_post(post_id: UUID, user: depend_user):
     await PostBo(user=user).like_post(post_id=post_id)
 
 
-@router.post('/post/{post_id}/comment')
+@router.post('/{post_id}/comment')
 async def create_post_comment(post_id: UUID, user: depend_user, comment: PostCommentRequestBody):
     await PostBo(user=user).create_post_comment(post_id=post_id, content=comment.content)
 
 
-@router.put('/post/comment/{comment_id}')
+@router.put('/comment/{comment_id}')
 async def update_post_comment(comment_id: UUID, user: depend_user, comment: PutCommentRequestBody):
     await PostBo(user=user).update_post_comment(comment_id=comment_id, content=comment.content)
 
 
-@router.post('/post/comment/{comment_id}')
+@router.post('/comment/{comment_id}')
 async def delete_post_comment(user: depend_user, comment_id: UUID):
     await PostBo(user=user).delete_post_comment(comment_id=comment_id)
