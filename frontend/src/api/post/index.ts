@@ -5,7 +5,10 @@ import {
   type FECreatePostResponseType,
   type FEGetPostResponseType
 } from '@/api/post/schema'
-import { type PostFormType } from '@/schema/validation/add-post'
+import {
+  type PostFormType,
+  type PostCommentFormType
+} from '@/schema/validation/add-post'
 import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 
 const PostApi = {
@@ -28,6 +31,22 @@ const PostApi = {
     const res = await _axios({
       url: '/post/list',
       responseSchema: getPostResponseSchema
+    })
+
+    return transformObjectKeyFromSnakeToCamel(res)
+  },
+
+  async createPostComment({
+    postId,
+    content
+  }: PostCommentFormType): Promise<FEGetPostResponseType> {
+    const res = await _axios({
+      url: `/post/${postId}/comment`,
+      method: 'POST',
+      responseSchema: getPostResponseSchema,
+      body: {
+        content
+      }
     })
 
     return transformObjectKeyFromSnakeToCamel(res)

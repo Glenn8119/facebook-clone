@@ -23,6 +23,6 @@ dayjs.updateLocale('en', {
   }
 })
 
-export const getDayFromNow = (date: Date) => {
+export const getTimeFromNow = (date: Date) => {
   return dayjs(date).fromNow()
 }

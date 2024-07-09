@@ -1,5 +1,5 @@
 import Card from '@/components/layout/Card'
-import { FC, useRef } from 'react'
+import { FC, useRef, useState } from 'react'
 import PostUserInfo from '@/components/common/post-area/post-list/post/PostUserInfo'
 import Comment from '@/components/common/post-area/post-list/post/Comment'
 import CommentAction from '@/components/common/post-area/post-list/post/CommentAction'
@@ -9,9 +9,10 @@ import {
   MdOutlineModeComment
 } from 'react-icons/md'
 import scrollCenterElement from '@/utils/scrollCenterElement'
-import { getDayFromNow } from '@/utils/formatter/dayjs'
+import { getTimeFromNow } from '@/utils/formatter/dayjs'
 import { type Post } from '@/types/api/post'
 import { FriendStatus } from '@/types/common'
+import useCreatePostComment from '@/hooks/api/mutation/useAddPostComment'
 
 type PostProps = {
   className: string
@@ -20,6 +21,12 @@ type PostProps = {
 
 const Post: FC<PostProps> = ({ className, post }) => {
   const commentInputRef = useRef<HTMLInputElement>(null)
+  const [commentInput, setCommentInput] = useState('')
+
+  const { createPostComment } = useCreatePostComment()
+  const sendComment = () => {
+    createPostComment({ postId: post.id, content: commentInput })
+  }
 
   const commentClick = () => {
     if (commentInputRef.current) {
@@ -29,7 +36,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
     }
   }
 
-  const postTime = getDayFromNow(new Date(post.createdAt))
+  const postTime = getTimeFromNow(new Date(post.createdAt))
   const renderLikerOverview = () => {
     if (!post.likerList.length) return null
 
@@ -66,14 +73,18 @@ const Post: FC<PostProps> = ({ className, post }) => {
     )
   }
 
-  const renderCommentList = post.commentList.map((comment) => (
-    <Comment
-      key={comment.id}
-      content={comment.content}
-      name={comment.poster}
-      className='mb-2'
-    />
-  ))
+  const renderCommentList = post.commentList.map((comment) => {
+    const createTime = getTimeFromNow(new Date(comment.createdAt))
+    return (
+      <Comment
+        key={comment.id}
+        content={comment.content}
+        createAt={createTime}
+        name={comment.poster}
+        className='mb-2'
+      />
+    )
+  })
 
   return (
     <Card className={className}>
@@ -99,7 +110,12 @@ const Post: FC<PostProps> = ({ className, post }) => {
         </div>
       </div>
       {renderCommentList}
-      <CommentAction ref={commentInputRef} />
+      <CommentAction
+        ref={commentInputRef}
+        inputValue={commentInput}
+        setInputValue={setCommentInput}
+        handleEnterKey={sendComment}
+      />
     </Card>
   )
 }

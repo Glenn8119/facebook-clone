@@ -5,6 +5,7 @@ import UserContextProvider from '@/context/UserContextProvider'
 import LoadingContextProvider from '@/context/LoadingContextProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import ToastContextProvider from './context/ToastContextProvider'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,5 +25,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </ToastContextProvider>
       </LoadingContextProvider>
     </UserContextProvider>
+    <ReactQueryDevtools />
   </QueryClientProvider>
 )

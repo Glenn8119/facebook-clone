@@ -4,6 +4,7 @@ import { userOverviewSchema } from '@/api/user/schema'
 
 export const commentSchema = z.object({
   id: z.string().uuid(),
+  created_at: z.string(),
   content: z.string(),
   poster: z.string()
 })
