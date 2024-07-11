@@ -35,9 +35,14 @@ async def delete_post(post_id: UUID, user: depend_user):
     return to_json_response(post)
 
 
-@router.post('/like/{post_id}', status_code=status.HTTP_204_NO_CONTENT)
+@router.post('/{post_id}/like', status_code=status.HTTP_204_NO_CONTENT)
 async def like_post(post_id: UUID, user: depend_user):
     await PostBo(user=user).like_post(post_id=post_id)
+
+
+@router.post('/{post_id}/unlike', status_code=status.HTTP_204_NO_CONTENT)
+async def unlike_post(post_id: UUID, user: depend_user):
+    await PostBo(user=user).unlike_post(post_id=post_id)
 
 
 @router.post('/{post_id}/comment')
