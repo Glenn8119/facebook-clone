@@ -15,7 +15,7 @@ const _axios = async <T extends ZodSchema>({
   params
 }: {
   url: string
-  responseSchema: T
+  responseSchema?: T
   isNeedToken?: boolean
   headers?: RawAxiosRequestHeaders
   method?: Method
@@ -41,6 +41,8 @@ const _axios = async <T extends ZodSchema>({
   })
 
   const data = res.data
+  if (!responseSchema) return data
+
   // TODO: zod error handle
   const parsedData = responseSchema.parse(data)
   return parsedData

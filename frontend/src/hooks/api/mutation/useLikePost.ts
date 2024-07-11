@@ -1,11 +1,11 @@
 import PostApi from '@/api/post'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-const useCreatePostComment = () => {
+const useLikePost = () => {
   const queryClient = useQueryClient()
 
-  const { mutateAsync: createPostComment } = useMutation({
-    mutationFn: PostApi.createPostComment,
+  const { mutateAsync: likePost } = useMutation({
+    mutationFn: PostApi.likePost,
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['getPostList'] })
       const previousPostList = queryClient.getQueryData(['getPostList'])
@@ -21,7 +21,7 @@ const useCreatePostComment = () => {
     }
   })
 
-  return { createPostComment }
+  return { likePost }
 }
 
-export default useCreatePostComment
+export default useLikePost

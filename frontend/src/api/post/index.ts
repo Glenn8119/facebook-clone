@@ -50,6 +50,21 @@ const PostApi = {
     })
 
     return transformObjectKeyFromSnakeToCamel(res)
+  },
+
+  async likePost(postId: string) {
+    await _axios({
+      url: `/post/${postId}/like`,
+      method: 'POST',
+      responseSchema: getPostResponseSchema
+    })
+  },
+
+  async unlikePost(postId: string) {
+    await _axios({
+      url: `/post/${postId}/unlike`,
+      method: 'POST'
+    })
   }
 }
 

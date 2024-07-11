@@ -13,6 +13,9 @@ import { getTimeFromNow } from '@/utils/formatter/dayjs'
 import { type Post } from '@/types/api/post'
 import { FriendStatus } from '@/types/common'
 import useCreatePostComment from '@/hooks/api/mutation/useAddPostComment'
+import useLikePost from '@/hooks/api/mutation/useLikePost'
+import useUnlikePost from '@/hooks/api/mutation/useUnlikePost'
+import useUserContext from '@/hooks/useUserContext'
 
 type PostProps = {
   className: string
@@ -24,6 +27,11 @@ const Post: FC<PostProps> = ({ className, post }) => {
   const [commentInput, setCommentInput] = useState('')
 
   const { createPostComment } = useCreatePostComment()
+  const { likePost } = useLikePost()
+  const { unlikePost } = useUnlikePost()
+  const {
+    value: { id: selfId }
+  } = useUserContext()
   const sendComment = () => {
     createPostComment({ postId: post.id, content: commentInput })
   }
@@ -48,18 +56,23 @@ const Post: FC<PostProps> = ({ className, post }) => {
     )
     if (!friendList.length) {
       text = post.likerList.length.toString()
+    } else {
+      const order = [
+        FriendStatus.IsSelf,
+        FriendStatus.IsFriend,
+        FriendStatus.IsNotFriend
+      ]
+      friendList.sort(
+        (a, b) => order.indexOf(a.friendStatus) - order.indexOf(b.friendStatus)
+      )
+
+      text = friendList[0].name
+
+      const restPeople = post.likerList.length - 1
+      if (restPeople) {
+        text += `和其他${post.likerList.length - 1}人`
+      }
     }
-
-    const order = [
-      FriendStatus.IsSelf,
-      FriendStatus.IsFriend,
-      FriendStatus.IsNotFriend
-    ]
-    friendList.sort(
-      (a, b) => order.indexOf(b.friendStatus) - order.indexOf(a.friendStatus)
-    )
-
-    text = `${friendList[0].name}和其他${post.likerList.length - 1}人`
 
     return (
       <>
@@ -86,6 +99,14 @@ const Post: FC<PostProps> = ({ className, post }) => {
     )
   })
 
+  const handleLike = () => {
+    if (!post.likerList.find((liker) => liker.id === selfId)) {
+      likePost(post.id)
+    } else {
+      unlikePost(post.id)
+    }
+  }
+
   return (
     <Card className={className}>
       <PostUserInfo name={post.poster} createAt={postTime} />
@@ -97,7 +118,10 @@ const Post: FC<PostProps> = ({ className, post }) => {
         </span>
       </div>
       <div className='flex py-1 mb-2 border-t border-b text-gray-500 text-15'>
-        <div className='flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main'>
+        <div
+          className='flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main'
+          onClick={handleLike}
+        >
           <MdOutlineThumbUp size='20' className='mr-2' />
           <span>讚</span>
         </div>
