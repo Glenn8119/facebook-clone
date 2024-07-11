@@ -39,28 +39,24 @@ const PostApi = {
   async createPostComment({
     postId,
     content
-  }: PostCommentFormType): Promise<FEGetPostResponseType> {
-    const res = await _axios({
+  }: PostCommentFormType): Promise<void> {
+    await _axios({
       url: `/post/${postId}/comment`,
       method: 'POST',
-      responseSchema: getPostResponseSchema,
       body: {
         content
       }
     })
-
-    return transformObjectKeyFromSnakeToCamel(res)
   },
 
-  async likePost(postId: string) {
+  async likePost(postId: string): Promise<void> {
     await _axios({
       url: `/post/${postId}/like`,
-      method: 'POST',
-      responseSchema: getPostResponseSchema
+      method: 'POST'
     })
   },
 
-  async unlikePost(postId: string) {
+  async unlikePost(postId: string): Promise<void> {
     await _axios({
       url: `/post/${postId}/unlike`,
       method: 'POST'

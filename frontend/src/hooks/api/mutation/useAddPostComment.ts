@@ -1,13 +1,38 @@
 import PostApi from '@/api/post'
+import useUserContext from '@/hooks/useUserContext'
+import { Post } from '@/types/api/post'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const useCreatePostComment = () => {
   const queryClient = useQueryClient()
+  const {
+    value: { name }
+  } = useUserContext()
 
   const { mutateAsync: createPostComment } = useMutation({
     mutationFn: PostApi.createPostComment,
-    onMutate: async () => {
+    onMutate: async ({ postId, content }) => {
       await queryClient.cancelQueries({ queryKey: ['getPostList'] })
+
+      queryClient.setQueryData(['getPostList'], (oldPostList: Post[]) => {
+        return oldPostList.map((post) => {
+          if (post.id !== postId) return post
+          const newCommentList = [
+            {
+              id: '',
+              content,
+              poster: name,
+              createdAt: new Date()
+            },
+            ...post.commentList
+          ]
+          return {
+            ...post,
+            commentList: newCommentList
+          }
+        })
+      })
+
       const previousPostList = queryClient.getQueryData(['getPostList'])
       return { previousPostList }
     },

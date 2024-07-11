@@ -16,6 +16,7 @@ import useCreatePostComment from '@/hooks/api/mutation/useAddPostComment'
 import useLikePost from '@/hooks/api/mutation/useLikePost'
 import useUnlikePost from '@/hooks/api/mutation/useUnlikePost'
 import useUserContext from '@/hooks/useUserContext'
+import { twMerge } from 'tailwind-merge'
 
 type PostProps = {
   className: string
@@ -99,13 +100,19 @@ const Post: FC<PostProps> = ({ className, post }) => {
     )
   })
 
+  const isLikeBySelf = !!post.likerList.find((liker) => liker.id === selfId)
+
   const handleLike = () => {
-    if (!post.likerList.find((liker) => liker.id === selfId)) {
+    if (!isLikeBySelf) {
       likePost(post.id)
     } else {
       unlikePost(post.id)
     }
   }
+  const likeClassName = twMerge(
+    'flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main',
+    isLikeBySelf ? 'text-blue-500' : ''
+  )
 
   return (
     <Card className={className}>
@@ -118,10 +125,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
         </span>
       </div>
       <div className='flex py-1 mb-2 border-t border-b text-gray-500 text-15'>
-        <div
-          className='flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main'
-          onClick={handleLike}
-        >
+        <div className={likeClassName} onClick={handleLike}>
           <MdOutlineThumbUp size='20' className='mr-2' />
           <span>讚</span>
         </div>
