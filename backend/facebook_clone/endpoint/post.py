@@ -55,6 +55,6 @@ async def update_post_comment(comment_id: UUID, user: depend_user, comment: PutC
     await PostBo(user=user).update_post_comment(comment_id=comment_id, content=comment.content)
 
 
-@router.post('/comment/{comment_id}')
+@router.delete('/comment/{comment_id}')
 async def delete_post_comment(user: depend_user, comment_id: UUID):
     await PostBo(user=user).delete_post_comment(comment_id=comment_id)
