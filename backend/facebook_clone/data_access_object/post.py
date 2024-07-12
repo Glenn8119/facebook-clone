@@ -14,6 +14,7 @@ class PostDao(BaseDao):
             SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name as poster FROM post as p
             INNER JOIN user_table as u on p.user_id = u.id
             WHERE p.user_id = $1
+            ORDER BY p.created_at DESC
         ''', user_id)
 
     async def get_friend_post_list(self, user_id: str):
@@ -22,6 +23,7 @@ class PostDao(BaseDao):
             INNER JOIN friend_relation as f on p.user_id = f.friend_id
             INNER JOIN user_table as u on u.id = f.friend_id
             WHERE f.user_id = $1
+            ORDER BY p.created_at DESC
         ''', user_id)
 
     async def update_post_by_id(self, post_id: UUID, user_id: str, content: str):
@@ -64,10 +66,11 @@ class PostDao(BaseDao):
 
     async def get_comment_list_from_post(self, post_id: UUID):
         return await self.connection.fetch('''
-            SELECT c.*, u.name as poster
+            SELECT c.*, u.name as poster, u.id as poster_id
             FROM comment as c
             INNER JOIN user_table as u on c.user_id = u.id
             WHERE c.post_id = $1
+            ORDER BY c.created_at DESC
         ''', post_id)
 
     async def add_post_comment(self, content: str, post_id: UUID, user_id: UUID):

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from facebook_clone.endpoint import auth, post, friend, user, group, comment
+from facebook_clone.endpoint import auth, post, friend, user, group
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

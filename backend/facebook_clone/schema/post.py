@@ -24,6 +24,7 @@ class PutCommentRequestBody(BaseModel):
 class Comment(BaseModel):
     id: UUID
     poster: str
+    poster_id: UUID
     content: str
     created_at: datetime
     updated_at: datetime

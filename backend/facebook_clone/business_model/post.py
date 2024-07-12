@@ -39,7 +39,6 @@ class PostBo(BaseBo):
             # TODO: use pool
             liker_list = from_record_list_to_dict_list(await post_dao.get_post_liker_list(post_id=post['id']))
             comment_list = from_record_list_to_dict_list(await post_dao.get_comment_list_from_post(post_id=post['id']))
-
             liker_list_with_common_friend_list = await asyncio.gather(*[friend_bo.append_common_friend_list_to_dict_with_user_id(liker) for liker in liker_list])
 
             return {**post, 'liker_list': liker_list_with_common_friend_list, 'comment_list': comment_list}
