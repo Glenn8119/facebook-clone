@@ -19,7 +19,7 @@ const useCreatePostComment = () => {
           if (post.id !== postId) return post
           const newCommentList = [
             {
-              id: '',
+              id: post.commentList.length,
               content,
               poster: name,
               createdAt: new Date()

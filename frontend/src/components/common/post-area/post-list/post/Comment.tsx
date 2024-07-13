@@ -7,6 +7,7 @@ import Modal from '@/components/Modal'
 import CommentDotAction from '@/components/common/post-area/post-list/post/CommentDotAction'
 import Button from '@/components/form/Button'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
+import { AnyFunction } from '@/types/common'
 
 type CommentProps = {
   isHoverShowDots: boolean
@@ -14,6 +15,7 @@ type CommentProps = {
   name: string
   createAt: string
   className?: string
+  onDeletePostComment: AnyFunction
 }
 
 const Comment: FC<CommentProps> = ({
@@ -21,10 +23,15 @@ const Comment: FC<CommentProps> = ({
   className,
   content,
   name,
-  createAt
+  createAt,
+  onDeletePostComment
 }) => {
   const [isHovered, setHoverState] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const handleDeleteComment = async () => {
+    await onDeletePostComment()
+    setShowConfirmModal(false)
+  }
 
   const cn = twMerge('flex items-start', className)
   return (
@@ -75,7 +82,11 @@ const Comment: FC<CommentProps> = ({
               >
                 否
               </Button>
-              <Button size={ButtonSize.SMALL} className='w-28'>
+              <Button
+                size={ButtonSize.SMALL}
+                className='w-28'
+                onClick={handleDeleteComment}
+              >
                 刪除
               </Button>
             </div>

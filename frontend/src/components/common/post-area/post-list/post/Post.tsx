@@ -17,6 +17,7 @@ import useLikePost from '@/hooks/api/mutation/useLikePost'
 import useUnlikePost from '@/hooks/api/mutation/useUnlikePost'
 import useUserContext from '@/hooks/useUserContext'
 import { twMerge } from 'tailwind-merge'
+import useDeletePostComment from '@/hooks/api/mutation/useDeletePostComment'
 
 type PostProps = {
   className: string
@@ -37,6 +38,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
     setCommentInput('')
     createPostComment({ postId: post.id, content: commentInput })
   }
+  const { deletePostComment } = useDeletePostComment()
 
   const commentClick = () => {
     if (commentInputRef.current) {
@@ -92,12 +94,15 @@ const Post: FC<PostProps> = ({ className, post }) => {
     const createTime = getTimeFromNow(new Date(comment.createdAt))
     return (
       <Comment
+        className='mb-2'
         isHoverShowDots={comment.posterId === selfId}
         key={comment.id}
         content={comment.content}
         createAt={createTime}
         name={comment.poster}
-        className='mb-2'
+        onDeletePostComment={() =>
+          deletePostComment({ postId: post.id, commentId: comment.id })
+        }
       />
     )
   })
@@ -122,7 +127,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
       <div className='py-4'>{post.content}</div>
       <div className='flex items-center mb-3'>
         <div className='mr-auto flex items-center'>{renderLikerOverview()}</div>
-        <span className='cursor-pointer hover:underline text-gray-400'>
+        <span className='text-gray-400'>
           {post.commentList.length ? `${post.commentList.length}則留言` : null}
         </span>
       </div>
