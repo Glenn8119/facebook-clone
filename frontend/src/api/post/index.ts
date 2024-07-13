@@ -47,6 +47,15 @@ const PostApi = {
     return transformObjectKeyFromSnakeToCamel(res)
   },
 
+  async deletePost(postId: string): Promise<void> {
+    const res = await _axios({
+      url: `/post/${postId}`,
+      method: 'DELETE'
+    })
+
+    transformObjectKeyFromSnakeToCamel(res)
+  },
+
   async getPostList(): Promise<FEGetPostResponseType> {
     const res = await _axios({
       url: '/post/list',

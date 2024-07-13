@@ -1,13 +1,14 @@
-import Avatar from '@/components/Avatar'
 import { FC, useEffect, useRef, useState } from 'react'
+
 import { twMerge } from 'tailwind-merge'
+
 import { MdMoreHoriz } from 'react-icons/md'
+
+import Avatar from '@/components/Avatar'
 import Popover from '@/components/Popover'
-import Modal from '@/components/Modal'
-import CommentDotAction from '@/components/common/post-area/post-list/post/comment/CommentDotAction'
-import Button from '@/components/form/Button'
-import { ButtonSize, ButtonVariant } from '@/types/component/button'
+import MoreAction from '@/components/common/post-area/post-list/post/comment/MoreAction'
 import Input, { ForwardedInputRefType } from '@/components/form/Input'
+import ConfirmModal from '@/components/common/ConfirmModal'
 
 type CommentProps = {
   isHoverShowDots: boolean
@@ -137,7 +138,7 @@ const Comment: FC<CommentProps> = ({
         <Popover
           closeWhenClicked
           popOverElement={
-            <CommentDotAction
+            <MoreAction
               handleDelete={() => setShowConfirmModal(true)}
               handleEdit={handleStartEdit}
             />
@@ -148,31 +149,14 @@ const Comment: FC<CommentProps> = ({
         </Popover>
       ) : null}
       {showConfirmModal ? (
-        <Modal onCloseModal={() => setShowConfirmModal(false)}>
-          <div className='h-15 p-4 text-center font-semibold text-xl border-b'>
-            刪除留言？
-          </div>
-          <div className='p-4'>
-            <div className='mb-8'>確定要刪除這則留言嗎？</div>
-            <div className='flex justify-end'>
-              <Button
-                size={ButtonSize.SMALL}
-                className='w-10 mr-2'
-                variant={ButtonVariant.AUXILIARY}
-                onClick={() => setShowConfirmModal(false)}
-              >
-                否
-              </Button>
-              <Button
-                size={ButtonSize.SMALL}
-                className='w-28'
-                onClick={handleDeleteComment}
-              >
-                刪除
-              </Button>
-            </div>
-          </div>
-        </Modal>
+        <ConfirmModal
+          title='刪除留言？'
+          description='確定要刪除這則留言嗎？'
+          confirmLabel='刪除'
+          closeModal={() => setShowConfirmModal(false)}
+          onCancel={() => setShowConfirmModal(false)}
+          onConfirm={handleDeleteComment}
+        />
       ) : null}
     </div>
   )

@@ -28,10 +28,54 @@ import useUserContext from '@/hooks/useUserContext'
 import useDeletePostComment from '@/hooks/api/mutation/useDeletePostComment'
 import useEditPostComment from '@/hooks/api/mutation/useEditPostComment'
 import Popover from '@/components/Popover'
-import CommentDotAction from './comment/CommentDotAction'
+import MoreAction from './comment/MoreAction'
 import { PostFormType, postFormSchema } from '@/schema/validation/add-post'
 import useForm from '@/hooks/useForm'
 import useEditPost from '@/hooks/api/mutation/useEditPost'
+import ConfirmModal from '@/components/common/ConfirmModal'
+import useDeletePost from '@/hooks/api/mutation/useDeletePost'
+
+const CommentList = ({
+  post,
+  selfId,
+  deletePostComment,
+  editPostComment
+}: {
+  post: Post
+  selfId: string
+  deletePostComment: (body: {
+    postId: string
+    commentId: string
+  }) => Promise<void>
+  editPostComment: (body: {
+    postId: string
+    commentId: string
+    content: string
+  }) => Promise<void>
+}) => {
+  const renderCommentList = post.commentList.map((comment) => {
+    const createTime = getTimeFromNow(new Date(comment.createdAt))
+    return (
+      <Comment
+        className='mb-2'
+        isHoverShowDots={comment.posterId === selfId}
+        key={comment.id}
+        content={comment.content}
+        createAt={createTime}
+        hasEdited={comment.createdAt !== comment.updatedAt}
+        name={comment.poster}
+        onDeletePostComment={() =>
+          deletePostComment({ postId: post.id, commentId: comment.id })
+        }
+        onEditPostComment={(content) =>
+          editPostComment({ postId: post.id, commentId: comment.id, content })
+        }
+      />
+    )
+  })
+
+  return renderCommentList
+}
 
 const LikerOverveiw = ({ post }: { post: Post }) => {
   if (!post.likerList.length) return null
@@ -83,6 +127,8 @@ const Post: FC<PostProps> = ({ className, post }) => {
   const commentInputRef = useRef<CommentActionForwardedRefType>(null)
   const [commentInput, setCommentInput] = useState('')
   const [isPostModalShow, setPostModalShow] = useState(false)
+  const [isConfirmDeletePostModalShow, setConfirmDeletePostModalShow] =
+    useState(false)
 
   const {
     value: { id: selfId }
@@ -100,6 +146,9 @@ const Post: FC<PostProps> = ({ className, post }) => {
   const { deletePostComment } = useDeletePostComment()
   const { editPostComment } = useEditPostComment()
   const { editPost } = useEditPost()
+  const { deletePost } = useDeletePost()
+
+  const isSelfPost = selfId === post.userId
 
   const closePostActionModal = () => {
     setPostModalShow(false)
@@ -134,28 +183,6 @@ const Post: FC<PostProps> = ({ className, post }) => {
   }
 
   const postTime = getTimeFromNow(new Date(post.createdAt))
-
-  const renderCommentList = post.commentList.map((comment) => {
-    const createTime = getTimeFromNow(new Date(comment.createdAt))
-    return (
-      <Comment
-        className='mb-2'
-        isHoverShowDots={comment.posterId === selfId}
-        key={comment.id}
-        content={comment.content}
-        createAt={createTime}
-        hasEdited={comment.createdAt !== comment.updatedAt}
-        name={comment.poster}
-        onDeletePostComment={() =>
-          deletePostComment({ postId: post.id, commentId: comment.id })
-        }
-        onEditPostComment={(content) =>
-          editPostComment({ postId: post.id, commentId: comment.id, content })
-        }
-      />
-    )
-  })
-
   const isLikeBySelf = !!post.likerList.find((liker) => liker.id === selfId)
 
   const handleLike = () => {
@@ -166,11 +193,13 @@ const Post: FC<PostProps> = ({ className, post }) => {
     }
   }
 
-  const handleEditPost = () => {
+  const handleEditAction = () => {
     setPostModalShow(true)
   }
 
-  const handleDeletePost = () => {}
+  const handleDeleteAction = () => {
+    setConfirmDeletePostModalShow(true)
+  }
   const likeClassName = twMerge(
     'flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main',
     isLikeBySelf ? 'text-blue-500' : ''
@@ -180,18 +209,20 @@ const Post: FC<PostProps> = ({ className, post }) => {
 
   return (
     <Card className={postClassname}>
-      <Popover
-        containerClass='absolute top-4 right-4 cursor-pointer'
-        closeWhenClicked
-        popOverElement={
-          <CommentDotAction
-            handleDelete={handleDeletePost}
-            handleEdit={handleEditPost}
-          />
-        }
-      >
-        <MdMoreHoriz size={24} />
-      </Popover>
+      {isSelfPost ? (
+        <Popover
+          containerClass='absolute top-4 right-4 cursor-pointer'
+          closeWhenClicked
+          popOverElement={
+            <MoreAction
+              handleDelete={handleDeleteAction}
+              handleEdit={handleEditAction}
+            />
+          }
+        >
+          <MdMoreHoriz size={24} />
+        </Popover>
+      ) : null}
       <PostUserInfo name={post.poster} createAt={postTime} />
       <div className='py-4'>{post.content}</div>
       <div className='flex items-center mb-3'>
@@ -215,7 +246,12 @@ const Post: FC<PostProps> = ({ className, post }) => {
           <span>留言</span>
         </div>
       </div>
-      {renderCommentList}
+      <CommentList
+        selfId={selfId}
+        post={post}
+        deletePostComment={deletePostComment}
+        editPostComment={editPostComment}
+      />
       <CommentAction
         ref={commentInputRef}
         inputValue={commentInput}
@@ -232,6 +268,16 @@ const Post: FC<PostProps> = ({ className, post }) => {
           closeModal={closePostActionModal}
           onSubmit={handleSubmit}
           onTextAreaChange={onTextAreaChange}
+        />
+      ) : null}
+      {isConfirmDeletePostModalShow ? (
+        <ConfirmModal
+          title='刪除貼文？'
+          description='確定要刪除這則貼文嗎？'
+          confirmLabel='刪除'
+          closeModal={() => setConfirmDeletePostModalShow(false)}
+          onCancel={() => setConfirmDeletePostModalShow(false)}
+          onConfirm={() => deletePost(post.id)}
         />
       ) : null}
     </Card>

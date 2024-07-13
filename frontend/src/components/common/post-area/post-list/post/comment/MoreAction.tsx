@@ -1,15 +1,12 @@
 import { AnyFunction } from '@/types/common'
 import { FC } from 'react'
 
-type CommentDotActionProps = {
+type MoreActionProps = {
   handleEdit: AnyFunction
   handleDelete: AnyFunction
 }
 
-const CommentDotAction: FC<CommentDotActionProps> = ({
-  handleEdit,
-  handleDelete
-}) => {
+const MoreAction: FC<MoreActionProps> = ({ handleEdit, handleDelete }) => {
   return (
     <div className='w-60'>
       <div
@@ -28,4 +25,4 @@ const CommentDotAction: FC<CommentDotActionProps> = ({
   )
 }
 
-export default CommentDotAction
+export default MoreAction
