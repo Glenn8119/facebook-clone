@@ -5,6 +5,7 @@ import { userOverviewSchema } from '@/api/user/schema'
 export const commentSchema = z.object({
   id: z.string().uuid(),
   created_at: z.string(),
+  updated_at: z.string(),
   content: z.string(),
   poster: z.string(),
   poster_id: z.string().uuid()
@@ -13,15 +14,17 @@ export const commentSchema = z.object({
 export const createPostResponseSchema = z.object({
   content: z.string(),
   id: z.string().uuid(),
-  comment_list: z.array(commentSchema),
-  liker_list: z.array(userOverviewSchema),
-  poster: z.string(),
   user_id: z.string().uuid(),
-  created_at: z.string()
+  created_at: z.string(),
+  updated_at: z.string()
 })
 
-export const getPostResponseSchema = z.array(createPostResponseSchema)
-export const getSinglePostResponseSchema = createPostResponseSchema
+export const getSinglePostResponseSchema = createPostResponseSchema.extend({
+  comment_list: z.array(commentSchema),
+  liker_list: z.array(userOverviewSchema),
+  poster: z.string()
+})
+export const getPostResponseSchema = z.array(getSinglePostResponseSchema)
 
 type CreatePostResponseType = z.infer<typeof createPostResponseSchema>
 type GetPostResponseType = z.infer<typeof getPostResponseSchema>

@@ -29,13 +29,11 @@ const Input = forwardRef<ForwardedInputRefType, InputProps>((props, ref) => {
     }
   }))
 
-  return (
-    <input
-      {...props}
-      ref={(node) => (inputRef.current = node)}
-      className={className}
-    />
-  )
+  const setInputRef = (node: HTMLInputElement) => {
+    inputRef.current = node
+  }
+
+  return <input {...props} ref={setInputRef} className={className} />
 })
 
 export default Input
