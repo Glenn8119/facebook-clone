@@ -1,5 +1,5 @@
 import Avatar from '@/components/Avatar'
-import { FC, KeyboardEvent, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { MdMoreHoriz } from 'react-icons/md'
 import Popover from '@/components/Popover'
@@ -14,6 +14,7 @@ type CommentProps = {
   content: string
   name: string
   createAt: string
+  hasEdited: boolean
   className?: string
   onDeletePostComment: () => Promise<void>
   onEditPostComment: (content: string) => Promise<void>
@@ -21,6 +22,7 @@ type CommentProps = {
 
 const Comment: FC<CommentProps> = ({
   isHoverShowDots,
+  hasEdited,
   className,
   content,
   name,
@@ -29,10 +31,11 @@ const Comment: FC<CommentProps> = ({
   onEditPostComment
 }) => {
   const [isHovered, setHoverState] = useState(false)
-  const [isShowPopover, setShowPopover] = useState(true)
+  const [isHidePopover, setHidePopover] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
-  const [isEdiding, setEditing] = useState(false)
+  const [isEditing, setEditing] = useState(false)
   const [editInput, setEditInput] = useState(content)
+  const [isInputFocused, setInputFocused] = useState(false)
   const inputRef = useRef<ForwardedInputRefType | null>(null)
   const handleDeleteComment = async () => {
     await onDeletePostComment()
@@ -49,24 +52,44 @@ const Comment: FC<CommentProps> = ({
 
   const handleStartEdit = () => {
     setEditing(true)
-    setShowPopover(false)
+    setHidePopover(true)
     // wait for value assignment for inputRef
     setTimeout(() => {
       inputRef.current && inputRef.current.focus()
     })
   }
 
-  const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+  const handleEnterKeyDown = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Enter' && editInput) {
       if (content !== editInput) {
         await onEditPostComment(editInput)
       }
       setEditing(false)
-      setShowPopover(true)
+      setHidePopover(false)
     }
   }
 
+  const handleCancelEditing = () => {
+    setEditing(false)
+    setHidePopover(false)
+  }
+
   const cn = twMerge('flex items-start', className)
+
+  useEffect(() => {
+    const handleESCKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isInputFocused) {
+        setEditing(false)
+        setHidePopover(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleESCKeyDown)
+    return () => document.removeEventListener('keydown', handleESCKeyDown)
+  }, [isInputFocused])
+
   return (
     <div
       className={cn}
@@ -74,15 +97,29 @@ const Comment: FC<CommentProps> = ({
       onMouseLeave={handleMouseLeave}
     >
       <Avatar className='mr-2' />
-      <div className={`flex flex-col mr-2 ${isEdiding && 'flex-grow'}`}>
-        {isEdiding ? (
-          <Input
-            ref={(ref) => (inputRef.current = ref)}
-            className='flex-grow h-8 border-none rounded-full bg-main'
-            value={editInput}
-            onChange={(e) => setEditInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
+      <div className={`flex flex-col mr-2 ${isEditing && 'flex-grow'}`}>
+        {isEditing ? (
+          <div>
+            <Input
+              ref={(ref) => (inputRef.current = ref)}
+              className='flex-grow h-8 mb-1 border-none rounded-full bg-main'
+              value={editInput}
+              onChange={(e) => setEditInput(e.target.value)}
+              onKeyDown={handleEnterKeyDown}
+              onFocus={() => setInputFocused(true)}
+              onBlur={() => setInputFocused(false)}
+            />
+            <div className='text-xs'>
+              {isInputFocused ? <span>按 ESC 鍵可</span> : null}
+              <span
+                className='text-blue-600 hover:underline cursor-pointer'
+                // use mousedown event make the event happen before input blur.
+                onMouseDown={handleCancelEditing}
+              >
+                取消
+              </span>
+            </div>
+          </div>
         ) : (
           <div className='bg-main rounded-2xl py-2 px-3 text-15 w-min max-w-72 break-words'>
             <div className='cursor-pointer font-bold hover:underline'>
@@ -91,14 +128,19 @@ const Comment: FC<CommentProps> = ({
             <div>{content}</div>
           </div>
         )}
-        <div className='pl-3 text-13 text-gray-500'>
-          <span className='font-light  mr-3'>{createAt}</span>
-        </div>
+        {isEditing ? null : (
+          <div className='pl-3 text-13 text-gray-500'>
+            <span className='font-light  mr-3'>{createAt}</span>
+            {hasEdited ? (
+              <span className='font-light  mr-3'>已編輯</span>
+            ) : null}
+          </div>
+        )}
       </div>
       {isHovered && isHoverShowDots ? (
         // TODO: popover position
         <Popover
-          showPopover={isShowPopover}
+          hidePopover={isHidePopover}
           popOverElement={
             <CommentDotAction
               handleDelete={() => setShowConfirmModal(true)}

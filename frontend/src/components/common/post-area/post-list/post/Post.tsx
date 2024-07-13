@@ -37,6 +37,8 @@ const Post: FC<PostProps> = ({ className, post }) => {
     value: { id: selfId }
   } = useUserContext()
   const sendComment = () => {
+    if (!commentInput) return
+
     setCommentInput('')
     createPostComment({ postId: post.id, content: commentInput })
   }
@@ -100,6 +102,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
         key={comment.id}
         content={comment.content}
         createAt={createTime}
+        hasEdited={comment.createdAt !== comment.updatedAt}
         name={comment.poster}
         onDeletePostComment={() =>
           deletePostComment({ postId: post.id, commentId: comment.id })
