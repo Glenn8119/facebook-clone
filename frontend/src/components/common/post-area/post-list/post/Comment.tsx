@@ -8,6 +8,7 @@ import CommentDotAction from '@/components/common/post-area/post-list/post/Comme
 import Button from '@/components/form/Button'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { AnyFunction } from '@/types/common'
+import Input from '@/components/form/Input'
 
 type CommentProps = {
   isHoverShowDots: boolean
@@ -27,38 +28,58 @@ const Comment: FC<CommentProps> = ({
   onDeletePostComment
 }) => {
   const [isHovered, setHoverState] = useState(false)
+  const [isShowPopover, setShowPopover] = useState(true)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
+  const [isEdiding, setEditing] = useState(false)
   const handleDeleteComment = async () => {
     await onDeletePostComment()
     setShowConfirmModal(false)
+  }
+
+  const handleMouseEnter = () => {
+    setHoverState(true)
+  }
+
+  const handleMouseLeave = () => {
+    setHoverState(false)
+  }
+
+  const handleStartEdit = () => {
+    setEditing(true)
+    setShowPopover(false)
   }
 
   const cn = twMerge('flex items-start', className)
   return (
     <div
       className={cn}
-      onMouseEnter={() => setHoverState(true)}
-      onMouseLeave={() => setHoverState(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <Avatar className='mr-2' />
-      <div className='mr-2'>
-        <div className='bg-main rounded-2xl py-2 px-3 text-15'>
-          <div className='cursor-pointer font-bold hover:underline'>{name}</div>
-          <div>{content}</div>
-        </div>
+      <div className={`flex flex-col mr-2 ${isEdiding && 'flex-grow'}`}>
+        {isEdiding ? (
+          <Input className='flex-grow' />
+        ) : (
+          <div className='bg-main rounded-2xl py-2 px-3 text-15 w-min max-w-72 break-words'>
+            <div className='cursor-pointer font-bold hover:underline'>
+              {name}
+            </div>
+            <div>{content}</div>
+          </div>
+        )}
         <div className='pl-3 text-13 text-gray-500'>
           <span className='font-light  mr-3'>{createAt}</span>
-          {/* <span className='cursor-pointer hover:underline mr-3'>讚</span>
-          <span className='cursor-pointer hover:underline mr-3'>回覆</span> */}
         </div>
       </div>
       {isHovered && isHoverShowDots ? (
         // TODO: popover position
         <Popover
+          showPopover={isShowPopover}
           popOverElement={
             <CommentDotAction
               handleDelete={() => setShowConfirmModal(true)}
-              handleEdit={() => {}}
+              handleEdit={handleStartEdit}
             />
           }
           containerClass='self-center -translate-y-3 '
