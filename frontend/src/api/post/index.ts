@@ -5,10 +5,7 @@ import {
   type FECreatePostResponseType,
   type FEGetPostResponseType
 } from '@/api/post/schema'
-import {
-  type PostFormType,
-  type PostCommentFormType
-} from '@/schema/validation/add-post'
+import { type PostFormType } from '@/schema/validation/add-post'
 import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 
 const PostApi = {
@@ -51,10 +48,30 @@ const PostApi = {
   async createPostComment({
     postId,
     content
-  }: PostCommentFormType): Promise<void> {
+  }: {
+    postId: string
+    content: string
+  }): Promise<void> {
     await _axios({
       url: `/post/${postId}/comment`,
       method: 'POST',
+      body: {
+        content
+      }
+    })
+  },
+
+  async editPostComment({
+    commentId,
+    content
+  }: {
+    postId: string
+    commentId: string
+    content: string
+  }): Promise<void> {
+    await _axios({
+      url: `/post/comment/${commentId}`,
+      method: 'PUT',
       body: {
         content
       }

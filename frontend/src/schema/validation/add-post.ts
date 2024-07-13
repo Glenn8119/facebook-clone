@@ -4,7 +4,6 @@ export const postFormSchema = z.object({
   content: z.string().max(1000, { message: '長度最多為 1000' })
 })
 export const commentFormSchema = z.object({
-  postId: z.string().uuid(),
   content: z.string().max(1000, { message: '長度最多為 1000' })
 })
 
