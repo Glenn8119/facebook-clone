@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS comment (
     user_id uuid NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),
-    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id),
+    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id)
 );
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS comment_like (
     id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
     comment_id uuid NOT NULL,
     user_id uuid NOT NULL,
-    CONSTRAINT fk_comment_id FOREIGN KEY (comment_id) REFERENCES comment(id),
+    CONSTRAINT fk_comment_id FOREIGN KEY (comment_id) REFERENCES comment(id) ON DELETE CASCADE,
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id)
 );
 
@@ -75,6 +75,6 @@ CREATE TABLE IF NOT EXISTS post_like (
     id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
     post_id uuid NOT NULL,
     user_id uuid NOT NULL,
-    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id),
+    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE,
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id)
 );
