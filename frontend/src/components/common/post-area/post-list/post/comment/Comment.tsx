@@ -1,14 +1,13 @@
 import Avatar from '@/components/Avatar'
-import { FC, useState } from 'react'
+import { FC, KeyboardEvent, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { MdMoreHoriz } from 'react-icons/md'
 import Popover from '@/components/Popover'
 import Modal from '@/components/Modal'
-import CommentDotAction from '@/components/common/post-area/post-list/post/CommentDotAction'
+import CommentDotAction from '@/components/common/post-area/post-list/post/comment/CommentDotAction'
 import Button from '@/components/form/Button'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
-import { AnyFunction } from '@/types/common'
-import Input from '@/components/form/Input'
+import Input, { ForwardedInputRefType } from '@/components/form/Input'
 
 type CommentProps = {
   isHoverShowDots: boolean
@@ -16,7 +15,8 @@ type CommentProps = {
   name: string
   createAt: string
   className?: string
-  onDeletePostComment: AnyFunction
+  onDeletePostComment: () => Promise<void>
+  onEditPostComment: (content: string) => Promise<void>
 }
 
 const Comment: FC<CommentProps> = ({
@@ -25,12 +25,15 @@ const Comment: FC<CommentProps> = ({
   content,
   name,
   createAt,
-  onDeletePostComment
+  onDeletePostComment,
+  onEditPostComment
 }) => {
   const [isHovered, setHoverState] = useState(false)
   const [isShowPopover, setShowPopover] = useState(true)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [isEdiding, setEditing] = useState(false)
+  const [editInput, setEditInput] = useState(content)
+  const inputRef = useRef<ForwardedInputRefType | null>(null)
   const handleDeleteComment = async () => {
     await onDeletePostComment()
     setShowConfirmModal(false)
@@ -47,6 +50,20 @@ const Comment: FC<CommentProps> = ({
   const handleStartEdit = () => {
     setEditing(true)
     setShowPopover(false)
+    // wait for value assignment for inputRef
+    setTimeout(() => {
+      inputRef.current && inputRef.current.focus()
+    })
+  }
+
+  const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      if (content !== editInput) {
+        await onEditPostComment(editInput)
+      }
+      setEditing(false)
+      setShowPopover(true)
+    }
   }
 
   const cn = twMerge('flex items-start', className)
@@ -59,7 +76,13 @@ const Comment: FC<CommentProps> = ({
       <Avatar className='mr-2' />
       <div className={`flex flex-col mr-2 ${isEdiding && 'flex-grow'}`}>
         {isEdiding ? (
-          <Input className='flex-grow' />
+          <Input
+            ref={(ref) => (inputRef.current = ref)}
+            className='flex-grow h-8 border-none rounded-full bg-main'
+            value={editInput}
+            onChange={(e) => setEditInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
         ) : (
           <div className='bg-main rounded-2xl py-2 px-3 text-15 w-min max-w-72 break-words'>
             <div className='cursor-pointer font-bold hover:underline'>

@@ -1,14 +1,15 @@
 import Card from '@/components/layout/Card'
 import { FC, useRef, useState } from 'react'
 import PostUserInfo from '@/components/common/post-area/post-list/post/PostUserInfo'
-import Comment from '@/components/common/post-area/post-list/post/Comment'
-import CommentAction from '@/components/common/post-area/post-list/post/CommentAction'
+import Comment from '@/components/common/post-area/post-list/post/comment/Comment'
+import CommentAction, {
+  CommentActionForwardedRefType
+} from '@/components/common/post-area/post-list/post/comment/CommentAction'
 import {
   MdThumbUp,
   MdOutlineThumbUp,
   MdOutlineModeComment
 } from 'react-icons/md'
-import scrollCenterElement from '@/utils/scrollCenterElement'
 import { getTimeFromNow } from '@/utils/formatter/dayjs'
 import { type Post } from '@/types/api/post'
 import { FriendStatus } from '@/types/common'
@@ -18,6 +19,7 @@ import useUnlikePost from '@/hooks/api/mutation/useUnlikePost'
 import useUserContext from '@/hooks/useUserContext'
 import { twMerge } from 'tailwind-merge'
 import useDeletePostComment from '@/hooks/api/mutation/useDeletePostComment'
+import useEditPostComment from '@/hooks/api/mutation/useEditPostComment'
 
 type PostProps = {
   className: string
@@ -25,7 +27,7 @@ type PostProps = {
 }
 
 const Post: FC<PostProps> = ({ className, post }) => {
-  const commentInputRef = useRef<HTMLInputElement>(null)
+  const commentInputRef = useRef<CommentActionForwardedRefType>(null)
   const [commentInput, setCommentInput] = useState('')
 
   const { createPostComment } = useCreatePostComment()
@@ -39,12 +41,11 @@ const Post: FC<PostProps> = ({ className, post }) => {
     createPostComment({ postId: post.id, content: commentInput })
   }
   const { deletePostComment } = useDeletePostComment()
+  const { editPostComment } = useEditPostComment()
 
   const commentClick = () => {
     if (commentInputRef.current) {
-      const input = commentInputRef.current
-      input.focus()
-      scrollCenterElement(input)
+      commentInputRef.current.scrollAndFocusInput()
     }
   }
 
@@ -102,6 +103,9 @@ const Post: FC<PostProps> = ({ className, post }) => {
         name={comment.poster}
         onDeletePostComment={() =>
           deletePostComment({ postId: post.id, commentId: comment.id })
+        }
+        onEditPostComment={(content) =>
+          editPostComment({ postId: post.id, commentId: comment.id, content })
         }
       />
     )
