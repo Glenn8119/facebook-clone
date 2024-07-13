@@ -1,11 +1,15 @@
 import _axios from '@/api/_axios'
 import {
+  FEEditPostResponseType,
   createPostResponseSchema,
+  editPostResponseSchema,
   getPostResponseSchema,
   type FECreatePostResponseType,
   type FEGetPostResponseType
 } from '@/api/post/schema'
+
 import { type PostFormType } from '@/schema/validation/add-post'
+
 import { transformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 
 const PostApi = {
@@ -19,6 +23,25 @@ const PostApi = {
         content
       },
       responseSchema: createPostResponseSchema
+    })
+
+    return transformObjectKeyFromSnakeToCamel(res)
+  },
+
+  async editPost({
+    postId,
+    content
+  }: {
+    postId: string
+    content: string
+  }): Promise<FEEditPostResponseType> {
+    const res = await _axios({
+      url: `/post/${postId}`,
+      method: 'PUT',
+      body: {
+        content
+      },
+      responseSchema: editPostResponseSchema
     })
 
     return transformObjectKeyFromSnakeToCamel(res)

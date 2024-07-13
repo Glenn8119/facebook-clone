@@ -17,7 +17,7 @@ type PopoverProps = {
     closePopover: () => void
   }>
   type?: PopoverType
-  hidePopover?: boolean
+  closeWhenClicked?: boolean
   popOverClass?: string
   containerClass?: string
 }
@@ -31,7 +31,7 @@ const Popover: FC<PopoverProps> = ({
   children,
   popOverElement,
   type = PopoverType.CLICK,
-  hidePopover = false,
+  closeWhenClicked = false,
   popOverClass,
   containerClass
 }) => {
@@ -77,13 +77,19 @@ const Popover: FC<PopoverProps> = ({
     setOpen(true)
   }
 
+  const handleClickCard = () => {
+    closeWhenClicked && setOpen(false)
+  }
+
   return (
     <div ref={containerRef} className={containerCn}>
       <div onClick={handleClick} onMouseEnter={handleMouseEnter}>
         {children}
       </div>
-      {open && !hidePopover && (
-        <Card className={popoverCn}>{PopovrElement}</Card>
+      {open && (
+        <Card className={popoverCn} onClick={handleClickCard}>
+          {PopovrElement}
+        </Card>
       )}
     </div>
   )

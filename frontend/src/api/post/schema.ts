@@ -1,5 +1,7 @@
 import { TransformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
+
 import { z } from 'zod'
+
 import { userOverviewSchema } from '@/api/user/schema'
 
 export const commentSchema = z.object({
@@ -19,6 +21,8 @@ export const createPostResponseSchema = z.object({
   updated_at: z.string()
 })
 
+export const editPostResponseSchema = createPostResponseSchema
+
 export const getSinglePostResponseSchema = createPostResponseSchema.extend({
   comment_list: z.array(commentSchema),
   liker_list: z.array(userOverviewSchema),
@@ -27,10 +31,13 @@ export const getSinglePostResponseSchema = createPostResponseSchema.extend({
 export const getPostResponseSchema = z.array(getSinglePostResponseSchema)
 
 type CreatePostResponseType = z.infer<typeof createPostResponseSchema>
+type EditPostResponseType = z.infer<typeof editPostResponseSchema>
 type GetPostResponseType = z.infer<typeof getPostResponseSchema>
 type GetSinglePostResponseType = z.infer<typeof getSinglePostResponseSchema>
 export type FECreatePostResponseType =
   TransformObjectKeyFromSnakeToCamel<CreatePostResponseType>
+export type FEEditPostResponseType =
+  TransformObjectKeyFromSnakeToCamel<EditPostResponseType>
 export type FEGetPostResponseType =
   TransformObjectKeyFromSnakeToCamel<GetPostResponseType>
 export type FEGetSinglePostResponseType =

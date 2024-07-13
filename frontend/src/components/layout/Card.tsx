@@ -1,15 +1,18 @@
-import { FC, ReactNode } from 'react'
+import { FC, InputHTMLAttributes, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-type CardProps = {
+type CardProps = InputHTMLAttributes<HTMLDivElement> & {
   children: ReactNode
-  className?: string
 }
 
-const Card: FC<CardProps> = ({ children, className }) => {
-  const cn = twMerge('p-2 px-4 rounded-lg bg-white shadow-lg', className)
+const Card: FC<CardProps> = ({ children, ...props }) => {
+  const cn = twMerge('p-2 px-4 rounded-lg bg-white shadow-lg', props.className)
 
-  return <div className={cn}>{children}</div>
+  return (
+    <div {...props} className={cn}>
+      {children}
+    </div>
+  )
 }
 
 export default Card

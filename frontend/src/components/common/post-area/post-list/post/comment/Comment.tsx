@@ -31,7 +31,6 @@ const Comment: FC<CommentProps> = ({
   onEditPostComment
 }) => {
   const [isHovered, setHoverState] = useState(false)
-  const [isHidePopover, setHidePopover] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [isEditing, setEditing] = useState(false)
   const [editInput, setEditInput] = useState(content)
@@ -52,7 +51,6 @@ const Comment: FC<CommentProps> = ({
 
   const handleStartEdit = () => {
     setEditing(true)
-    setHidePopover(true)
     // wait for value assignment for inputRef
     setTimeout(() => {
       inputRef.current && inputRef.current.focus()
@@ -67,13 +65,11 @@ const Comment: FC<CommentProps> = ({
         await onEditPostComment(editInput)
       }
       setEditing(false)
-      setHidePopover(false)
     }
   }
 
   const handleCancelEditing = () => {
     setEditing(false)
-    setHidePopover(false)
   }
 
   const cn = twMerge('flex items-start', className)
@@ -82,7 +78,6 @@ const Comment: FC<CommentProps> = ({
     const handleESCKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isInputFocused) {
         setEditing(false)
-        setHidePopover(false)
       }
     }
 
@@ -140,7 +135,7 @@ const Comment: FC<CommentProps> = ({
       {isHovered && isHoverShowDots ? (
         // TODO: popover position
         <Popover
-          hidePopover={isHidePopover}
+          closeWhenClicked
           popOverElement={
             <CommentDotAction
               handleDelete={() => setShowConfirmModal(true)}
