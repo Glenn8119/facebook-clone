@@ -34,6 +34,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
     value: { id: selfId }
   } = useUserContext()
   const sendComment = () => {
+    setCommentInput('')
     createPostComment({ postId: post.id, content: commentInput })
   }
 
@@ -91,6 +92,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
     const createTime = getTimeFromNow(new Date(comment.createdAt))
     return (
       <Comment
+        isHoverShowDots={comment.posterId === selfId}
         key={comment.id}
         content={comment.content}
         createAt={createTime}

@@ -6,7 +6,8 @@ export const commentSchema = z.object({
   id: z.string().uuid(),
   created_at: z.string(),
   content: z.string(),
-  poster: z.string()
+  poster: z.string(),
+  poster_id: z.string().uuid()
 })
 
 export const createPostResponseSchema = z.object({

@@ -19,6 +19,7 @@ type PopoverProps = {
   type?: PopoverType
   showPopover?: boolean
   popOverClass?: string
+  containerClass?: string
 }
 
 const eventMap = {
@@ -31,7 +32,8 @@ const Popover: FC<PopoverProps> = ({
   popOverElement,
   type = PopoverType.CLICK,
   showPopover = true,
-  popOverClass
+  popOverClass,
+  containerClass
 }) => {
   const [open, setOpen] = useState<boolean>(false)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -63,6 +65,8 @@ const Popover: FC<PopoverProps> = ({
     popOverClass
   )
 
+  const containerCn = twMerge('relative', containerClass)
+
   const handleClick = () => {
     if (type !== 'click') return
     setOpen(!open)
@@ -74,7 +78,7 @@ const Popover: FC<PopoverProps> = ({
   }
 
   return (
-    <div ref={containerRef} className='relative'>
+    <div ref={containerRef} className={containerCn}>
       <div onClick={handleClick} onMouseEnter={handleMouseEnter}>
         {children}
       </div>

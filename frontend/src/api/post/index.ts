@@ -36,6 +36,18 @@ const PostApi = {
     return transformObjectKeyFromSnakeToCamel(res)
   },
 
+  async deletePostComment({
+    commentId
+  }: {
+    postId: string
+    commentId: string
+  }): Promise<void> {
+    await _axios({
+      url: `/post/comment/${commentId}`,
+      method: 'DELETE'
+    })
+  },
+
   async createPostComment({
     postId,
     content

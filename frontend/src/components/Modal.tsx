@@ -17,7 +17,7 @@ const Modal: FC<ModalProps> = ({ children, onCloseModal, modalClassName }) => {
     setShowModal(false)
   }
   const cn = twMerge(
-    'relative w-125 bg-white rounded shadow-lg',
+    'relative w-125 bg-white rounded shadow-lg min-h-20',
     modalClassName
   )
 
