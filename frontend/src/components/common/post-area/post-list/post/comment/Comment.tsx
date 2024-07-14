@@ -117,11 +117,28 @@ const Comment: FC<CommentProps> = ({
             </div>
           </div>
         ) : (
-          <div className='bg-main rounded-2xl py-2 px-3 text-15 w-min max-w-72 break-words'>
-            <div className='cursor-pointer font-bold hover:underline'>
-              {name}
+          <div className='flex items-center'>
+            <div className='bg-main rounded-2xl py-2 px-3 mr-2 text-15 w-min max-w-72 break-words'>
+              <div className='cursor-pointer font-bold hover:underline'>
+                {name}
+              </div>
+              <div>{content}</div>
             </div>
-            <div>{content}</div>
+            {isHovered && isHoverShowDots ? (
+              // TODO: popover position
+              <Popover
+                closeWhenClicked
+                popOverElement={
+                  <MoreAction
+                    handleDelete={() => setShowConfirmModal(true)}
+                    handleEdit={handleStartEdit}
+                  />
+                }
+                containerClass=''
+              >
+                <MdMoreHoriz className='cursor-pointer' size={18} />
+              </Popover>
+            ) : null}
           </div>
         )}
         {isEditing ? null : (
@@ -133,21 +150,6 @@ const Comment: FC<CommentProps> = ({
           </div>
         )}
       </div>
-      {isHovered && isHoverShowDots ? (
-        // TODO: popover position
-        <Popover
-          closeWhenClicked
-          popOverElement={
-            <MoreAction
-              handleDelete={() => setShowConfirmModal(true)}
-              handleEdit={handleStartEdit}
-            />
-          }
-          containerClass='self-center -translate-y-3 '
-        >
-          <MdMoreHoriz className='cursor-pointer' size={18} />
-        </Popover>
-      ) : null}
       {showConfirmModal ? (
         <ConfirmModal
           title='刪除留言？'
