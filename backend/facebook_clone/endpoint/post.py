@@ -19,7 +19,12 @@ async def create_post(post: PostPostRequestBody, user: depend_user):
 @router.get('/list', response_model=List[Post])
 async def get_post_list(user: depend_user):
     post_list = await PostBo(user=user).get_post_list()
-    print(00000, post_list)
+    return to_json_response(post_list)
+
+
+@router.get('/list/{user_id}', response_model=List[Post])
+async def get_post_list_by_user_id(user_id: UUID, user: depend_user):
+    post_list = await PostBo(user=user).get_post_list_by_user_id(user_id=user_id)
     return to_json_response(post_list)
 
 

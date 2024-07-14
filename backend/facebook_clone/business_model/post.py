@@ -31,6 +31,15 @@ class PostBo(BaseBo):
             return [Post.model_validate(post) for post in
                     sorted_post_list]
 
+    async def get_post_list_by_user_id(self, user_id):
+        post_dao: PostDao
+        async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
+            # TODO: user pool
+            post_list = from_record_list_to_dict_list(await post_dao.get_post_list(user_id))
+            post_list_response = await asyncio.gather(*[self.get_single_post_response(post=post) for post in post_list])
+            return [Post.model_validate(post) for post in
+                    post_list_response]
+
     async def get_single_post_response(self, post):
         post_dao: PostDao
         friend_bo: FriendBo
