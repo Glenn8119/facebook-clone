@@ -22,6 +22,7 @@ const CommentList = ({
   deletePostComment,
   editPostComment
 }: CommentListProps) => {
+  // TODO: 留言分頁管理
   const renderCommentList = post.commentList.map((comment) => {
     const createTime = getTimeFromNow(new Date(comment.createdAt))
     return (

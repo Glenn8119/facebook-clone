@@ -77,7 +77,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
   }
 
   const { formData, setFormData, submit, error } = useForm(
-    { content: '' },
+    { content: post.content },
     postFormSchema,
     onSubmit
   )
@@ -140,7 +140,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
           <MdMoreHoriz size={24} />
         </Popover>
       ) : null}
-      <PostUserInfo name={post.poster} createAt={postTime} />
+      <PostUserInfo post={post} createAt={postTime} />
       <div className='py-4'>{post.content}</div>
       <div className='flex items-center mb-3'>
         <div className='mr-auto flex items-center'>

@@ -65,6 +65,15 @@ const PostApi = {
     return transformObjectKeyFromSnakeToCamel(res)
   },
 
+  async getPostListByUserId(userId: string): Promise<FEGetPostResponseType> {
+    const res = await _axios({
+      url: `/post/list/${userId}`,
+      responseSchema: getPostResponseSchema
+    })
+
+    return transformObjectKeyFromSnakeToCamel(res)
+  },
+
   async deletePostComment({
     commentId
   }: {

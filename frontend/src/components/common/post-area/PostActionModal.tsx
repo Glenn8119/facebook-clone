@@ -50,6 +50,7 @@ const PostActionModal: FC<PostActionModalProps> = ({
           <span>{name}</span>
         </div>
         <TextArea
+          isFocusOnCallbackRef
           error={isError}
           value={textAreaValue}
           onChange={handleTextAreaChange}

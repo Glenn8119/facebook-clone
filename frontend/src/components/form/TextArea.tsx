@@ -1,11 +1,17 @@
+import { Nullable } from '@/types/common'
 import { FC, TextareaHTMLAttributes } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type TextAreaProps = {
-  className: string
+  isFocusOnCallbackRef?: boolean
   error?: boolean
 } & TextareaHTMLAttributes<HTMLTextAreaElement>
-const TextArea: FC<TextAreaProps> = ({ className, error, ...props }) => {
+const TextArea: FC<TextAreaProps> = ({
+  className,
+  error,
+  isFocusOnCallbackRef,
+  ...props
+}) => {
   const errorClassName = error ? 'border border-red-500' : ''
 
   const cn = twMerge(
@@ -14,7 +20,11 @@ const TextArea: FC<TextAreaProps> = ({ className, error, ...props }) => {
     errorClassName
   )
 
-  return <textarea {...props} className={cn} />
+  const setRef = (node: Nullable<HTMLTextAreaElement>) => {
+    isFocusOnCallbackRef && node && node.focus()
+  }
+
+  return <textarea {...props} ref={setRef} className={cn} />
 }
 
 export default TextArea

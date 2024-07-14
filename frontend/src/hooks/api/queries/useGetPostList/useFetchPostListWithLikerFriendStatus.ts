@@ -3,18 +3,22 @@ import useUserContext from '@/hooks/useUserContext'
 import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
 import getFriendStatus from '@/utils/freindsStatus'
 import { Post } from '@/types/api/post'
+import useGetPostListByUserId from '@/hooks/api/queries/useGetPostListByUserId'
 
-const useFetchPostListWithLikerFriendStatus = () => {
+const useFetchPostListWithLikerFriendStatus = (userId?: string) => {
   const {
     value: { id: selfId }
   } = useUserContext()
 
   const { friendList: selfFriendList } = useGetFriendList(selfId)
-  const { postList: originalPostList } = useGetPostList()
+  const { postList } = useGetPostList(userId)
+  const { postListByUserId } = useGetPostListByUserId(userId)
+
+  const originalPostList = userId ? postListByUserId : postList
 
   if (!originalPostList || !selfFriendList) return { postList: undefined }
 
-  const postList = originalPostList.map((post) => {
+  const output = originalPostList.map((post) => {
     const likerList = post.likerList.map((liker) => {
       const friendStatus = getFriendStatus({
         selfId,
@@ -33,7 +37,7 @@ const useFetchPostListWithLikerFriendStatus = () => {
     }
   }) as Post[]
 
-  return { postList }
+  return { postList: output }
 }
 
 export default useFetchPostListWithLikerFriendStatus
