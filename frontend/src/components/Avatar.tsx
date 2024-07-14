@@ -1,33 +1,19 @@
-import { FC } from 'react'
+import { FC, InputHTMLAttributes } from 'react'
 import { twMerge } from 'tailwind-merge'
 import FakeAvatar from '@/assets/fake-avatar.jpeg'
-import { AnyFunction } from '@/types/common'
 
-type AvatarProps = {
+type AvatarProps = InputHTMLAttributes<HTMLImageElement> & {
   imgUrl?: string
-  className?: string
-  style?: Record<string, string>
-  onClick?: AnyFunction
 }
 
 const Avatar: FC<AvatarProps> = ({
   imgUrl = FakeAvatar,
   className,
-  style,
-  onClick
+  ...props
 }) => {
-  const cn = twMerge('rounded-full', className)
+  const cn = twMerge('rounded-full h-10 w-10', className)
 
-  return (
-    <img
-      style={style}
-      width='40'
-      height='40'
-      src={imgUrl}
-      className={cn}
-      onClick={onClick}
-    />
-  )
+  return <img src={imgUrl} className={cn} {...props} />
 }
 
 export default Avatar

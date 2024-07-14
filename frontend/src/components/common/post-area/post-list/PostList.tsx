@@ -15,7 +15,6 @@ const PostList = ({ userId }: PostListProps) => {
   return (
     <div>
       {postList.map((post) => (
-        // TODO: replace key with poster when api is ready
         <Post className='mb-3' key={post.id} post={post} />
       ))}
     </div>

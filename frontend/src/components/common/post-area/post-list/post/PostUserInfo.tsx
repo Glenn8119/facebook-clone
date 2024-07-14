@@ -1,7 +1,12 @@
 import Avatar from '@/components/Avatar'
+import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover'
+import useAddFriend from '@/hooks/api/mutation/useAddFriend'
+import useUserContext from '@/hooks/useUserContext'
+import useToastContext from '@/hooks/userToastContext'
 // import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 import { Post } from '@/types/api/post'
-import { FC } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { FC, useState } from 'react'
 
 type PostUserInfoProps = {
   post: Post
@@ -9,41 +14,47 @@ type PostUserInfoProps = {
 }
 
 const PostUserInfo: FC<PostUserInfoProps> = ({ post, createAt }) => {
-  return (
-    // <div className='flex'>
-    //   <UserOverviewPopover
-    //     userId={post.userId}
-    //     addFriend && addFriend(av)
-    //     name={post.poster}
-    //   >
-    //     <Avatar className='mr-2' />
-    //     <div>
-    //       <div className='font-bold cursor-pointer hover:underline'>{post.poster}</div>
-    //       <div className='text-gray-500 text-sm'>{createAt}</div>
-    //     </div>
-    //   </UserOverviewPopover>
-    //   <UserOverviewPopover
-    //         key={avatarInfo.id}
-    //         userId={avatarInfo.id}
-    //         addFriend={() => addFriend && addFriend(avatarInfo.id)}
-    //         name={avatarInfo.name}
-    //         friendStatus={avatarInfo.friendStatus}
-    //         commonFriendList={avatarInfo.commonFriendList}
-    //       >
-    //         <Avatar
-    //           style={zIndexStyle}
-    //           imgUrl={avatarInfo.imgUrl}
-    //           className={cn}
-    //         />
-    //       </UserOverviewPopover>
-    // </div>
+  const [startLoadPopover, setStartLoadPopover] = useState(false)
+  const {
+    value: { id: selfId }
+  } = useUserContext()
+  const queryClient = useQueryClient()
+  const { addToast } = useToastContext()
 
+  const { addFriend } = useAddFriend({
+    onSuccess: () => {
+      addToast({ type: 'SUCCESS', title: '加入好友成功！' })
+      queryClient.invalidateQueries({ queryKey: ['getFriendList', selfId] })
+    }
+  })
+
+  return (
     <div className='flex'>
-      <Avatar className='mr-2' />
+      <LazyLoadUserOverviewPopover
+        startLoad={startLoadPopover}
+        userId={post.userId}
+        name={post.poster}
+        addFriend={addFriend}
+      >
+        <Avatar
+          className='mr-2 cursor-pointer'
+          onMouseEnter={() => setStartLoadPopover(true)}
+        />
+      </LazyLoadUserOverviewPopover>
       <div>
-        <div className='font-bold cursor-pointer hover:underline'>
-          {post.poster}
-        </div>
+        <LazyLoadUserOverviewPopover
+          startLoad={startLoadPopover}
+          userId={post.userId}
+          name={post.poster}
+          addFriend={addFriend}
+        >
+          <div
+            className='font-bold cursor-pointer hover:underline'
+            onMouseEnter={() => setStartLoadPopover(true)}
+          >
+            {post.poster}
+          </div>
+        </LazyLoadUserOverviewPopover>
         <div className='text-gray-500 text-sm'>{createAt}</div>
       </div>
     </div>

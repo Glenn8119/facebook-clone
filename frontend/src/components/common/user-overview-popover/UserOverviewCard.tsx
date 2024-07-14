@@ -33,7 +33,7 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
   const handleCommonFriendListDescription = (
     commonFriendList: FERecommendationFriendSingleResponseType['commonFriendList']
   ) => {
-    if (!commonFriendList.length) {
+    if (!commonFriendList.length || friendStatus === FriendStatus.IsSelf) {
       return null
     }
 

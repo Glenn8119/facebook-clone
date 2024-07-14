@@ -9,8 +9,14 @@ import Popover from '@/components/Popover'
 import MoreAction from '@/components/common/post-area/post-list/post/comment/MoreAction'
 import Input, { ForwardedInputRefType } from '@/components/form/Input'
 import ConfirmModal from '@/components/common/ConfirmModal'
+import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover'
+import useAddFriend from '@/hooks/api/mutation/useAddFriend'
+import { useQueryClient } from '@tanstack/react-query'
+import useToastContext from '@/hooks/userToastContext'
+import useUserContext from '@/hooks/useUserContext'
 
 type CommentProps = {
+  userId: string
   isHoverShowDots: boolean
   content: string
   name: string
@@ -22,6 +28,7 @@ type CommentProps = {
 }
 
 const Comment: FC<CommentProps> = ({
+  userId,
   isHoverShowDots,
   hasEdited,
   className,
@@ -32,11 +39,24 @@ const Comment: FC<CommentProps> = ({
   onEditPostComment
 }) => {
   const [isHovered, setHoverState] = useState(false)
+  const [startLoadPopover, setStartLoadPopover] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [isEditing, setEditing] = useState(false)
   const [editInput, setEditInput] = useState(content)
   const [isInputFocused, setInputFocused] = useState(false)
   const inputRef = useRef<ForwardedInputRefType | null>(null)
+
+  const queryClient = useQueryClient()
+  const { addToast } = useToastContext()
+  const {
+    value: { id: selfId }
+  } = useUserContext()
+  const { addFriend } = useAddFriend({
+    onSuccess: () => {
+      addToast({ type: 'SUCCESS', title: '加入好友成功！' })
+      queryClient.invalidateQueries({ queryKey: ['getFriendList', selfId] })
+    }
+  })
   const handleDeleteComment = async () => {
     await onDeletePostComment()
     setShowConfirmModal(false)
@@ -92,7 +112,17 @@ const Comment: FC<CommentProps> = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <Avatar className='mr-2' />
+      <LazyLoadUserOverviewPopover
+        startLoad={startLoadPopover}
+        userId={userId}
+        name={name}
+        addFriend={addFriend}
+      >
+        <Avatar
+          className='mr-2 cursor-pointer'
+          onMouseEnter={() => setStartLoadPopover(true)}
+        />
+      </LazyLoadUserOverviewPopover>
       <div className={`flex flex-col mr-2 ${isEditing && 'flex-grow'}`}>
         {isEditing ? (
           <div>
@@ -119,9 +149,19 @@ const Comment: FC<CommentProps> = ({
         ) : (
           <div className='flex items-center'>
             <div className='bg-main rounded-2xl py-2 px-3 mr-2 text-15 w-min max-w-72 break-words'>
-              <div className='cursor-pointer font-bold hover:underline'>
-                {name}
-              </div>
+              <LazyLoadUserOverviewPopover
+                startLoad={startLoadPopover}
+                userId={userId}
+                name={name}
+                addFriend={addFriend}
+              >
+                <div
+                  className='cursor-pointer font-bold hover:underline'
+                  onMouseEnter={() => setStartLoadPopover(true)}
+                >
+                  {name}
+                </div>
+              </LazyLoadUserOverviewPopover>
               <div>{content}</div>
             </div>
             {isHovered && isHoverShowDots ? (

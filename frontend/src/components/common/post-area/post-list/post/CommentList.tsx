@@ -27,6 +27,7 @@ const CommentList = ({
     const createTime = getTimeFromNow(new Date(comment.createdAt))
     return (
       <Comment
+        userId={comment.posterId}
         className='mb-2'
         isHoverShowDots={comment.posterId === selfId}
         key={comment.id}
