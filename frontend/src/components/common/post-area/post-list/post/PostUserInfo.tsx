@@ -25,6 +25,7 @@ const PostUserInfo: FC<PostUserInfoProps> = ({ post, createAt }) => {
     onSuccess: () => {
       addToast({ type: 'SUCCESS', title: '加入好友成功！' })
       queryClient.invalidateQueries({ queryKey: ['getFriendList', selfId] })
+      queryClient.invalidateQueries({ queryKey: ['friendRecommendation'] })
     }
   })
 

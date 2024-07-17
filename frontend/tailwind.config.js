@@ -11,7 +11,9 @@ export default {
         100: '25rem',
         107: '26.75rem',
         108: '27rem',
-        125: '31.25rem'
+        110: '27.5rem',
+        125: '31.25rem',
+        137: '34.25rem'
       },
       colors: {
         main: colors.slate[100]
@@ -22,8 +24,8 @@ export default {
       },
       zIndex: {
         header: '1000',
-        toast: '1001',
-        mask: '1002',
+        mask: '1001',
+        toast: '1002',
         max: '9999'
       },
       boxShadow: {

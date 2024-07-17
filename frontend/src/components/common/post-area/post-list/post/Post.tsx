@@ -34,6 +34,7 @@ import useEditPost from '@/hooks/api/mutation/useEditPost'
 import useDeletePost from '@/hooks/api/mutation/useDeletePost'
 
 import { type PostFormType, postFormSchema } from '@/schema/validation/add-post'
+import LikerListModal from './LikerListModal'
 
 type PostProps = {
   className: string
@@ -44,6 +45,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
   const commentInputRef = useRef<CommentActionForwardedRefType>(null)
   const [commentInput, setCommentInput] = useState('')
   const [isPostModalShow, setPostModalShow] = useState(false)
+  const [isLikerListModalShow, setLikerListModal] = useState(false)
   const [isConfirmDeletePostModalShow, setConfirmDeletePostModalShow] =
     useState(false)
 
@@ -125,79 +127,92 @@ const Post: FC<PostProps> = ({ className, post }) => {
   const postClassname = twMerge('relative', className)
 
   return (
-    <Card className={postClassname}>
-      {isSelfPost ? (
-        <Popover
-          containerClass='absolute top-4 right-4 cursor-pointer'
-          closeWhenClicked
-          popOverElement={
-            <MoreAction
-              handleDelete={handleDeleteAction}
-              handleEdit={handleEditAction}
-            />
-          }
-        >
-          <MdMoreHoriz size={24} />
-        </Popover>
-      ) : null}
-      <PostUserInfo post={post} createAt={postTime} />
-      <div className='py-4'>{post.content}</div>
-      <div className='flex items-center mb-3'>
-        <div className='mr-auto flex items-center'>
-          <LikerOverview post={post} />
+    <>
+      <Card className={postClassname}>
+        {isSelfPost ? (
+          <Popover
+            containerClass='absolute top-4 right-4 cursor-pointer'
+            closeWhenClicked
+            popOverElement={
+              <MoreAction
+                handleDelete={handleDeleteAction}
+                handleEdit={handleEditAction}
+              />
+            }
+          >
+            <MdMoreHoriz size={24} />
+          </Popover>
+        ) : null}
+        <PostUserInfo post={post} createAt={postTime} />
+        <div className='py-4'>{post.content}</div>
+        <div className='flex items-center mb-3'>
+          <div
+            className='mr-auto flex items-center'
+            onClick={() => setLikerListModal(true)}
+          >
+            <LikerOverview post={post} />
+          </div>
+          <span className='text-gray-400'>
+            {post.commentList.length
+              ? `${post.commentList.length}則留言`
+              : null}
+          </span>
         </div>
-        <span className='text-gray-400'>
-          {post.commentList.length ? `${post.commentList.length}則留言` : null}
-        </span>
-      </div>
-      <div className='flex py-1 mb-2 border-t border-b text-gray-500 text-15'>
-        <div className={likeClassName} onClick={handleLike}>
-          <MdOutlineThumbUp size='20' className='mr-2' />
-          <span>讚</span>
+        <div className='flex py-1 mb-2 border-t border-b text-gray-500 text-15'>
+          <div className={likeClassName} onClick={handleLike}>
+            <MdOutlineThumbUp size='20' className='mr-2' />
+            <span>讚</span>
+          </div>
+          <div
+            className='flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main'
+            onClick={commentClick}
+          >
+            <MdOutlineModeComment size='20' className='mr-2' />
+            <span>留言</span>
+          </div>
         </div>
-        <div
-          className='flex items-center justify-center flex-grow py-1 cursor-pointer hover:bg-main'
-          onClick={commentClick}
-        >
-          <MdOutlineModeComment size='20' className='mr-2' />
-          <span>留言</span>
-        </div>
-      </div>
-      <CommentList
-        selfId={selfId}
-        post={post}
-        deletePostComment={deletePostComment}
-        editPostComment={editPostComment}
-      />
-      <CommentAction
-        ref={commentInputRef}
-        inputValue={commentInput}
-        setInputValue={setCommentInput}
-        handleEnterKey={handleSendComment}
-      />
-      {isPostModalShow ? (
-        <PostActionModal
-          buttonLabel='儲存'
-          title='編輯貼文'
-          isError={!!error?.content}
-          textAreaValue={formData.content}
-          errorMessageList={error?.content?._errors}
-          closeModal={closePostActionModal}
-          onSubmit={handleSubmit}
-          onTextAreaChange={onTextAreaChange}
+        <CommentList
+          selfId={selfId}
+          post={post}
+          deletePostComment={deletePostComment}
+          editPostComment={editPostComment}
+        />
+        <CommentAction
+          ref={commentInputRef}
+          inputValue={commentInput}
+          setInputValue={setCommentInput}
+          handleEnterKey={handleSendComment}
+        />
+        {isPostModalShow ? (
+          <PostActionModal
+            buttonLabel='儲存'
+            title='編輯貼文'
+            isError={!!error?.content}
+            textAreaValue={formData.content}
+            errorMessageList={error?.content?._errors}
+            closeModal={closePostActionModal}
+            onSubmit={handleSubmit}
+            onTextAreaChange={onTextAreaChange}
+          />
+        ) : null}
+        {isConfirmDeletePostModalShow ? (
+          <ConfirmModal
+            title='刪除貼文？'
+            description='確定要刪除這則貼文嗎？'
+            confirmLabel='刪除'
+            closeModal={() => setConfirmDeletePostModalShow(false)}
+            onCancel={() => setConfirmDeletePostModalShow(false)}
+            onConfirm={() => deletePost(post.id)}
+          />
+        ) : null}
+      </Card>
+      {isLikerListModalShow ? (
+        <LikerListModal
+          likerList={post.likerList}
+          closeModal={() => setLikerListModal(false)}
         />
       ) : null}
-      {isConfirmDeletePostModalShow ? (
-        <ConfirmModal
-          title='刪除貼文？'
-          description='確定要刪除這則貼文嗎？'
-          confirmLabel='刪除'
-          closeModal={() => setConfirmDeletePostModalShow(false)}
-          onCancel={() => setConfirmDeletePostModalShow(false)}
-          onConfirm={() => deletePost(post.id)}
-        />
-      ) : null}
-    </Card>
+    </>
   )
 }
 
