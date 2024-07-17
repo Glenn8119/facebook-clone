@@ -14,7 +14,7 @@ type PostUserInfoProps = {
 }
 
 const PostUserInfo: FC<PostUserInfoProps> = ({ post, createAt }) => {
-  const [startLoadPopover, setStartLoadPopover] = useState(false)
+  const [isEnableLoadPopover, setEnableLoadPopover] = useState(false)
   const {
     value: { id: selfId }
   } = useUserContext()
@@ -31,26 +31,26 @@ const PostUserInfo: FC<PostUserInfoProps> = ({ post, createAt }) => {
   return (
     <div className='flex'>
       <LazyLoadUserOverviewPopover
-        startLoad={startLoadPopover}
+        isEnableQuery={isEnableLoadPopover}
         userId={post.userId}
         name={post.poster}
         addFriend={addFriend}
       >
         <Avatar
           className='mr-2 cursor-pointer'
-          onMouseEnter={() => setStartLoadPopover(true)}
+          onMouseEnter={() => setEnableLoadPopover(true)}
         />
       </LazyLoadUserOverviewPopover>
       <div>
         <LazyLoadUserOverviewPopover
-          startLoad={startLoadPopover}
+          isEnableQuery={isEnableLoadPopover}
           userId={post.userId}
           name={post.poster}
           addFriend={addFriend}
         >
           <div
             className='font-bold cursor-pointer hover:underline'
-            onMouseEnter={() => setStartLoadPopover(true)}
+            onMouseEnter={() => setEnableLoadPopover(true)}
           >
             {post.poster}
           </div>

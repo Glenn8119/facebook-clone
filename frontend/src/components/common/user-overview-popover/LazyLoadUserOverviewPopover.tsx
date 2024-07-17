@@ -12,7 +12,7 @@ type LazyLoadUserOverviewPopoverProps = {
   userId: string
   name: string
   addFriend?: (id: string) => void
-  startLoad: boolean
+  isEnableQuery: boolean
 }
 
 const LazyLoadUserOverviewPopover: FC<LazyLoadUserOverviewPopoverProps> = ({
@@ -20,13 +20,13 @@ const LazyLoadUserOverviewPopover: FC<LazyLoadUserOverviewPopoverProps> = ({
   userId,
   addFriend,
   name,
-  startLoad
+  isEnableQuery
 }) => {
   const {
     value: { id: selfId }
   } = useUserContext()
   const queryClient = useQueryClient()
-  const { commonFriendList } = useGetCommonFriendList(userId, startLoad)
+  const { commonFriendList } = useGetCommonFriendList(userId, isEnableQuery)
   const selfFriendList = queryClient.getQueryData<FEFriendSingleResponseType[]>(
     ['getFriendList', selfId]
   )
