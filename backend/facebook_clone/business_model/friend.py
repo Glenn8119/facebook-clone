@@ -22,6 +22,11 @@ class FriendBo(BaseBo):
             user = self.user
             await friend_dao.add_friend_relation(user.get('id'), target_user_id)
 
+    async def delete_friend(self, target_user_id):
+        async with get_facebook_clone_dao_factory().create_dao_list(FriendDao) as [friend_dao]:
+            user = self.user
+            await friend_dao.delete_friend_relation(user.get('id'), target_user_id)
+
     @staticmethod
     async def get_common_friend_list(user_id, friend_id):
         async with get_facebook_clone_dao_factory().create_dao_list(FriendDao) as [friend_dao]:

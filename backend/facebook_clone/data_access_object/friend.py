@@ -25,6 +25,15 @@ class FriendDao(BaseDao):
             ''', user_id, target_user_id
         )
 
+    async def delete_friend_relation(self, user_id, target_user_id):
+        await self.connection.execute(
+            '''
+                DELETE FROM friend_relation
+                WHERE user_id = $1 AND friend_id = $2
+                OR user_id = $2 AND friend_id = $1
+            ''', user_id, target_user_id
+        )
+
     async def get_common_friend_list(self, user_id, friend_id):
         return await self.connection.fetch('''
             SELECT u.name, u.account, u.id
