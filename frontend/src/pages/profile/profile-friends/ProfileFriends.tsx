@@ -31,15 +31,6 @@ const ProfileFriends = () => {
 
   const { friendList } = useFetchFriendListWithFriendStatus(userId)
 
-  const navigateToProfilePage = (id: string, tab?: string) => {
-    const queries = { id } as Record<string, string>
-    tab && (queries.tab = tab)
-    navigate({
-      pathname: ROUTES.PROFILE,
-      queries
-    })
-  }
-
   if (!friendList) return null
 
   const friendBoxList = friendList.map((friend) => (
@@ -54,10 +45,7 @@ const ProfileFriends = () => {
         friendStatus={friend.friendStatus}
         commonFriendList={friend.commonFriendList}
       >
-        <Avatar
-          className='mr-4 rounded w-20 cursor-pointer'
-          onClick={() => navigateToProfilePage(friend.id)}
-        />
+        <Avatar className='mr-4 rounded w-20 h-20 cursor-pointer' />
       </UserOverviewPopover>
 
       <div className='flex flex-col justify-center'>
@@ -68,18 +56,16 @@ const ProfileFriends = () => {
           friendStatus={friend.friendStatus}
           commonFriendList={friend.commonFriendList}
         >
-          <div
-            className='cursor-pointer hover:underline'
-            onClick={() => navigateToProfilePage(friend.id)}
-          >
-            {friend.name}
-          </div>
+          <div className='cursor-pointer hover:underline'>{friend.name}</div>
         </UserOverviewPopover>
         {friend.commonFriendList.length > 0 ? (
           <div
             className='text-sm text-slate-400 cursor-pointer'
             onClick={() =>
-              navigateToProfilePage(friend.id, PROFILE_QUERIES.FRIENDS_MUTUAL)
+              navigate({
+                pathname: ROUTES.PROFILE,
+                queries: { tab: PROFILE_QUERIES.FRIENDS_MUTUAL, id: friend.id }
+              })
             }
           >
             {friend.commonFriendList.length} 位共同朋友

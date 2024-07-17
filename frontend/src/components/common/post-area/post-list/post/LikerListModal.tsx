@@ -28,6 +28,7 @@ const Liker = ({
 }) => {
   const cn = twMerge('flex items-center', className)
   const [isEnableLoadPopover, setEnableLoadPopover] = useState(false)
+
   return (
     <div className={cn}>
       <LazyLoadUserOverviewPopover

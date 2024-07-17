@@ -1,22 +1,16 @@
 import Card from '@/components/layout/Card'
-import { FC } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import Avatar from '@/components/Avatar'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import FriendApi from '@/api/friend'
 import useToastContext from '@/hooks/userToastContext'
-import { ROUTES } from '@/constants/common'
-import useNavigateTo from '@/hooks/useNavigateTo'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 import useFetchFriendListWithFriendStatus from '@/hooks/api/queries/useGetFriendList/useFetchFriendListWithFriendStatus'
 
-interface FriendAreaProps {}
-
-const FriendArea: FC<FriendAreaProps> = () => {
+const FriendArea = () => {
   const [searchParams] = useSearchParams()
   const { addToast } = useToastContext()
   const queryClient = useQueryClient()
-  const navigate = useNavigateTo()
   const userId = searchParams.get('id') as string
   const { friendList } = useFetchFriendListWithFriendStatus(userId)
 
@@ -27,14 +21,6 @@ const FriendArea: FC<FriendAreaProps> = () => {
       queryClient.invalidateQueries({ queryKey: ['friendRecommendation'] })
     }
   })
-
-  const navigateToProfilePage = (id: string) => {
-    const queries = { id } as Record<string, string>
-    navigate({
-      pathname: ROUTES.PROFILE,
-      queries
-    })
-  }
 
   if (!friendList) return null
 
@@ -47,10 +33,7 @@ const FriendArea: FC<FriendAreaProps> = () => {
         friendStatus={friend.friendStatus}
         commonFriendList={friend.commonFriendList}
       >
-        <Avatar
-          className='mr-4 rounded w-20 cursor-pointer'
-          onClick={() => navigateToProfilePage(friend.id)}
-        />
+        <Avatar className='mr-4 rounded w-20 h-20 cursor-pointer' />
       </UserOverviewPopover>
       <UserOverviewPopover
         userId={friend.id}
@@ -59,12 +42,7 @@ const FriendArea: FC<FriendAreaProps> = () => {
         friendStatus={friend.friendStatus}
         commonFriendList={friend.commonFriendList}
       >
-        <div
-          className='cursor-pointer hover:underline'
-          onClick={() => navigateToProfilePage(friend.id)}
-        >
-          {friend.name}
-        </div>
+        <div className='cursor-pointer hover:underline'>{friend.name}</div>
       </UserOverviewPopover>
     </div>
   ))

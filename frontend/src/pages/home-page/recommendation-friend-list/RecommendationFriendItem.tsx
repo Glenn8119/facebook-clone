@@ -3,9 +3,7 @@ import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 import Button from '@/components/form/Button'
-import { ROUTES } from '@/constants/common'
 import useAddFriend from '@/hooks/api/mutation/useAddFriend'
-import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
 import useToastContext from '@/hooks/userToastContext'
 import { FriendStatus } from '@/types/common'
@@ -28,7 +26,6 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
   const {
     value: { id: selfId }
   } = useUserContext()
-  const navigate = useNavigateTo()
 
   const cn = twMerge('flex items-center', className)
   const commonFriendList = recommendationFriend.commonFriendList.map(
@@ -45,15 +42,6 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
     }
   })
 
-  const navigateToProfilePage = () => {
-    navigate({
-      pathname: ROUTES.PROFILE,
-      queries: {
-        id: recommendationFriend.id
-      }
-    })
-  }
-
   return (
     <div className={cn}>
       <UserOverviewPopover
@@ -63,10 +51,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
         friendStatus={FriendStatus.IsNotFriend}
         commonFriendList={commonFriendList}
       >
-        <Avatar
-          className='mr-2 cursor-pointer'
-          onClick={navigateToProfilePage}
-        />
+        <Avatar className='mr-2 cursor-pointer' />
       </UserOverviewPopover>
 
       <div className='mr-auto'>
@@ -77,10 +62,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
           friendStatus={FriendStatus.IsNotFriend}
           commonFriendList={commonFriendList}
         >
-          <div
-            className='cursor-pointer hover:underline'
-            onClick={navigateToProfilePage}
-          >
+          <div className='cursor-pointer hover:underline'>
             {recommendationFriend.name}
           </div>
         </UserOverviewPopover>

@@ -1,9 +1,11 @@
 import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 import Popover from '@/components/Popover'
 import { PopoverType } from '@/types/component/popover'
-import { FC } from 'react'
+import React, { FC } from 'react'
 import UserOverviewCard from '@/components/common/user-overview-popover/UserOverviewCard'
 import { FriendStatus } from '@/types/common'
+import useNavigateTo from '@/hooks/useNavigateTo'
+import { ROUTES } from '@/constants/common'
 
 type UserOverviewPopoverProps = {
   children: React.ReactNode
@@ -22,6 +24,14 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
   friendStatus,
   commonFriendList
 }) => {
+  const navigate = useNavigateTo()
+  const navigateToUserProfile = () => {
+    navigate({
+      pathname: ROUTES.PROFILE,
+      queries: { id: userId }
+    })
+  }
+
   return (
     <Popover
       type={PopoverType.HOVER}
@@ -36,7 +46,7 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
       }
       popOverClass='animate-fade-in'
     >
-      {children}
+      <div onClick={navigateToUserProfile}>{children}</div>
     </Popover>
   )
 }

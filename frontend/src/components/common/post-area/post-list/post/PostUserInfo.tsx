@@ -20,7 +20,6 @@ const PostUserInfo: FC<PostUserInfoProps> = ({ post, createAt }) => {
   } = useUserContext()
   const queryClient = useQueryClient()
   const { addToast } = useToastContext()
-
   const { addFriend } = useAddFriend({
     onSuccess: () => {
       addToast({ type: 'SUCCESS', title: '加入好友成功！' })
