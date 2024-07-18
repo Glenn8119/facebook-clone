@@ -1,9 +1,11 @@
 import PostApi from '@/api/post'
+import useToastContext from '@/hooks/userToastContext'
 import { Post } from '@/types/api/post'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 const useDeletePostComment = () => {
   const queryClient = useQueryClient()
+  const { addToast } = useToastContext()
 
   const { mutateAsync: deletePostComment } = useMutation({
     mutationFn: PostApi.deletePostComment,
@@ -33,6 +35,9 @@ const useDeletePostComment = () => {
       queryClient.invalidateQueries({ queryKey: ['getPostList'] })
       // TODO: check if needed after adding profile post
       // invalidateQuery(['getPostList', postId])
+    },
+    onSuccess: () => {
+      addToast({ type: 'SUCCESS', title: '留言已刪除' })
     }
   })
 

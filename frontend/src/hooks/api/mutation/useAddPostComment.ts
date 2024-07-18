@@ -17,14 +17,16 @@ const useCreatePostComment = () => {
       queryClient.setQueryData(['getPostList'], (oldPostList: Post[]) => {
         return oldPostList.map((post) => {
           if (post.id !== postId) return post
+          const now = new Date()
           const newCommentList = [
+            ...post.commentList,
             {
               id: post.commentList.length,
               content,
               poster: name,
-              createdAt: new Date()
-            },
-            ...post.commentList
+              createdAt: now,
+              updatedAt: now
+            }
           ]
           return {
             ...post,
@@ -40,7 +42,7 @@ const useCreatePostComment = () => {
       queryClient.setQueryData(['getPostList'], context?.previousPostList)
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['getPostList'] })
+      // queryClient.invalidateQueries({ queryKey: ['getPostList'] })
       // TODO: check if needed after adding profile post
       // invalidateQuery(['getPostList', postId])
     }
