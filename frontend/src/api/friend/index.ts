@@ -31,6 +31,13 @@ const FriendApi = {
     return transformObjectKeyFromSnakeToCamel(res)
   },
 
+  async deleteFriend(id: string): Promise<void> {
+    await _axios({
+      url: `/friend/${id}`,
+      method: 'DELETE'
+    })
+  },
+
   async getFriendList(id: string): Promise<FEFriendSingleResponseType[]> {
     const res = await _axios({
       url: `/friend/list/${id}`,

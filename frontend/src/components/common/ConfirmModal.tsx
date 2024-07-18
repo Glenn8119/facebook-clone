@@ -35,7 +35,7 @@ const ConfirmModal: FC<ConfirmModalProps> = ({
         <div className='flex justify-end'>
           <Button
             size={ButtonSize.SMALL}
-            className='w-10 mr-2'
+            className='w-28 mr-2 text-nowrap px-2'
             variant={ButtonVariant.AUXILIARY}
             onClick={onCancel}
           >
