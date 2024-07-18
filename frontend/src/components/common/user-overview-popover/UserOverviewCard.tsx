@@ -1,29 +1,35 @@
-import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
+import { FC } from 'react'
+
 import Avatar from '@/components/Avatar'
 import Button from '@/components/form/Button'
+
 import { ROUTES } from '@/constants/common'
+
+import useAddFriend from '@/hooks/api/mutation/useAddFriend'
 import useNavigateTo from '@/hooks/useNavigateTo'
+
 import { FriendStatus } from '@/types/common'
 import { ButtonSize } from '@/types/component/button'
-import { FC } from 'react'
+
 import { MdGroup } from 'react-icons/md'
+
+import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 
 type UserOverviewCardProps = {
   userId: string
   name: string
   friendStatus: FriendStatus
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
-  addFriend?: (id: string) => void
 }
 
 const UserOverviewCard: FC<UserOverviewCardProps> = ({
   userId,
   name,
   friendStatus,
-  commonFriendList,
-  addFriend
+  commonFriendList
 }) => {
   const navigate = useNavigateTo()
+  const { addFriend } = useAddFriend()
   const navigateToProfilePage = (id: string) => {
     navigate({
       pathname: ROUTES.PROFILE,

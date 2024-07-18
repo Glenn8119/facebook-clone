@@ -1,21 +1,24 @@
+import { useSearchParams } from 'react-router-dom'
+
 import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
 import Button from '@/components/form/Button'
+
 import { ROUTES } from '@/constants/common'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
-import useAddFriend from '@/hooks/api/mutation/useAddFriend'
+
 import useFetchFriendListWithFriendStatus from '@/hooks/api/queries/useGetFriendList/useFetchFriendListWithFriendStatus'
 import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
 import useGetUserDetail from '@/hooks/api/queries/useGetUserDetail'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
-import useToastContext from '@/hooks/userToastContext'
+
 import { FriendStatus } from '@/types/common'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
+
 import getFriendStatus from '@/utils/freindsStatus'
-import { useQueryClient } from '@tanstack/react-query'
+
 import { MdEdit } from 'react-icons/md'
-import { useSearchParams } from 'react-router-dom'
 
 const Detail = () => {
   const [searchParams] = useSearchParams()
@@ -24,16 +27,7 @@ const Detail = () => {
     value: { id: selfId }
   } = useUserContext()
   const navigate = useNavigateTo()
-  const queryClient = useQueryClient()
-  const { addToast } = useToastContext()
   const { userDetail } = useGetUserDetail(userId)
-  const { addFriend } = useAddFriend({
-    onSuccess: () => {
-      addToast({ type: 'SUCCESS', title: '加入好友成功！' })
-      queryClient.invalidateQueries({ queryKey: ['getFriendList', selfId] })
-      queryClient.invalidateQueries({ queryKey: ['friendRecommendation'] })
-    }
-  })
   const { friendList: selfFriendList } = useGetFriendList(selfId)
   const { friendList: userFriendList } =
     useFetchFriendListWithFriendStatus(userId)
@@ -108,7 +102,6 @@ const Detail = () => {
         <div className='font-bold text-4xl mb-1'>{userDetail.name}</div>
         <div className='text-slate-600 mb-1'>{renderFriendDescription()}</div>
         <CollapsingAvatarList
-          addFriend={addFriend}
           handleClickList={navigateToFriendsOrMutualFriends}
           avatarInfoList={userFriendList ?? []}
         />

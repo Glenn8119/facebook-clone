@@ -3,12 +3,9 @@ import Modal from '@/components/Modal'
 import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover'
 import Button from '@/components/form/Button'
 import useAddFriend from '@/hooks/api/mutation/useAddFriend'
-import useUserContext from '@/hooks/useUserContext'
-import useToastContext from '@/hooks/userToastContext'
 import { Post } from '@/types/api/post'
 import { FriendStatus } from '@/types/common'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
-import { useQueryClient } from '@tanstack/react-query'
 import { FC, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -68,18 +65,7 @@ const Liker = ({
 }
 
 const LikerListModal: FC<LikerListModalProps> = ({ closeModal, likerList }) => {
-  const { addToast } = useToastContext()
-  const queryClient = useQueryClient()
-  const {
-    value: { id: selfId }
-  } = useUserContext()
-  const { addFriend } = useAddFriend({
-    onSuccess: () => {
-      addToast({ type: 'SUCCESS', title: '加入好友成功！' })
-      queryClient.invalidateQueries({ queryKey: ['getFriendList', selfId] })
-      queryClient.invalidateQueries({ queryKey: ['friendRecommendation'] })
-    }
-  })
+  const { addFriend } = useAddFriend()
 
   const likerListRender = likerList.map((liker) => {
     return (

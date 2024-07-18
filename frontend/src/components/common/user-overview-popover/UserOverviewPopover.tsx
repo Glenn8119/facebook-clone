@@ -13,13 +13,11 @@ type UserOverviewPopoverProps = {
   name: string
   friendStatus: FriendStatus
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
-  addFriend?: (id: string) => void
 }
 
 const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
   children,
   userId,
-  addFriend,
   name,
   friendStatus,
   commonFriendList
@@ -38,7 +36,6 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
       popOverElement={
         <UserOverviewCard
           userId={userId}
-          addFriend={addFriend}
           name={name}
           friendStatus={friendStatus}
           commonFriendList={commonFriendList}

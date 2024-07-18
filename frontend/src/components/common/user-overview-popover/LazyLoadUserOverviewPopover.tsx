@@ -11,14 +11,12 @@ type LazyLoadUserOverviewPopoverProps = {
   children: React.ReactNode
   userId: string
   name: string
-  addFriend?: (id: string) => void
   isEnableQuery: boolean
 }
 
 const LazyLoadUserOverviewPopover: FC<LazyLoadUserOverviewPopoverProps> = ({
   children,
   userId,
-  addFriend,
   name,
   isEnableQuery
 }) => {
@@ -38,7 +36,6 @@ const LazyLoadUserOverviewPopover: FC<LazyLoadUserOverviewPopoverProps> = ({
   return (
     <UserOverviewPopover
       userId={userId}
-      addFriend={() => addFriend && addFriend(userId)}
       name={name}
       friendStatus={getFriendStatus({ selfId, userId, selfFriendList })}
       commonFriendList={commonFriendList}

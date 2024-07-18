@@ -10,10 +10,6 @@ import MoreAction from '@/components/common/post-area/post-list/post/comment/Mor
 import Input, { ForwardedInputRefType } from '@/components/form/Input'
 import ConfirmModal from '@/components/common/ConfirmModal'
 import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover'
-import useAddFriend from '@/hooks/api/mutation/useAddFriend'
-import { useQueryClient } from '@tanstack/react-query'
-import useToastContext from '@/hooks/userToastContext'
-import useUserContext from '@/hooks/useUserContext'
 
 type CommentProps = {
   userId: string
@@ -46,18 +42,6 @@ const Comment: FC<CommentProps> = ({
   const [isInputFocused, setInputFocused] = useState(false)
   const inputRef = useRef<ForwardedInputRefType | null>(null)
 
-  const queryClient = useQueryClient()
-  const { addToast } = useToastContext()
-  const {
-    value: { id: selfId }
-  } = useUserContext()
-  const { addFriend } = useAddFriend({
-    onSuccess: () => {
-      addToast({ type: 'SUCCESS', title: '加入好友成功！' })
-      queryClient.invalidateQueries({ queryKey: ['getFriendList', selfId] })
-      queryClient.invalidateQueries({ queryKey: ['friendRecommendation'] })
-    }
-  })
   const handleDeleteComment = async () => {
     await onDeletePostComment()
     setShowConfirmModal(false)
@@ -117,7 +101,6 @@ const Comment: FC<CommentProps> = ({
         isEnableQuery={isEnableLoadPopover}
         userId={userId}
         name={name}
-        addFriend={addFriend}
       >
         <Avatar
           className='mr-2 cursor-pointer'
@@ -154,7 +137,6 @@ const Comment: FC<CommentProps> = ({
                 isEnableQuery={isEnableLoadPopover}
                 userId={userId}
                 name={name}
-                addFriend={addFriend}
               >
                 <div
                   className='cursor-pointer font-bold hover:underline'

@@ -6,7 +6,6 @@ import UserOverviewPopover from '@/components/common/user-overview-popover/UserO
 
 type CollapsingAvatarListProps = {
   avatarInfoList: AvatarInfo[]
-  addFriend?: (id: string) => void
   handleClickList?: AnyFunction
   className?: string
   avatarClassName?: string
@@ -18,8 +17,7 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
   className,
   avatarClassName,
   length = 7,
-  handleClickList,
-  addFriend
+  handleClickList
 }) => {
   const cn = twMerge('flex', className)
   const finalList = avatarInfoList.slice(0, length)
@@ -46,7 +44,6 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
           <UserOverviewPopover
             key={avatarInfo.id}
             userId={avatarInfo.id}
-            addFriend={() => addFriend && addFriend(avatarInfo.id)}
             name={avatarInfo.name}
             friendStatus={avatarInfo.friendStatus}
             commonFriendList={avatarInfo.commonFriendList}
