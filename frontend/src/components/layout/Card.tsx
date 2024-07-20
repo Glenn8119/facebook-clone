@@ -1,18 +1,23 @@
-import { FC, InputHTMLAttributes, ReactNode } from 'react'
+import { InputHTMLAttributes, ReactNode, forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type CardProps = InputHTMLAttributes<HTMLDivElement> & {
   children: ReactNode
 }
+export type ForwardedInputRefType = HTMLDivElement
 
-const Card: FC<CardProps> = ({ children, ...props }) => {
-  const cn = twMerge('p-2 px-4 rounded-lg bg-white shadow-lg', props.className)
+const Card = forwardRef<ForwardedInputRefType, CardProps>(
+  ({ children, ...props }, ref) => {
+    const cn = twMerge(
+      'p-2 px-4 rounded-lg bg-white shadow-lg',
+      props.className
+    )
 
-  return (
-    <div {...props} className={cn}>
-      {children}
-    </div>
-  )
-}
-
+    return (
+      <div {...props} className={cn} ref={ref}>
+        {children}
+      </div>
+    )
+  }
+)
 export default Card

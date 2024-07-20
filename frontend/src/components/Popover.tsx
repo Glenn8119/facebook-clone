@@ -27,6 +27,35 @@ const eventMap = {
   [PopoverType.HOVER]: 'mousemove'
 }
 
+type PositionStyle = Record<
+  'top' | 'bottom' | 'right' | 'left',
+  string | number
+>
+
+const defaultPositionStyle = {
+  right: 0
+} as PositionStyle
+
+const calculatePosition = (el: HTMLDivElement) => {
+  const rect = el.getBoundingClientRect()
+  const height = el.clientHeight
+  const windowHeight = window.innerHeight
+  const isOffScreenLeft = rect.left < 0
+  const isOffScreenBottom = rect.bottom > windowHeight
+
+  const output = { ...defaultPositionStyle }
+
+  if (isOffScreenLeft) {
+    output.left = 0
+  }
+
+  if (isOffScreenBottom) {
+    output.top = -height
+  }
+
+  return output
+}
+
 const Popover: FC<PopoverProps> = ({
   children,
   popOverElement,
@@ -37,6 +66,8 @@ const Popover: FC<PopoverProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const popoverRef = useRef<HTMLDivElement>(null)
+  const [positionStyle, setPositionStyle] = useState(defaultPositionStyle)
 
   useEffect(() => {
     const clickEvent = (e: Event) => {
@@ -50,19 +81,23 @@ const Popover: FC<PopoverProps> = ({
 
     const eventType = eventMap[type]
     document.addEventListener(eventType, clickEvent)
+    if (popoverRef.current) {
+      setPositionStyle(calculatePosition(popoverRef.current))
+    }
 
     return () => {
       document.removeEventListener(eventType, clickEvent)
     }
-  }, [type])
+  }, [type, open])
 
   const PopovrElement = cloneElement(popOverElement, {
     closePopover: () => setOpen(false)
   })
 
   const popoverCn = twMerge(
-    'absolute right-0 mt-0 shadow-popover p-3 z-max',
-    popOverClass
+    'absolute w-min right-0 mt-0 shadow-popover p-3 z-max',
+    popOverClass,
+    !open ? 'hidden' : ''
   )
 
   const containerCn = twMerge('relative', containerClass)
@@ -86,11 +121,14 @@ const Popover: FC<PopoverProps> = ({
       <div onClick={handleClick} onMouseEnter={handleMouseEnter}>
         {children}
       </div>
-      {open && (
-        <Card className={popoverCn} onClick={handleClickCard}>
-          {PopovrElement}
-        </Card>
-      )}
+      <Card
+        ref={popoverRef}
+        className={popoverCn}
+        onClick={handleClickCard}
+        style={positionStyle}
+      >
+        {PopovrElement}
+      </Card>
     </div>
   )
 }
