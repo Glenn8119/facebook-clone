@@ -1,3 +1,4 @@
+import FullScreenLoading from '@/components/FullScreenLoading'
 import Post from '@/components/common/post-area/post-list/post/Post'
 import useFetchPostListWithLikerFriendStatus from '@/hooks/api/queries/useGetPostList/useFetchPostListWithLikerFriendStatus'
 
@@ -6,10 +7,10 @@ type PostListProps = {
 }
 
 const PostList = ({ userId }: PostListProps) => {
-  const { postList } = useFetchPostListWithLikerFriendStatus(userId)
+  const { postList, isPending } = useFetchPostListWithLikerFriendStatus(userId)
 
-  if (!postList) {
-    return null
+  if (!postList || isPending) {
+    return <FullScreenLoading />
   }
 
   return (

@@ -10,13 +10,24 @@ const useFetchPostListWithLikerFriendStatus = (userId?: string) => {
     value: { id: selfId }
   } = useUserContext()
 
-  const { friendList: selfFriendList } = useGetFriendList(selfId)
-  const { postList } = useGetPostList(userId)
-  const { postListByUserId } = useGetPostListByUserId(userId)
+  const { friendList: selfFriendList, isPending: isFriendListPending } =
+    useGetFriendList(selfId)
+  const { postList, isPending: isGetPostPending } = useGetPostList(userId)
+  const { postListByUserId, isPending: isGetPostListByUserIdPending } =
+    useGetPostListByUserId(userId)
 
   const originalPostList = userId ? postListByUserId : postList
+  const postLoadingState = userId
+    ? isGetPostListByUserIdPending
+    : isGetPostPending
 
-  if (!originalPostList || !selfFriendList) return { postList: undefined }
+  if (
+    isFriendListPending ||
+    postLoadingState ||
+    !originalPostList ||
+    !selfFriendList
+  )
+    return { postList: undefined, isPending: true }
 
   const output = originalPostList.map((post) => {
     const likerList = post.likerList.map((liker) => {
@@ -37,7 +48,7 @@ const useFetchPostListWithLikerFriendStatus = (userId?: string) => {
     }
   }) as Post[]
 
-  return { postList: output }
+  return { postList: output, isPending: false }
 }
 
 export default useFetchPostListWithLikerFriendStatus
