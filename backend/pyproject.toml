@@ -17,8 +17,8 @@ python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.8.0"
 autopep8 = "^2.1.0"
+mypy = "^1.11.1"
 
 
 [build-system]
