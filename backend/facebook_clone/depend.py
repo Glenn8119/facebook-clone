@@ -1,13 +1,18 @@
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException
-from typing import Annotated
+from typing import Annotated, TypedDict
 from facebook_clone.config import get_settings
 from starlette import status
-from jose import JWTError, jwt
+from jose import JWTError, jwt  # type: ignore
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
 settings = get_settings()
+
+
+class CurrentUser(TypedDict):
+    account: str
+    id: str
 
 
 def get_current_user(token: Annotated[dict, Depends(oauth2_bearer)]):
@@ -26,4 +31,4 @@ def get_current_user(token: Annotated[dict, Depends(oauth2_bearer)]):
             status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate user.')
 
 
-depend_user = Annotated[dict, Depends(get_current_user)]
+depend_user = Annotated[CurrentUser, Depends(get_current_user)]
