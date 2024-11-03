@@ -26,12 +26,6 @@ async def delete_friend(user: depend_user, user_id):
     await FriendBo(user=user).delete_friend(target_user_id=user_id)
 
 
-@router.get('/common/{friend_id}')
-async def get_common_friend_list(user: depend_user, friend_id):
-    user_list = await FriendBo(user=user).get_common_friend_list(friend_id=friend_id)
-    return to_json_response(user_list)
-
-
 @router.get('/list/{user_id}')
 async def get_friend_list(user: depend_user, user_id):
     friend_list = await FriendBo(user=user).get_friend_list(user_id)
