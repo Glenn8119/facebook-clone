@@ -51,7 +51,7 @@ const Detail = () => {
   }
 
   const renderFriendDescription = () => {
-    if (FriendStatus.IsSelf) {
+    if (friendStatus === FriendStatus.IsSelf) {
       return (
         <div
           className='hover:underline cursor-pointer'
@@ -71,13 +71,14 @@ const Detail = () => {
           >
             {userFriendList.length} 位朋友
           </span>
-          ，
-          <span
-            className='hover:underline cursor-pointer'
-            onClick={() => navigateToFriendsOrMutualFriends(true)}
-          >
-            {userDetail.commonFriendList.length} 位共同朋友
-          </span>
+          {userDetail.commonFriendList.length ? (
+            <span
+              className='hover:underline cursor-pointer'
+              onClick={() => navigateToFriendsOrMutualFriends(true)}
+            >
+              ，{userDetail.commonFriendList.length} 位共同朋友
+            </span>
+          ) : null}
         </div>
       )
     }

@@ -2,7 +2,7 @@ import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
 import useUserContext from '@/hooks/useUserContext'
 import getFriendStatus from '@/utils/freindsStatus'
 
-const useFetchUserFriendList = (userId: string) => {
+const useFetchFriendListWithFriendStatus = (userId: string) => {
   const {
     value: { id: selfId }
   } = useUserContext()
@@ -24,4 +24,4 @@ const useFetchUserFriendList = (userId: string) => {
   return { friendList }
 }
 
-export default useFetchUserFriendList
+export default useFetchFriendListWithFriendStatus
