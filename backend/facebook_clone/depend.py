@@ -3,6 +3,7 @@ from fastapi import Depends, HTTPException
 from typing import Annotated, TypedDict
 from facebook_clone.config import get_settings
 from starlette import status
+from uuid import UUID
 from jose import JWTError, jwt  # type: ignore
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl='/auth/login')
@@ -12,7 +13,7 @@ settings = get_settings()
 
 class CurrentUser(TypedDict):
     account: str
-    id: str
+    id: UUID
 
 
 def get_current_user(token: Annotated[dict, Depends(oauth2_bearer)]):

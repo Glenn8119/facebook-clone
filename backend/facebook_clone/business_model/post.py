@@ -5,6 +5,11 @@ from uuid import UUID
 from facebook_clone.asyncpg import from_record_list_to_dict_list
 from facebook_clone.schema.post import Post
 import asyncio
+from facebook_clone.response import PageResponse
+
+
+def get_page_offset(page: int, limit: int):
+    return (page - 1) * limit
 
 
 class PostBo(BaseBo):
@@ -18,27 +23,30 @@ class PostBo(BaseBo):
         async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
             return await post_dao.update_post_by_id(post_id=post_id, user_id=self.user['id'], content=content)
 
-    async def get_post_list(self):
+    # 首頁貼文列表拿自己的貼文 + 所有好友的貼文來顯示
+    async def get_post_list(self, page: int, limit: int):
         post_dao: PostDao
         async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
             # TODO: user pool
-            self_post_list = from_record_list_to_dict_list(await post_dao.get_post_list(self.user['id']))
-            friend_post_list = from_record_list_to_dict_list(await post_dao.get_friend_post_list(self.user['id']))
-            post_list = [*self_post_list, *friend_post_list]
+            offset = get_page_offset(page=page, limit=limit)
+            post_list = from_record_list_to_dict_list(await post_dao.get_self_and_friend_post_list(user_id=self.user['id'], offset=offset, limit=limit))
+            total = post_list[0]['total'] if post_list else 0
             post_list_response = await asyncio.gather(*[self.get_single_post_response(post=post) for post in post_list])
-            sorted_post_list = sorted(post_list_response,
-                                      key=lambda post: post['created_at'], reverse=True)
-            return [Post.model_validate(post) for post in
-                    sorted_post_list]
+            post_page_result = [Post.model_validate(post) for post in
+                                post_list_response]
+            return PageResponse(page=page, total=total, page_size=limit, result=post_page_result)
 
-    async def get_post_list_by_user_id(self, user_id):
+    async def get_post_list_by_user_id(self, user_id, page: int, limit: int):
         post_dao: PostDao
         async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
             # TODO: user pool
-            post_list = from_record_list_to_dict_list(await post_dao.get_post_list(user_id))
+            offset = get_page_offset(page=page, limit=limit)
+            post_list = from_record_list_to_dict_list(await post_dao.get_post_list(user_id=user_id, offset=offset, limit=limit))
+            total = post_list[0]['total'] if post_list else 0
             post_list_response = await asyncio.gather(*[self.get_single_post_response(post=post) for post in post_list])
-            return [Post.model_validate(post) for post in
-                    post_list_response]
+            post_page_result = [Post.model_validate(post) for post in
+                                post_list_response]
+            return PageResponse(page=page, total=total, page_size=limit, result=post_page_result)
 
     async def get_single_post_response(self, post):
         post_dao: PostDao

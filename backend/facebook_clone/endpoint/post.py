@@ -3,7 +3,7 @@ from facebook_clone.schema.post import Post, PostPostRequestBody, PutPostRequest
 from facebook_clone.business_model.post import PostBo
 from typing import List
 from facebook_clone.depend import depend_user
-from facebook_clone.response import to_json_response
+from facebook_clone.response import to_json_response, PageResponse
 from uuid import UUID
 from starlette import status
 
@@ -16,15 +16,15 @@ async def create_post(post: PostPostRequestBody, user: depend_user):
     return to_json_response(post)
 
 
-@router.get('/list', response_model=List[Post])
-async def get_post_list(user: depend_user):
-    post_list = await PostBo(user=user).get_post_list()
-    return to_json_response(post_list)
+@router.get('/list', response_model=PageResponse[Post])
+async def get_post_list(user: depend_user, page: int = 1, limit: int = 10):
+    page_result = await PostBo(user=user).get_post_list(page=page, limit=limit)
+    return to_json_response(page_result)
 
 
-@router.get('/list/{user_id}', response_model=List[Post])
-async def get_post_list_by_user_id(user_id: UUID, user: depend_user):
-    post_list = await PostBo(user=user).get_post_list_by_user_id(user_id=user_id)
+@router.get('/list/{user_id}', response_model=PageResponse[Post])
+async def get_post_list_by_user_id(user_id: UUID, user: depend_user, page: int = 1, limit: int = 10):
+    post_list = await PostBo(user=user).get_post_list_by_user_id(user_id=user_id, page=page, limit=limit)
     return to_json_response(post_list)
 
 

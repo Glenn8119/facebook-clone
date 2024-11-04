@@ -3,35 +3,41 @@ from uuid import UUID
 
 
 class PostDao(BaseDao):
-    async def create_post(self, content: str, user_id: str):
+    async def create_post(self, content: str, user_id: UUID):
         return await self.connection.fetchrow('''
             INSERT INTO post (content, user_id) VALUES ($1, $2)
             RETURNING *
         ''', content, user_id)
 
-    async def get_post_list(self, user_id: str):
+    async def get_post_list(self, user_id: UUID, offset: int, limit: int):
         return await self.connection.fetch('''
-            SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name as poster FROM post as p
-            INNER JOIN user_table as u on p.user_id = u.id
+            SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name AS poster, count(p.id) over() AS total
+            FROM post AS p
+            INNER JOIN user_table AS u ON p.user_id = u.id
             WHERE p.user_id = $1
             ORDER BY p.created_at DESC
-        ''', user_id)
+            OFFSET $2 LIMIT $3
+        ''', user_id, offset, limit)
 
-    async def get_friend_post_list(self, user_id: str):
+    async def get_self_and_friend_post_list(self, user_id: UUID, offset: int, limit: int):
         return await self.connection.fetch('''
-            SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name as poster FROM post as p
-            INNER JOIN friend_relation as f on p.user_id = f.friend_id
-            INNER JOIN user_table as u on u.id = f.friend_id
-            WHERE f.user_id = $1
+            SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name AS poster, count(p.id) over() AS total
+            FROM post AS p
+            INNER JOIN user_table AS u ON u.id in (
+                select f.friend_id from friend_relation as f
+                where f.user_id = $1
+            ) OR u.id = $1
+            WHERE p.user_id = u.id
             ORDER BY p.created_at DESC
-        ''', user_id)
+            OFFSET $2 LIMIT $3
+        ''', user_id, offset, limit)
 
-    async def update_post_by_id(self, post_id: UUID, user_id: str, content: str):
+    async def update_post_by_id(self, post_id: UUID, user_id: UUID, content: str):
         return await self.connection.fetchrow('''
             UPDATE post
             SET content = $1, updated_at = now()
             WHERE id = $2
-            and user_id = $3
+            AND user_id = $3
             RETURNING *
         ''', content, post_id, user_id)
 
@@ -58,17 +64,17 @@ class PostDao(BaseDao):
 
     async def get_post_liker_list(self, post_id: UUID):
         return await self.connection.fetch('''
-            SELECT p.user_id as id, u.name
-            FROM post_like as p
-            INNER JOIN user_table as u on u.id = p.user_id
+            SELECT p.user_id AS id, u.name
+            FROM post_like AS p
+            INNER JOIN user_table AS u ON u.id = p.user_id
             WHERE p.post_id = $1
         ''', post_id)
 
     async def get_comment_list_from_post(self, post_id: UUID):
         return await self.connection.fetch('''
-            SELECT c.*, u.name as poster, u.id as poster_id
-            FROM comment as c
-            INNER JOIN user_table as u on c.user_id = u.id
+            SELECT c.*, u.name AS poster, u.id AS poster_id
+            FROM comment AS c
+            INNER JOIN user_table AS u ON c.user_id = u.id
             WHERE c.post_id = $1
             ORDER BY c.created_at DESC
         ''', post_id)
