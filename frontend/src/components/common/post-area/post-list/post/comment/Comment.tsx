@@ -132,7 +132,7 @@ const Comment: FC<CommentProps> = ({
           </div>
         ) : (
           <div className='flex items-center'>
-            <div className='bg-main rounded-2xl py-2 px-3 mr-2 text-15 w-min max-w-72 break-words'>
+            <div className='bg-main rounded-2xl py-2 px-3 mr-2 text-15 max-w-72 break-words'>
               <LazyLoadUserOverviewPopover
                 isEnableQuery={isEnableLoadPopover}
                 userId={userId}
@@ -157,7 +157,6 @@ const Comment: FC<CommentProps> = ({
                     handleEdit={handleStartEdit}
                   />
                 }
-                containerClass=''
               >
                 <MdMoreHoriz className='cursor-pointer' size={18} />
               </Popover>
