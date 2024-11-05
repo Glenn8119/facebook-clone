@@ -28,7 +28,13 @@ export const getSinglePostResponseSchema = createPostResponseSchema.extend({
   liker_list: z.array(userOverviewSchema),
   poster: z.string()
 })
-export const getPostResponseSchema = z.array(getSinglePostResponseSchema)
+
+export const getPostResponseSchema = z.object({
+  page: z.number(),
+  page_size: z.number(),
+  total: z.number(),
+  result: z.array(getSinglePostResponseSchema)
+})
 
 type CreatePostResponseType = z.infer<typeof createPostResponseSchema>
 type EditPostResponseType = z.infer<typeof editPostResponseSchema>
