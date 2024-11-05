@@ -56,18 +56,25 @@ const PostApi = {
     transformObjectKeyFromSnakeToCamel(res)
   },
 
-  async getPostList(): Promise<FEGetPostResponseType> {
+  async getPostList(
+    page: number = 1,
+    limit: number = 3
+  ): Promise<FEGetPostResponseType> {
     const res = await _axios({
-      url: '/post/list',
+      url: `/post/list?page=${page}&limit=${limit}`,
       responseSchema: getPostResponseSchema
     })
 
     return transformObjectKeyFromSnakeToCamel(res)
   },
 
-  async getPostListByUserId(userId: string): Promise<FEGetPostResponseType> {
+  async getPostListByUserId(
+    userId: string,
+    page: number = 1,
+    limit: number = 3
+  ): Promise<FEGetPostResponseType> {
     const res = await _axios({
-      url: `/post/list/${userId}`,
+      url: `/post/list/${userId}?page=${page}&limit=${limit}`,
       responseSchema: getPostResponseSchema
     })
 

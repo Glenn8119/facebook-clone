@@ -17,7 +17,7 @@ const PostArea: FC<PostAreaProps> = ({ className, userId }) => {
 
   return (
     <div className={cn}>
-      {userId === selfId ? <AddPost /> : null}
+      {userId && userId !== selfId ? null : <AddPost />}
       <PostList userId={userId} />
     </div>
   )
