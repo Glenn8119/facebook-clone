@@ -12,7 +12,7 @@ const Spin: FC<SpinProps> = ({ className }) => {
   )
 
   return (
-    <div role='status'>
+    <div className='flex justify-center'>
       <svg
         aria-hidden='true'
         className={cn}

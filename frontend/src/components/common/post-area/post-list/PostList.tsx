@@ -1,6 +1,6 @@
 import FullScreenLoading from '@/components/FullScreenLoading'
+import Spin from '@/components/Spin'
 import Post from '@/components/common/post-area/post-list/post/Post'
-import Button from '@/components/form/Button'
 import useFetchPostListWithLikerFriendStatus from '@/hooks/api/queries/useFetchPostListWithLikerFriendStatus'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 
@@ -9,13 +9,8 @@ type PostListProps = {
 }
 
 const PostList = ({ userId }: PostListProps) => {
-  const {
-    postList,
-    isPending,
-    isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage
-  } = useFetchPostListWithLikerFriendStatus(userId)
+  const { postList, isPending, isFetchingNextPage, fetchNextPage } =
+    useFetchPostListWithLikerFriendStatus(userId)
 
   useInfiniteScroll(() => !isFetchingNextPage && fetchNextPage())
 
@@ -25,15 +20,10 @@ const PostList = ({ userId }: PostListProps) => {
 
   return (
     <div>
-      <Button
-        disabled={!hasNextPage}
-        onClick={() => !isFetchingNextPage && fetchNextPage()}
-      >
-        next page
-      </Button>
       {postList.map((post) => (
         <Post className='mb-3' key={post.id} post={post} />
       ))}
+      {isFetchingNextPage ? <Spin className='w-8 h-8 mt-2' /> : null}
     </div>
   )
 }
