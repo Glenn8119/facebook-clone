@@ -2,7 +2,7 @@ import { TransformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 
 import { z } from 'zod'
 
-import { userOverviewSchema } from '@/api/user/schema'
+import { userSchema } from '@/api/user/schema'
 
 export const commentSchema = z.object({
   id: z.string().uuid(),
@@ -23,9 +23,13 @@ export const createPostResponseSchema = z.object({
 
 export const editPostResponseSchema = createPostResponseSchema
 
+const likerSchema = userSchema.extend({
+  is_friend: z.boolean()
+})
+
 export const getSinglePostResponseSchema = createPostResponseSchema.extend({
   comment_list: z.array(commentSchema),
-  liker_list: z.array(userOverviewSchema),
+  liker_list: z.array(likerSchema),
   poster: z.string()
 })
 

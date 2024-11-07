@@ -62,13 +62,23 @@ class PostDao(BaseDao):
             RETURNING *
         ''', post_id, user_id)
 
-    async def get_post_liker_list(self, post_id: UUID):
+    async def get_post_liker_list(self, current_user_id: UUID, post_id: UUID):
         return await self.connection.fetch('''
-            SELECT p.user_id AS id, u.name
-            FROM post_like AS p
-            INNER JOIN user_table AS u ON u.id = p.user_id
-            WHERE p.post_id = $1
-        ''', post_id)
+            WITH friend_cte AS (
+                SELECT friend_id
+                FROM friend_relation
+                WHERE user_id = $1
+            )
+                     
+            SELECT pl.user_id AS id, u.name,
+                CASE
+                    WHEN pl.user_id in (SELECT * FROM friend_cte) THEN TRUE
+                    ELSE FALSE
+                END AS is_friend
+            FROM post_like AS pl
+            INNER JOIN user_table AS u ON u.id = pl.user_id
+            WHERE pl.post_id = $2
+        ''', current_user_id, post_id)
 
     async def get_comment_list_from_post(self, post_id: UUID):
         return await self.connection.fetch('''

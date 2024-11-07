@@ -48,17 +48,15 @@ class PostBo(BaseBo):
                                 post_list_response]
             return PageResponse(page=page, total=total, page_size=limit, result=post_page_result)
 
+    # 拿到 liker list 以及留言的前三筆
     async def get_single_post_response(self, post):
         post_dao: PostDao
-        friend_bo: FriendBo
         async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
-            friend_bo = FriendBo(user=self.user)
             # TODO: use pool
-            liker_list = from_record_list_to_dict_list(await post_dao.get_post_liker_list(post_id=post['id']))
+            liker_list = from_record_list_to_dict_list(await post_dao.get_post_liker_list(current_user_id=self.user['id'], post_id=post['id']))
             comment_list = from_record_list_to_dict_list(await post_dao.get_comment_list_from_post(post_id=post['id']))
-            liker_list_with_common_friend_list = await asyncio.gather(*[friend_bo.append_common_friend_list_to_dict_with_user_id(liker) for liker in liker_list])
 
-            return {**post, 'liker_list': liker_list_with_common_friend_list, 'comment_list': comment_list}
+            return {**post, 'liker_list': liker_list, 'comment_list': comment_list}
 
     async def delete_post(self, post_id: UUID):
         post_dao: PostDao

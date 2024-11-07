@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
 from typing import List
-from facebook_clone.schema.user import UserOverviewItem
+from facebook_clone.schema.user import User
 
 
 class PostPostRequestBody(BaseModel):
@@ -30,9 +30,13 @@ class Comment(BaseModel):
     updated_at: datetime
 
 
+class Liker(User):
+    is_friend: bool
+
+
 class Post(BaseModel):
     comment_list: List[Comment]
-    liker_list: List[UserOverviewItem]
+    liker_list: List[Liker]
     poster: str
     id: UUID
     content: str

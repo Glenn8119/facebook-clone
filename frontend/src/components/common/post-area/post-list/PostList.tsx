@@ -3,16 +3,36 @@ import Spin from '@/components/Spin'
 import Post from '@/components/common/post-area/post-list/post/Post'
 import useFetchPostListWithLikerFriendStatus from '@/hooks/api/queries/useFetchPostListWithLikerFriendStatus'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
+import { useState } from 'react'
 
 type PostListProps = {
   userId?: string
 }
 
-const PostList = ({ userId }: PostListProps) => {
-  const { postList, isPending, isFetchingNextPage, fetchNextPage } =
-    useFetchPostListWithLikerFriendStatus(userId)
+const wait = (seconds: number) =>
+  new Promise((res) => setTimeout(res, seconds * 1000))
 
-  useInfiniteScroll(() => !isFetchingNextPage && fetchNextPage())
+const PostList = ({ userId }: PostListProps) => {
+  const {
+    postList,
+    isPending,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage
+  } = useFetchPostListWithLikerFriendStatus(userId)
+
+  const [delaying, setDelaying] = useState(false)
+
+  const delayFetch = async () => {
+    if (hasNextPage) {
+      setDelaying(true)
+      await wait(0.5)
+      await fetchNextPage()
+      setDelaying(false)
+    }
+  }
+
+  useInfiniteScroll(() => !isFetchingNextPage && !delaying && delayFetch())
 
   if (!postList || isPending) {
     return <FullScreenLoading />
@@ -23,7 +43,9 @@ const PostList = ({ userId }: PostListProps) => {
       {postList.map((post) => (
         <Post className='mb-3' key={post.id} post={post} />
       ))}
-      {isFetchingNextPage ? <Spin className='w-8 h-8 mt-2' /> : null}
+      {isFetchingNextPage || delaying ? (
+        <Spin className='w-8 h-8 mt-2' />
+      ) : null}
     </div>
   )
 }
