@@ -80,14 +80,15 @@ class PostDao(BaseDao):
             WHERE pl.post_id = $2
         ''', current_user_id, post_id)
 
-    async def get_comment_list_from_post(self, post_id: UUID):
+    async def get_comment_list_from_post(self, post_id: UUID, offset: int, limit: int):
         return await self.connection.fetch('''
             SELECT c.*, u.name AS poster, u.id AS poster_id
             FROM comment AS c
             INNER JOIN user_table AS u ON c.user_id = u.id
             WHERE c.post_id = $1
             ORDER BY c.created_at DESC
-        ''', post_id)
+            OFFSET $2 LIMIT $3
+        ''', post_id, offset, limit)
 
     async def add_post_comment(self, content: str, post_id: UUID, user_id: UUID):
         return await self.connection.execute('''
