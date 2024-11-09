@@ -1,9 +1,9 @@
 import useUserContext from '@/hooks/useUserContext'
 import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
-import getFriendStatus from '@/utils/freindsStatus'
 import { Post } from '@/types/api/post'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import PostApi from '@/api/post'
+import { FriendStatus } from '@/types/common'
 
 const getPostListByUserId = async (userId: string, page: number) => {
   return PostApi.getPostListByUserId(userId, page)
@@ -59,11 +59,12 @@ const useFetchPostListWithLikerFriendStatus = (userId?: string) => {
   const result = data.pages.reduce((acc, cur) => {
     const next = cur.result.map((post) => {
       const likerList = post.likerList.map((liker) => {
-        const friendStatus = getFriendStatus({
-          selfId,
-          userId: liker.id,
-          selfFriendList: selfFriendList!
-        })
+        const friendStatus =
+          liker.id === selfId
+            ? FriendStatus.IsSelf
+            : liker.isFriend
+            ? FriendStatus.IsFriend
+            : FriendStatus.IsNotFriend
         return {
           ...liker,
           friendStatus

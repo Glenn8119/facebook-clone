@@ -44,6 +44,7 @@ type CreatePostResponseType = z.infer<typeof createPostResponseSchema>
 type EditPostResponseType = z.infer<typeof editPostResponseSchema>
 type GetPostResponseType = z.infer<typeof getPostResponseSchema>
 type GetSinglePostResponseType = z.infer<typeof getSinglePostResponseSchema>
+type LikerType = z.infer<typeof likerSchema>
 export type FECreatePostResponseType =
   TransformObjectKeyFromSnakeToCamel<CreatePostResponseType>
 export type FEEditPostResponseType =
@@ -52,3 +53,4 @@ export type FEGetPostResponseType =
   TransformObjectKeyFromSnakeToCamel<GetPostResponseType>
 export type FEGetSinglePostResponseType =
   TransformObjectKeyFromSnakeToCamel<GetSinglePostResponseType>
+export type FELikerType = TransformObjectKeyFromSnakeToCamel<LikerType>
