@@ -1,7 +1,7 @@
 import FullScreenLoading from '@/components/FullScreenLoading'
 import Spin from '@/components/Spin'
 import Post from '@/components/common/post-area/post-list/post/Post'
-import useFetchPostListWithLikerFriendStatus from '@/hooks/api/queries/useFetchPostListWithLikerFriendStatus'
+import usePostListInfiniteQuery from '@/hooks/api/queries/usePostListInfiniteQuery'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { useState } from 'react'
 
@@ -19,7 +19,7 @@ const PostList = ({ userId }: PostListProps) => {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage
-  } = useFetchPostListWithLikerFriendStatus(userId)
+  } = usePostListInfiniteQuery(userId)
 
   const [delaying, setDelaying] = useState(false)
 

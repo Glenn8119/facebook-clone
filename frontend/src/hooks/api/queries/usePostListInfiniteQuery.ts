@@ -13,7 +13,7 @@ const getPostList = async (page: number) => {
   return PostApi.getPostList(page)
 }
 
-const useFetchPostListWithLikerFriendStatus = (userId?: string) => {
+const usePostListInfiniteQuery = (userId?: string) => {
   const {
     value: { id: selfId }
   } = useUserContext()
@@ -88,4 +88,4 @@ const useFetchPostListWithLikerFriendStatus = (userId?: string) => {
   }
 }
 
-export default useFetchPostListWithLikerFriendStatus
+export default usePostListInfiniteQuery
