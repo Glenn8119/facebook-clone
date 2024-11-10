@@ -29,6 +29,7 @@ const likerSchema = userSchema.extend({
 
 export const getSinglePostResponseSchema = createPostResponseSchema.extend({
   comment_list: z.array(commentSchema),
+  comment_total_count: z.number(),
   liker_list: z.array(likerSchema),
   poster: z.string()
 })
@@ -40,17 +41,29 @@ export const getPostResponseSchema = z.object({
   result: z.array(getSinglePostResponseSchema)
 })
 
+export const getPostCommentResponseSchema = z.object({
+  page: z.number(),
+  page_size: z.number(),
+  total: z.number(),
+  result: z.array(commentSchema)
+})
+
 type CreatePostResponseType = z.infer<typeof createPostResponseSchema>
 type EditPostResponseType = z.infer<typeof editPostResponseSchema>
 type GetPostResponseType = z.infer<typeof getPostResponseSchema>
+type GetPostCommentResponseType = z.infer<typeof getPostCommentResponseSchema>
 type GetSinglePostResponseType = z.infer<typeof getSinglePostResponseSchema>
 type LikerType = z.infer<typeof likerSchema>
+type CommentType = z.infer<typeof commentSchema>
 export type FECreatePostResponseType =
   TransformObjectKeyFromSnakeToCamel<CreatePostResponseType>
 export type FEEditPostResponseType =
   TransformObjectKeyFromSnakeToCamel<EditPostResponseType>
 export type FEGetPostResponseType =
   TransformObjectKeyFromSnakeToCamel<GetPostResponseType>
+export type FEGetPostCommentResponseType =
+  TransformObjectKeyFromSnakeToCamel<GetPostCommentResponseType>
 export type FEGetSinglePostResponseType =
   TransformObjectKeyFromSnakeToCamel<GetSinglePostResponseType>
 export type FELikerType = TransformObjectKeyFromSnakeToCamel<LikerType>
+export type FECommentType = TransformObjectKeyFromSnakeToCamel<CommentType>

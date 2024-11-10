@@ -50,6 +50,12 @@ async def unlike_post(post_id: UUID, user: depend_user):
     await PostBo(user=user).unlike_post(post_id=post_id)
 
 
+@router.get('/{post_id}/comments')
+async def get_post_comment_list(user: depend_user, post_id: UUID, page: int = 1, limit: int = 3):
+    page_result = await PostBo(user=user).get_post_comment_list(post_id=post_id, page=page, limit=limit)
+    return to_json_response(page_result)
+
+
 @router.post('/{post_id}/comment')
 async def create_post_comment(post_id: UUID, user: depend_user, comment: PostCommentRequestBody):
     await PostBo(user=user).create_post_comment(post_id=post_id, content=comment.content)

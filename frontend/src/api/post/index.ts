@@ -1,8 +1,10 @@
 import _axios from '@/api/_axios'
 import {
   FEEditPostResponseType,
+  FEGetPostCommentResponseType,
   createPostResponseSchema,
   editPostResponseSchema,
+  getPostCommentResponseSchema,
   getPostResponseSchema,
   type FECreatePostResponseType,
   type FEGetPostResponseType
@@ -76,6 +78,23 @@ const PostApi = {
     const res = await _axios({
       url: `/post/list/${userId}?page=${page}&limit=${limit}`,
       responseSchema: getPostResponseSchema
+    })
+
+    return transformObjectKeyFromSnakeToCamel(res)
+  },
+
+  async getPostCommentList({
+    postId,
+    page = 1,
+    limit = 3
+  }: {
+    postId: string
+    page: number
+    limit: number
+  }): Promise<FEGetPostCommentResponseType> {
+    const res = await _axios({
+      url: `/post/${postId}/comments?page=${page}&limit=${limit}`,
+      responseSchema: getPostCommentResponseSchema
     })
 
     return transformObjectKeyFromSnakeToCamel(res)

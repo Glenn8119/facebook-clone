@@ -1,5 +1,4 @@
 import useUserContext from '@/hooks/useUserContext'
-import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
 import { Post } from '@/types/api/post'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import PostApi from '@/api/post'
@@ -26,9 +25,6 @@ const usePostListInfiniteQuery = (userId?: string) => {
     }
   }
 
-  const { friendList: selfFriendList, isPending: isFriendListPending } =
-    useGetFriendList(selfId)
-
   const { data, isPending, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery({
       queryKey: getQueryKey(),
@@ -42,47 +38,37 @@ const usePostListInfiniteQuery = (userId?: string) => {
         const { page, total, pageSize } = lastPage
         const hasNextPage = page * pageSize < total
         return hasNextPage ? lastPage.page + 1 : null
+      },
+      select: (data) => {
+        return data.pages.reduce((acc, cur) => {
+          const next = cur.result.map((post) => {
+            const likerList = post.likerList.map((liker) => {
+              const friendStatus =
+                liker.id === selfId
+                  ? FriendStatus.IsSelf
+                  : liker.isFriend
+                  ? FriendStatus.IsFriend
+                  : FriendStatus.IsNotFriend
+              return {
+                ...liker,
+                friendStatus
+              }
+            })
+            return {
+              ...post,
+              likerList
+            }
+          })
+
+          return acc.concat(next)
+        }, [] as Post[])
       }
     })
-
-  if (!data || !selfFriendList || isPending || isFriendListPending) {
-    return {
-      hasNextPage,
-      postList: undefined,
-      isPending: true,
-      isFetchingNextPage: false,
-      fetchNextPage
-    }
-  }
-
-  // 在後端回傳的文章中沒有說明點讚的人是否是自己的好友，UI 需要根據此來顯示不同，所以前端自己組
-  const result = data.pages.reduce((acc, cur) => {
-    const next = cur.result.map((post) => {
-      const likerList = post.likerList.map((liker) => {
-        const friendStatus =
-          liker.id === selfId
-            ? FriendStatus.IsSelf
-            : liker.isFriend
-            ? FriendStatus.IsFriend
-            : FriendStatus.IsNotFriend
-        return {
-          ...liker,
-          friendStatus
-        }
-      })
-      return {
-        ...post,
-        likerList
-      }
-    })
-
-    return acc.concat(next)
-  }, [] as Post[])
 
   return {
     hasNextPage,
-    postList: result,
-    isPending: false,
+    postList: data,
+    isPending,
     isFetchingNextPage,
     fetchNextPage
   }

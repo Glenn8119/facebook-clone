@@ -82,7 +82,7 @@ class PostDao(BaseDao):
 
     async def get_comment_list_from_post(self, post_id: UUID, offset: int, limit: int):
         return await self.connection.fetch('''
-            SELECT c.*, u.name AS poster, u.id AS poster_id
+            SELECT c.*, u.name AS poster, u.id AS poster_id, count(c.id) over() AS total
             FROM comment AS c
             INNER JOIN user_table AS u ON c.user_id = u.id
             WHERE c.post_id = $1

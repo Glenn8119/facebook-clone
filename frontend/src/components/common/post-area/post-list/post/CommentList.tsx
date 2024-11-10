@@ -3,8 +3,9 @@ import { getTimeFromNow } from '@/utils/formatter/dayjs'
 import Comment from '@/components/common/post-area/post-list/post/comment/Comment'
 
 type CommentListProps = {
-  post: Post
+  postId: string
   selfId: string
+  commentList: Post['commentList']
   deletePostComment: (body: {
     postId: string
     commentId: string
@@ -17,29 +18,30 @@ type CommentListProps = {
 }
 
 const CommentList = ({
-  post,
+  postId,
   selfId,
+  commentList,
   deletePostComment,
   editPostComment
 }: CommentListProps) => {
   // TODO: 留言分頁管理
-  const renderCommentList = post.commentList.map((comment) => {
+  const renderCommentList = commentList.map((comment) => {
     const createTime = getTimeFromNow(new Date(comment.createdAt))
     return (
       <Comment
+        key={comment.id}
         userId={comment.posterId}
         className='mb-2'
         isHoverShowDots={comment.posterId === selfId}
-        key={comment.id}
         content={comment.content}
         createAt={createTime}
         hasEdited={comment.createdAt !== comment.updatedAt}
         name={comment.poster}
         onDeletePostComment={() =>
-          deletePostComment({ postId: post.id, commentId: comment.id })
+          deletePostComment({ postId, commentId: comment.id })
         }
         onEditPostComment={(content) =>
-          editPostComment({ postId: post.id, commentId: comment.id, content })
+          editPostComment({ postId, commentId: comment.id, content })
         }
       />
     )

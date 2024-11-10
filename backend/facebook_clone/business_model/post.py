@@ -3,7 +3,7 @@ from facebook_clone.business_model import get_facebook_clone_dao_factory, BaseBo
 from facebook_clone.business_model.friend import FriendBo
 from uuid import UUID
 from facebook_clone.asyncpg import from_record_list_to_dict_list
-from facebook_clone.schema.post import Post
+from facebook_clone.schema.post import Post, Comment
 import asyncio
 from facebook_clone.response import PageResponse
 
@@ -36,6 +36,17 @@ class PostBo(BaseBo):
                                 post_list_response]
             return PageResponse(page=page, total=total, page_size=limit, result=post_page_result)
 
+    async def get_post_comment_list(self, post_id: UUID, page: int, limit: int):
+        post_dao: PostDao
+        async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
+            # TODO: user pool
+            offset = get_page_offset(page=page, limit=limit)
+            comment_list = from_record_list_to_dict_list(await post_dao.get_comment_list_from_post(post_id=post_id, offset=offset, limit=limit))
+            total = comment_list[0]['total'] if comment_list else 0
+            post_comment_page_result = [Comment.model_validate(comment) for comment in
+                                        comment_list]
+            return PageResponse(page=page, total=total, page_size=limit, result=post_comment_page_result)
+
     async def get_post_list_by_user_id(self, user_id, page: int, limit: int):
         post_dao: PostDao
         async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
@@ -55,8 +66,8 @@ class PostBo(BaseBo):
             # TODO: use pool
             liker_list = from_record_list_to_dict_list(await post_dao.get_post_liker_list(current_user_id=self.user['id'], post_id=post['id']))
             comment_list = from_record_list_to_dict_list(await post_dao.get_comment_list_from_post(post_id=post['id'], limit=3, offset=0))
-
-            return {**post, 'liker_list': liker_list, 'comment_list': comment_list}
+            comment_total_count = comment_list[0]['total'] if comment_list else 0
+            return {**post, 'liker_list': liker_list, 'comment_list': comment_list, 'comment_total_count': comment_total_count}
 
     async def delete_post(self, post_id: UUID):
         post_dao: PostDao

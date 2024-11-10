@@ -35,6 +35,7 @@ import useDeletePost from '@/hooks/api/mutation/useDeletePost'
 
 import { type PostFormType, postFormSchema } from '@/schema/validation/add-post'
 import LikerListModal from './LikerListModal'
+import useCommentListInfiniteQuery from '@/hooks/api/queries/useCommentListInfiniteQuery'
 
 type PostProps = {
   className: string
@@ -59,6 +60,10 @@ const Post: FC<PostProps> = ({ className, post }) => {
     createPostComment({ postId: post.id, content: commentInput })
   }
 
+  const { commentList, fetchNextCommentPage } = useCommentListInfiniteQuery(
+    post.id
+  )
+
   const { createPostComment } = useCreatePostComment()
   const { likePost } = useLikePost()
   const { unlikePost } = useUnlikePost()
@@ -68,6 +73,9 @@ const Post: FC<PostProps> = ({ className, post }) => {
   const { deletePost } = useDeletePost()
 
   const isSelfPost = selfId === post.userId
+  const finalCommentList = commentList
+    ? [...post.commentList, ...commentList]
+    : post.commentList
 
   const closePostActionModal = () => {
     setPostModalShow(false)
@@ -173,10 +181,20 @@ const Post: FC<PostProps> = ({ className, post }) => {
         </div>
         <CommentList
           selfId={selfId}
-          post={post}
+          postId={post.id}
+          commentList={finalCommentList}
           deletePostComment={deletePostComment}
           editPostComment={editPostComment}
         />
+        {post.commentTotalCount > finalCommentList.length ? (
+          <div
+            className='pt-1 pb-2 cursor-pointer text-gray-500 text-15 font-semibold'
+            onClick={() => fetchNextCommentPage()}
+          >
+            查看更多留言
+          </div>
+        ) : null}
+
         <CommentAction
           ref={commentInputRef}
           inputValue={commentInput}
