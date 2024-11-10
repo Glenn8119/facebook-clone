@@ -10,7 +10,7 @@ class UserBo(BaseBo):
     async def get_user_detail(self, user_id):
         user_dao: UserDao
         async with get_facebook_clone_dao_factory().create_dao_list(UserDao) as [user_dao]:
-            user = await user_dao.get_user_by_id(user_id=user_id)
+            user = await user_dao.get_user_by_id(current_user_id=self.user['id'], user_id=user_id)
             friend_bo = FriendBo(user=user)
 
             common_friend_list = await friend_bo.get_common_friend_list(user_id=self.user['id'], friend_id=user_id)

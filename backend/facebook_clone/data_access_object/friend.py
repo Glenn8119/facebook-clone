@@ -43,13 +43,23 @@ class FriendDao(BaseDao):
             WHERE f1.user_id = $1 AND f2.user_id = $2
         ''', user_id, friend_id)
 
-    async def get_friend_list(self, user_id):
+    async def get_friend_list(self, current_user_id, user_id):
         return await self.connection.fetch('''
-            SELECT u.name, u.account, u.id
+            WITH friend_cte AS (
+                SELECT friend_id
+                FROM friend_relation
+                WHERE user_id = $1
+            )
+            
+            SELECT u.name, u.account, u.id,
+                CASE
+                    WHEN u.id in (SELECT * FROM friend_cte) THEN TRUE
+                    ELSE FALSE
+                END AS is_friend
             FROM user_table as u
             INNER JOIN friend_relation as f ON f.friend_id = u.id
-            WHERE f.user_id = $1
-        ''', user_id)
+            WHERE f.user_id = $2
+        ''', current_user_id, user_id)
 
     async def get_friend_relation(self, user_id, friend_id):
         return await self.connection.fetchrow('''

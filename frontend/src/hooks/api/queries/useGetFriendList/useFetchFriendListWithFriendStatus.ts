@@ -8,9 +8,8 @@ const useFetchFriendListWithFriendStatus = (userId: string) => {
   } = useUserContext()
 
   const { friendList: userFriendList } = useGetFriendList(userId)
-  const { friendList: selfFriendList } = useGetFriendList(selfId)
 
-  if (!userFriendList || !selfFriendList) {
+  if (!userFriendList) {
     return {
       friendList: null
     }
@@ -18,7 +17,11 @@ const useFetchFriendListWithFriendStatus = (userId: string) => {
 
   const friendList = userFriendList.map((friend) => ({
     ...friend,
-    friendStatus: getFriendStatus({ selfFriendList, userId: friend.id, selfId })
+    friendStatus: getFriendStatus({
+      isFriend: friend.isFriend,
+      userId: friend.id,
+      selfId
+    })
   }))
 
   return { friendList }

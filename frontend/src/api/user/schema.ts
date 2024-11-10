@@ -6,14 +6,13 @@ export const userSchema = z.object({
   id: z.string().uuid()
 })
 
-// TODO: add additional user data
-export const userDetailSchema = userSchema.extend({
+export const userOverviewSchema = userSchema.extend({
+  is_friend: z.boolean(),
   common_friend_list: z.array(userSchema)
 })
 
-export const userOverviewSchema = userSchema.extend({
-  common_friend_list: z.array(userSchema)
-})
+// TODO: add additional user data
+export const userDetailSchema = userOverviewSchema
 
 type UserDetailReponseType = z.infer<typeof userDetailSchema>
 type UserOverviewType = z.infer<typeof userOverviewSchema>

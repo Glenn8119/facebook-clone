@@ -19,10 +19,21 @@ class UserDao(BaseDao):
             ''', account
         )
 
-    async def get_user_by_id(self, user_id):
+    async def get_user_by_id(self, current_user_id, user_id):
         return await self.connection.fetchrow(
             '''
-                SELECT id, name, account FROM user_table
-                WHERE id = $1
-            ''', user_id
+                WITH friend_cte AS (
+                    SELECT friend_id
+                    FROM friend_relation
+                    WHERE user_id = $1
+                ) 
+                
+                SELECT id, name, account,
+                    CASE
+                        WHEN id IN (SELECT * FROM friend_cte) THEN TRUE
+                        ELSE FALSE
+                    END AS is_friend
+                FROM user_table
+                WHERE id = $2
+            ''', current_user_id, user_id
         )

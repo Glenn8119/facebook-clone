@@ -3,19 +3,17 @@ import { FriendStatus } from '@/types/common'
 const getFriendStatus = ({
   selfId,
   userId,
-  selfFriendList
+  isFriend
 }: {
   selfId: string
   userId: string
-  selfFriendList: { id: string }[]
+  isFriend: boolean
 }) => {
   if (selfId === userId) {
     return FriendStatus.IsSelf
   }
 
-  return selfFriendList.find((friend) => friend.id === userId)
-    ? FriendStatus.IsFriend
-    : FriendStatus.IsNotFriend
+  return isFriend ? FriendStatus.IsFriend : FriendStatus.IsNotFriend
 }
 
 export default getFriendStatus

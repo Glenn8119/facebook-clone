@@ -1,11 +1,8 @@
-import { FEFriendSingleResponseType } from '@/api/friend/schema'
-
 import { FC } from 'react'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
-import useGetCommonFriendList from '@/hooks/api/queries/useGetFriendList/useGetCommonFriendList'
-import { useQueryClient } from '@tanstack/react-query'
 import useUserContext from '@/hooks/useUserContext'
 import getFriendStatus from '@/utils/freindsStatus'
+import useGetUserDetail from '@/hooks/api/queries/useGetUserDetail'
 
 type LazyLoadUserOverviewPopoverProps = {
   children: React.ReactNode
@@ -23,13 +20,9 @@ const LazyLoadUserOverviewPopover: FC<LazyLoadUserOverviewPopoverProps> = ({
   const {
     value: { id: selfId }
   } = useUserContext()
-  const queryClient = useQueryClient()
-  const { commonFriendList } = useGetCommonFriendList(userId, isEnableQuery)
-  const selfFriendList = queryClient.getQueryData<FEFriendSingleResponseType[]>(
-    ['getFriendList', selfId]
-  )
+  const { userDetail } = useGetUserDetail(userId, isEnableQuery)
 
-  if (!commonFriendList || !selfFriendList) {
+  if (!userDetail) {
     return children
   }
 
@@ -37,8 +30,12 @@ const LazyLoadUserOverviewPopover: FC<LazyLoadUserOverviewPopoverProps> = ({
     <UserOverviewPopover
       userId={userId}
       name={name}
-      friendStatus={getFriendStatus({ selfId, userId, selfFriendList })}
-      commonFriendList={commonFriendList}
+      friendStatus={getFriendStatus({
+        selfId,
+        userId,
+        isFriend: userDetail.isFriend
+      })}
+      commonFriendList={userDetail.commonFriendList}
     >
       {children}
     </UserOverviewPopover>

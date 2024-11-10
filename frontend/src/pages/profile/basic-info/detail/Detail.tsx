@@ -8,7 +8,6 @@ import { ROUTES } from '@/constants/common'
 import { PROFILE_QUERIES } from '@/constants/pages/profile'
 
 import useFetchFriendListWithFriendStatus from '@/hooks/api/queries/useGetFriendList/useFetchFriendListWithFriendStatus'
-import useGetFriendList from '@/hooks/api/queries/useGetFriendList'
 import useGetUserDetail from '@/hooks/api/queries/useGetUserDetail'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import useUserContext from '@/hooks/useUserContext'
@@ -28,15 +27,18 @@ const Detail = () => {
   } = useUserContext()
   const navigate = useNavigateTo()
   const { userDetail } = useGetUserDetail(userId)
-  const { friendList: selfFriendList } = useGetFriendList(selfId)
   const { friendList: userFriendList } =
     useFetchFriendListWithFriendStatus(userId)
 
-  if (!userFriendList || !selfFriendList || !userDetail) {
+  if (!userFriendList || !userDetail) {
     return null
   }
 
-  const friendStatus = getFriendStatus({ selfFriendList, selfId, userId })
+  const friendStatus = getFriendStatus({
+    selfId,
+    userId,
+    isFriend: userDetail.isFriend
+  })
 
   const navigateToFriendsOrMutualFriends = (isToMutual?: boolean) => {
     navigate({
