@@ -9,24 +9,24 @@ const useCommentListInfiniteQuery = (postId: string) => {
       queryFn: async ({ pageParam }) => {
         return PostApi.getPostCommentList({ postId, page: pageParam, limit: 3 })
       },
-      // 從第二頁 comment 開始拿，因為第一頁在 fetch post 的時候已經會先給了
-      initialPageParam: 2,
+      initialPageParam: 1,
       getNextPageParam: (lastPage) => {
         const { page, total, pageSize } = lastPage
         const hasNextPage = page * pageSize < total
         return hasNextPage ? lastPage.page + 1 : null
       },
-      select: (data) => {
-        return data.pages.reduce(
-          (acc, cur) => acc.concat(cur.result),
-          [] as FECommentType[]
-        )
-      },
-      enabled: false
+      enabled: !!postId
     })
 
+  const commentList =
+    data?.pages.reduce(
+      (acc, cur) => acc.concat(cur.result),
+      [] as FECommentType[]
+    ) ?? []
+
   return {
-    commentList: data,
+    totalCount: data?.pages[0].total,
+    commentList,
     isPending,
     isFetchingNextPage,
     fetchNextCommentPage: fetchNextPage,

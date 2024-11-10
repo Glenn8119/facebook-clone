@@ -1,6 +1,11 @@
 import PostApi from '@/api/post'
-import { Post } from '@/types/api/post'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { FEGetPostCommentResponseType } from '@/api/post/schema'
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query'
+import cloneDeep from 'lodash/cloneDeep'
 
 const useEditPostComment = () => {
   const queryClient = useQueryClient()
@@ -8,38 +13,43 @@ const useEditPostComment = () => {
   const { mutateAsync: editPostComment } = useMutation({
     mutationFn: PostApi.editPostComment,
     onMutate: async ({ postId, commentId, content }) => {
-      await queryClient.cancelQueries({ queryKey: ['getPostList'] })
-
-      queryClient.setQueryData(['getPostList'], (oldPostList: Post[]) => {
-        return oldPostList.map((post) => {
-          if (post.id !== postId) return post
-
-          const newCommentList = post.commentList.map((comment) => {
-            if (comment.id !== commentId) return comment
-
-            return {
-              ...comment,
-              content
-            }
-          })
-
-          return {
-            ...post,
-            commentList: newCommentList
-          }
-        })
+      await queryClient.cancelQueries({
+        queryKey: ['getPostCommentList', postId]
       })
+      const previousPostCommentList = queryClient.getQueryData([
+        'getPostCommentList',
+        postId
+      ])
 
-      const previousPostList = queryClient.getQueryData(['getPostList'])
-      return { previousPostList }
+      queryClient.setQueryData<InfiniteData<FEGetPostCommentResponseType>>(
+        ['getPostCommentList', postId],
+        (oldPostCommentList) => {
+          const newCommentList = cloneDeep(oldPostCommentList)!
+          newCommentList.pages = newCommentList.pages.map((page) => {
+            const newPageResult = page.result.map((comment) => {
+              if (comment.id === commentId) {
+                return {
+                  ...comment,
+                  content
+                }
+              }
+              return comment
+            })
+
+            page.result = newPageResult
+            return page
+          })
+          return newCommentList
+        }
+      )
+
+      return { previousPostCommentList }
     },
-    onError: (error, variables, context) => {
-      queryClient.setQueryData(['getPostList'], context?.previousPostList)
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['getPostList'] })
-      // TODO: check if needed after adding profile post
-      // invalidateQuery(['getPostList', postId])
+    onError: (error, { postId }, context) => {
+      queryClient.setQueryData(
+        ['getPostCommentList', postId],
+        context?.previousPostCommentList
+      )
     }
   })
 

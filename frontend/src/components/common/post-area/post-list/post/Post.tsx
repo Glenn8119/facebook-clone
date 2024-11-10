@@ -60,9 +60,8 @@ const Post: FC<PostProps> = ({ className, post }) => {
     createPostComment({ postId: post.id, content: commentInput })
   }
 
-  const { commentList, fetchNextCommentPage } = useCommentListInfiniteQuery(
-    post.id
-  )
+  const { commentList, fetchNextCommentPage, hasNextPage, totalCount } =
+    useCommentListInfiniteQuery(post.id)
 
   const { createPostComment } = useCreatePostComment()
   const { likePost } = useLikePost()
@@ -73,9 +72,6 @@ const Post: FC<PostProps> = ({ className, post }) => {
   const { deletePost } = useDeletePost()
 
   const isSelfPost = selfId === post.userId
-  const finalCommentList = commentList
-    ? [...post.commentList, ...commentList]
-    : post.commentList
 
   const closePostActionModal = () => {
     setPostModalShow(false)
@@ -161,9 +157,7 @@ const Post: FC<PostProps> = ({ className, post }) => {
             <LikerOverview post={post} />
           </div>
           <span className='text-gray-400'>
-            {post.commentList.length
-              ? `${post.commentList.length}則留言`
-              : null}
+            {totalCount ? `${totalCount}則留言` : null}
           </span>
         </div>
         <div className='flex py-1 mb-2 border-t border-b text-gray-500 text-15'>
@@ -182,11 +176,11 @@ const Post: FC<PostProps> = ({ className, post }) => {
         <CommentList
           selfId={selfId}
           postId={post.id}
-          commentList={finalCommentList}
+          commentList={commentList}
           deletePostComment={deletePostComment}
           editPostComment={editPostComment}
         />
-        {post.commentTotalCount > finalCommentList.length ? (
+        {hasNextPage ? (
           <div
             className='pt-1 pb-2 cursor-pointer text-gray-500 text-15 font-semibold'
             onClick={() => fetchNextCommentPage()}
