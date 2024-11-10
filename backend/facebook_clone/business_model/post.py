@@ -65,9 +65,7 @@ class PostBo(BaseBo):
         async with get_facebook_clone_dao_factory().create_dao_list(PostDao) as [post_dao]:
             # TODO: use pool
             liker_list = from_record_list_to_dict_list(await post_dao.get_post_liker_list(current_user_id=self.user['id'], post_id=post['id']))
-            comment_list = from_record_list_to_dict_list(await post_dao.get_comment_list_from_post(post_id=post['id'], limit=3, offset=0))
-            comment_total_count = comment_list[0]['total'] if comment_list else 0
-            return {**post, 'liker_list': liker_list, 'comment_list': comment_list, 'comment_total_count': comment_total_count}
+            return {**post, 'liker_list': liker_list}
 
     async def delete_post(self, post_id: UUID):
         post_dao: PostDao

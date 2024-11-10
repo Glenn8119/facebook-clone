@@ -28,8 +28,6 @@ const likerSchema = userSchema.extend({
 })
 
 export const getSinglePostResponseSchema = createPostResponseSchema.extend({
-  comment_list: z.array(commentSchema),
-  comment_total_count: z.number(),
   liker_list: z.array(likerSchema),
   poster: z.string()
 })

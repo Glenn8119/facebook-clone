@@ -35,8 +35,6 @@ class Liker(User):
 
 
 class Post(BaseModel):
-    comment_list: List[Comment]
-    comment_total_count: int
     liker_list: List[Liker]
     poster: str
     id: UUID
