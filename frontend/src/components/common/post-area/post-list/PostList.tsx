@@ -32,7 +32,10 @@ const PostList = ({ userId }: PostListProps) => {
     }
   }
 
-  useInfiniteScroll(() => !isFetchingNextPage && !delaying && delayFetch())
+  useInfiniteScroll(
+    () => !isFetchingNextPage && !delaying && delayFetch(),
+    true
+  )
 
   if (!postList || isPending) {
     return <FullScreenLoading />
