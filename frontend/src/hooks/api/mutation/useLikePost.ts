@@ -1,48 +1,52 @@
 import PostApi from '@/api/post'
+import { FEGetPostResponseType } from '@/api/post/schema'
+import { ROUTES } from '@/constants/common'
 import useUserContext from '@/hooks/useUserContext'
-import { Post } from '@/types/api/post'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import {
+  InfiniteData,
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query'
+import cloneDeep from 'lodash/cloneDeep'
+import { useLocation, useSearchParams } from 'react-router-dom'
 
 const useLikePost = () => {
-  const queryClient = useQueryClient()
   const {
     value: { id, name }
   } = useUserContext()
+  const queryClient = useQueryClient()
+  const [searchParams] = useSearchParams()
+  const location = useLocation()
+  const userId = searchParams.get('id')
+  const currentRoute = location.pathname
 
   const { mutateAsync: likePost } = useMutation({
     mutationFn: PostApi.likePost,
-    onMutate: async (postId: string) => {
-      await queryClient.cancelQueries({ queryKey: ['getPostList'] })
-
-      queryClient.setQueryData(['getPostList'], (oldPostList: Post[]) => {
-        return oldPostList.map((post) => {
-          if (post.id !== postId) return post
-          const newLikerList = [
-            ...post.likerList,
-            {
-              id,
-              name,
-              commonFriendList: [], // mock for optimistic update
-              friendStatus: null // mock for optimistic update
+    onSuccess: (_, postId) => {
+      const updateCacheQueryData = (queryKey: string[]) => {
+        const oldPostList =
+          queryClient.getQueryData<InfiniteData<FEGetPostResponseType>>(
+            queryKey
+          )!
+        const newPostList = cloneDeep(oldPostList)
+        newPostList.pages.map((page) => {
+          page.result = page.result.map((post) => {
+            if (post.id === postId) {
+              const newLiker = { id, name, isFriend: false }
+              post.likerList.push(newLiker)
             }
-          ]
-          return {
-            ...post,
-            likerList: newLikerList
-          }
+            return post
+          })
+          return page
         })
-      })
+        queryClient.setQueryData(queryKey, newPostList)
+      }
 
-      const previousPostList = queryClient.getQueryData(['getPostList'])
-      return { previousPostList }
-    },
-    onError: (error, variables, context) => {
-      queryClient.setQueryData(['getPostList'], context?.previousPostList)
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['getPostList'] })
-      // TODO: check if needed after adding profile post
-      // invalidateQuery(['getPostList', postId])
+      if (userId && currentRoute === ROUTES.PROFILE) {
+        updateCacheQueryData(['getPostListByUserId', userId])
+      } else {
+        updateCacheQueryData(['getPostList'])
+      }
     }
   })
 

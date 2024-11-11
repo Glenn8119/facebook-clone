@@ -22,11 +22,6 @@ const useDeletePost = () => {
     mutationFn: PostApi.deletePost,
     onSuccess: (_, postId) => {
       const invalidateIfCanNotScroll = (queryKey: string[]) => {
-        console.log(
-          888,
-          document.documentElement.scrollHeight,
-          window.innerHeight
-        )
         if (document.documentElement.scrollHeight <= window.innerHeight) {
           queryClient.invalidateQueries({ queryKey })
         }
