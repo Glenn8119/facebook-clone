@@ -34,9 +34,11 @@ class AuthBo(BaseBo):
         if not user:
             raise HTTPException(status_code=401, detail='Invalid user.')
 
-        token = self.create_access_token(
-            account, user['id'], timedelta(hours=24))
-        return token
+        access_token = self.create_jwt_token(
+            account, user['id'], timedelta(hours=1))
+        refresh_token = self.create_jwt_token(
+            account, user['id'], timedelta(days=3))
+        return {'access_token': access_token, 'refresh_token': refresh_token}
 
     @staticmethod
     async def authenticate_user(account: str, password: str):
@@ -49,7 +51,7 @@ class AuthBo(BaseBo):
 
             return user
 
-    def create_access_token(self, account: str, user_id: int, expires_delta: timedelta):
+    def create_jwt_token(self, account: str, user_id: int, expires_delta: timedelta):
         encode = {'sub': account, 'id': str(user_id)}
         expires = datetime.utcnow() + expires_delta
         encode.update({'exp': expires})

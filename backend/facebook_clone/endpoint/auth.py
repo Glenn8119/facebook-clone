@@ -18,8 +18,8 @@ async def sign_up(user: SignUpRequestBody):
 
 @router.post('/login', response_model=Token)
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    token = await AuthBo().login(account=form_data.username, password=form_data.password)
-    return {'access_token': token, 'token_type': 'bearer'}
+    tokens = await AuthBo().login(account=form_data.username, password=form_data.password)
+    return {'access_token': tokens['access_token'], 'refresh_token': tokens['refresh_token'], 'token_type': 'bearer'}
 
 
 @router.get('/detail', response_model=UserAuthDetail)
