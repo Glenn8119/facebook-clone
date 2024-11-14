@@ -1,12 +1,13 @@
 from passlib.context import CryptContext
 from facebook_clone.business_model import get_facebook_clone_dao_factory
 from facebook_clone.data_access_object.user import UserDao
-from jose import jwt
+from jose import jwt, ExpiredSignatureError, JWTError
 from datetime import timedelta, datetime
 from fastapi import HTTPException
 from facebook_clone.config import get_settings
 from facebook_clone.business_model import BaseBo
 from facebook_clone.schema.user import UserAuthDetail
+from starlette import status
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
@@ -63,3 +64,21 @@ class AuthBo(BaseBo):
         async with get_facebook_clone_dao_factory().create_dao_list(UserDao) as [user_dao]:
             user = await user_dao.get_user_by_id(current_user_id=self.user['id'], user_id=self.user['id'])
             return UserAuthDetail.model_validate(dict(user))
+
+    async def refresh_token(self, refresh_token):
+        try:
+            payload = jwt.decode(refresh_token, settings.secret_key,
+                                 algorithms=[settings.algorithm])
+            account: str = payload.get('sub')
+            user_id: int = payload.get('id')
+            access_token = self.create_jwt_token(
+                account, user_id, timedelta(hours=1))
+            refresh_token = self.create_jwt_token(
+                account, user_id, timedelta(days=3))
+            return {'access_token': access_token, 'refresh_token': refresh_token}
+        except ExpiredSignatureError:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail='Refresh token expired.')
+        except JWTError:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail='Could not validate user.')

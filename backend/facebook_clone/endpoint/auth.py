@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from facebook_clone.schema.user import SignUpRequestBody, Token, UserAuthDetail
+from facebook_clone.schema.user import SignUpRequestBody, Token, UserAuthDetail, RefreshTokenRequestBody
 from facebook_clone.business_model.auth import AuthBo
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
@@ -26,3 +26,9 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 async def get_user_detail(user: depend_user):
     user = await AuthBo(user=user).get_user_info()
     return to_json_response(user)
+
+
+@router.post('/refresh_token', response_model=Token)
+async def refresh_token(body: RefreshTokenRequestBody):
+    tokens = await AuthBo().refresh_token(refresh_token=body.refresh_token)
+    return {'access_token': tokens['access_token'], 'refresh_token': tokens['refresh_token'], 'token_type': 'bearer'}
