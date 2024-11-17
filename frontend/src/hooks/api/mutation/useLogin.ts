@@ -14,7 +14,8 @@ const useLogin = () => {
       const loginResponse = data
       const userInfo = {
         account: formData.account,
-        token: loginResponse.accessToken,
+        accessToken: loginResponse.accessToken,
+        refreshToken: loginResponse.refreshToken,
         name: '',
         id: ''
       }

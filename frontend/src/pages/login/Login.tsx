@@ -9,7 +9,7 @@ const Login = () => {
   const userContext = useUserContext()
   const [showSignUp, setShowSignUp] = useState(false)
 
-  if (userContext.value.token) {
+  if (userContext.value.accessToken) {
     return <Navigate to={ROUTES.HOME_PAGE} />
   }
 

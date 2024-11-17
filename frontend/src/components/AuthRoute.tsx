@@ -7,7 +7,7 @@ import { ROUTES } from '@/constants/common'
 const AuthRoute: FC = () => {
   const userContext = useUserContext()
 
-  if (!userContext.value.token) {
+  if (!userContext.value.accessToken) {
     return <Navigate to={ROUTES.LOGIN} />
   }
 

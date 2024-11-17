@@ -1,5 +1,45 @@
 import axios, { RawAxiosRequestHeaders, Method } from 'axios'
 import { ZodSchema, z } from 'zod'
+import AuthApi from '@/api/auth'
+import dayjs from 'dayjs'
+import decodeJWT from '@/utils/decodeJWT'
+
+const checkAndMaybeRefreshToken = async () => {
+  const userInfo = JSON.parse(localStorage.getItem('user') ?? 'null')
+  if (!userInfo?.accessToken) {
+    return null
+  }
+
+  const checkIfNeedRefresh = () => {
+    const decodedToken = decodeJWT(userInfo.accessToken) as {
+      sub: string
+      id: string
+      exp: number
+    }
+    const expiredTimestampInSecond = decodedToken.exp
+    const currentTimestampInSecond = new Date().getTime() / 1000
+    return (
+      dayjs(expiredTimestampInSecond).diff(currentTimestampInSecond, 'second') <
+      600
+    )
+  }
+
+  if (checkIfNeedRefresh()) {
+    const refreshToken = userInfo.refreshToken
+    const { refreshToken: newRefreshToken, accessToken: newAccessToken } =
+      await AuthApi.refreshToken({
+        refresh_token: refreshToken
+      })
+    localStorage.setItem('userInfo', {
+      ...userInfo,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken
+    })
+    return newAccessToken
+  }
+
+  return userInfo.accessToken
+}
 
 const baseAxios = axios.create({
   baseURL: import.meta.env.VITE_API_ENDPOINT
@@ -28,8 +68,10 @@ const _axios = async <T extends ZodSchema>({
   } as RawAxiosRequestHeaders
 
   if (isNeedToken) {
-    const user = JSON.parse(localStorage.getItem('user') ?? 'null')
-    requesHeaders['Authorization'] = `Bearer ${user?.token}`
+    // const user = JSON.parse(localStorage.getItem('user') ?? 'null')
+    // requesHeaders['Authorization'] = `Bearer ${user?.token}`
+    const accessToken = await checkAndMaybeRefreshToken()
+    requesHeaders['Authorization'] = `Bearer ${accessToken}`
   }
 
   // TODO: error handle

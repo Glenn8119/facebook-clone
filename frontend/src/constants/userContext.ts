@@ -1,6 +1,7 @@
 export const userContextInitialValue = {
   account: '',
-  token: '',
+  accessToken: '',
+  refreshToken: '',
   name: '',
   id: ''
 }

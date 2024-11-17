@@ -1,8 +1,14 @@
 import _axios from '@/api/_axios'
-import { LoginRequestBody, SignUpRequestBody } from '@/types/api/user'
 import {
+  LoginRequestBody,
+  RefreshTokenRequestBody,
+  SignUpRequestBody
+} from '@/types/api/user'
+import {
+  FERefreshTokenResponseType,
   FEUserDetailResponseSchema,
   loginResponseSchema,
+  refreshTokenResponseSchema,
   signUpResponseSchema,
   userDetailResponseSchema,
   type FELoginResponseType
@@ -46,6 +52,20 @@ const AuthApi = {
     const res = await _axios({
       url: '/auth/detail',
       responseSchema: userDetailResponseSchema
+    })
+
+    return transformObjectKeyFromSnakeToCamel(res)
+  },
+
+  async refreshToken(
+    refreshTokenRequestBody: RefreshTokenRequestBody
+  ): Promise<FERefreshTokenResponseType> {
+    const res = await _axios({
+      url: '/auth/refresh_token',
+      responseSchema: refreshTokenResponseSchema,
+      isNeedToken: false,
+      method: 'POST',
+      body: refreshTokenRequestBody
     })
 
     return transformObjectKeyFromSnakeToCamel(res)
