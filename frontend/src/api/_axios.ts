@@ -16,12 +16,9 @@ const checkAndMaybeRefreshToken = async () => {
       id: string
       exp: number
     }
-    const expiredTimestampInSecond = decodedToken.exp
-    const currentTimestampInSecond = new Date().getTime() / 1000
-    return (
-      dayjs(expiredTimestampInSecond).diff(currentTimestampInSecond, 'second') <
-      600
-    )
+    const expiredTimestamp = decodedToken.exp * 1000
+    const currentTimestamp = new Date().getTime()
+    return dayjs(expiredTimestamp).diff(currentTimestamp, 'seconds') < 600
   }
 
   if (checkIfNeedRefresh()) {
@@ -30,11 +27,14 @@ const checkAndMaybeRefreshToken = async () => {
       await AuthApi.refreshToken({
         refresh_token: refreshToken
       })
-    localStorage.setItem('userInfo', {
-      ...userInfo,
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken
-    })
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        ...userInfo,
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken
+      })
+    )
     return newAccessToken
   }
 
@@ -68,8 +68,6 @@ const _axios = async <T extends ZodSchema>({
   } as RawAxiosRequestHeaders
 
   if (isNeedToken) {
-    // const user = JSON.parse(localStorage.getItem('user') ?? 'null')
-    // requesHeaders['Authorization'] = `Bearer ${user?.token}`
     const accessToken = await checkAndMaybeRefreshToken()
     requesHeaders['Authorization'] = `Bearer ${accessToken}`
   }
