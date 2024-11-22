@@ -13,7 +13,8 @@ export default {
         108: '27rem',
         110: '27.5rem',
         125: '31.25rem',
-        137: '34.25rem'
+        137: '34.25rem',
+        175: '43.75rem'
       },
       colors: {
         main: colors.slate[100]

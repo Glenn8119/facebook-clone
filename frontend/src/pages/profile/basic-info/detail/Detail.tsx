@@ -19,7 +19,11 @@ import getFriendStatus from '@/utils/freindsStatus'
 
 import { MdEdit } from 'react-icons/md'
 
+import EditProfileModal from '@/pages/profile/basic-info/detail/edit-profile-modal/EditProfileModal'
+import { useState } from 'react'
+
 const Detail = () => {
+  const [isEditModalShow, setEditModalShow] = useState(false)
   const [searchParams] = useSearchParams()
   const userId = searchParams.get('id') as string
   const {
@@ -96,30 +100,38 @@ const Detail = () => {
   }
 
   return (
-    <div className='flex items-end h-36 relative pb-4 border-b border-slate-300'>
-      <div className='absolute bottom-4 left-0 border-white border-4 rounded-full'>
-        <Avatar className='w-40 h-40' />
+    <>
+      <div className='flex items-end h-36 relative pb-4 border-b border-slate-300'>
+        <div className='absolute bottom-4 left-0 border-white border-4 rounded-full'>
+          <Avatar className='w-40 h-40' />
+        </div>
+        <div className='basis-44' />
+        <div className='flex-grow py-2'>
+          <div className='font-bold text-4xl mb-1'>{userDetail.name}</div>
+          <div className='text-slate-600 mb-1'>{renderFriendDescription()}</div>
+          <CollapsingAvatarList
+            handleClickList={navigateToFriendsOrMutualFriends}
+            avatarInfoList={userFriendList ?? []}
+          />
+        </div>
+        {userId === selfId ? (
+          <div className='flex-grow py-2'>
+            <Button
+              size={ButtonSize.SMALL}
+              className='w-auto px-4'
+              variant={ButtonVariant.AUXILIARY}
+              IconElement={MdEdit}
+              onClick={() => setEditModalShow(true)}
+            >
+              編輯個人檔案
+            </Button>
+          </div>
+        ) : null}
       </div>
-      <div className='basis-44' />
-      <div className='flex-grow py-2'>
-        <div className='font-bold text-4xl mb-1'>{userDetail.name}</div>
-        <div className='text-slate-600 mb-1'>{renderFriendDescription()}</div>
-        <CollapsingAvatarList
-          handleClickList={navigateToFriendsOrMutualFriends}
-          avatarInfoList={userFriendList ?? []}
-        />
-      </div>
-      <div className='flex-grow py-2'>
-        <Button
-          size={ButtonSize.SMALL}
-          className='w-auto px-4'
-          variant={ButtonVariant.AUXILIARY}
-          IconElement={MdEdit}
-        >
-          編輯個人檔案
-        </Button>
-      </div>
-    </div>
+      {isEditModalShow ? (
+        <EditProfileModal onClose={() => setEditModalShow(false)} />
+      ) : null}
+    </>
   )
 }
 
