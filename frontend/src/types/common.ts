@@ -12,7 +12,7 @@ export type AvatarInfo = {
 }
 
 export enum FriendStatus {
-  IsFriend = 'Is-friend',
-  IsNotFriend = 'Is-not-friend',
-  IsSelf = 'Is-self'
+  IS_FRIEND = 'Is-friend',
+  IS_NOT_FRIEND = 'Is-not-friend',
+  IS_SELF = 'Is-self'
 }

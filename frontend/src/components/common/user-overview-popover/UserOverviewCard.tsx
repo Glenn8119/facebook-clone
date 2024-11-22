@@ -35,9 +35,9 @@ const FunctionButtons = ({
 }) => {
   return (
     <div>
-      {friendStatus === FriendStatus.IsSelf ? (
+      {friendStatus === FriendStatus.IS_SELF ? (
         <Button size={ButtonSize.SMALL}>編輯個人檔案</Button>
-      ) : friendStatus === FriendStatus.IsFriend ? (
+      ) : friendStatus === FriendStatus.IS_FRIEND ? (
         <Button
           size={ButtonSize.SMALL}
           onClick={() => setDeleteFriendConfirm(true)}
@@ -62,7 +62,7 @@ const CommonFriendListDescription = ({
   friendStatus: FriendStatus
   navigateToProfilePage: (userId: string) => void
 }) => {
-  if (!commonFriendList.length || friendStatus === FriendStatus.IsSelf) {
+  if (!commonFriendList.length || friendStatus === FriendStatus.IS_SELF) {
     return null
   }
 

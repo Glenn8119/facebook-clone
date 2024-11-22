@@ -11,17 +11,17 @@ const LikerOverview: FC<LikerOverviewProps> = ({ post }) => {
   const getText = () => {
     const friendList = post.likerList.filter(
       (liker) =>
-        liker.friendStatus === FriendStatus.IsFriend ||
-        liker.friendStatus === FriendStatus.IsSelf
+        liker.friendStatus === FriendStatus.IS_FRIEND ||
+        liker.friendStatus === FriendStatus.IS_SELF
     )
     if (!friendList.length) {
       return post.likerList.length.toString()
     }
 
     const order = [
-      FriendStatus.IsSelf,
-      FriendStatus.IsFriend,
-      FriendStatus.IsNotFriend
+      FriendStatus.IS_SELF,
+      FriendStatus.IS_FRIEND,
+      FriendStatus.IS_NOT_FRIEND
     ]
     friendList.sort(
       (a, b) => order.indexOf(a.friendStatus) - order.indexOf(b.friendStatus)

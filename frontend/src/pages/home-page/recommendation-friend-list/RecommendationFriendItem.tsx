@@ -22,7 +22,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
   const commonFriendList = recommendationFriend.commonFriendList.map(
     (recommendationFriend) => ({
       ...recommendationFriend,
-      friendStatus: FriendStatus.IsFriend
+      friendStatus: FriendStatus.IS_FRIEND
     })
   )
   const { addFriend } = useAddFriend()
@@ -32,7 +32,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
       <UserOverviewPopover
         userId={recommendationFriend.id}
         name={recommendationFriend.name}
-        friendStatus={FriendStatus.IsNotFriend}
+        friendStatus={FriendStatus.IS_NOT_FRIEND}
         commonFriendList={commonFriendList}
       >
         <Avatar className='mr-2 cursor-pointer' />
@@ -42,7 +42,7 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
         <UserOverviewPopover
           userId={recommendationFriend.id}
           name={recommendationFriend.name}
-          friendStatus={FriendStatus.IsNotFriend}
+          friendStatus={FriendStatus.IS_NOT_FRIEND}
           commonFriendList={commonFriendList}
         >
           <div className='cursor-pointer hover:underline'>

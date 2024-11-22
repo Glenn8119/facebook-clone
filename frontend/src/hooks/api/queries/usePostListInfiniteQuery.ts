@@ -45,10 +45,10 @@ const usePostListInfiniteQuery = (userId?: string) => {
             const likerList = post.likerList.map((liker) => {
               const friendStatus =
                 liker.id === selfId
-                  ? FriendStatus.IsSelf
+                  ? FriendStatus.IS_SELF
                   : liker.isFriend
-                  ? FriendStatus.IsFriend
-                  : FriendStatus.IsNotFriend
+                  ? FriendStatus.IS_FRIEND
+                  : FriendStatus.IS_NOT_FRIEND
               return {
                 ...liker,
                 friendStatus

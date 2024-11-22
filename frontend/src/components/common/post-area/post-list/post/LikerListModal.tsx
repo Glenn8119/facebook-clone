@@ -50,7 +50,7 @@ const Liker = ({
           {liker.name}
         </span>
       </LazyLoadUserOverviewPopover>
-      {liker.friendStatus === FriendStatus.IsNotFriend ? (
+      {liker.friendStatus === FriendStatus.IS_NOT_FRIEND ? (
         <Button
           size={ButtonSize.SMALL}
           variant={ButtonVariant.AUXILIARY}

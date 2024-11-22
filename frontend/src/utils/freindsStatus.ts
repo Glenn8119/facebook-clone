@@ -10,10 +10,10 @@ const getFriendStatus = ({
   isFriend: boolean
 }) => {
   if (selfId === userId) {
-    return FriendStatus.IsSelf
+    return FriendStatus.IS_SELF
   }
 
-  return isFriend ? FriendStatus.IsFriend : FriendStatus.IsNotFriend
+  return isFriend ? FriendStatus.IS_FRIEND : FriendStatus.IS_NOT_FRIEND
 }
 
 export default getFriendStatus

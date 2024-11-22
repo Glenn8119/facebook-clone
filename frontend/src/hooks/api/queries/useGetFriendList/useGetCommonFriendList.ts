@@ -22,7 +22,7 @@ const useGetCommonFriendList = (userId: string, enabled?: boolean) => {
     .filter((friend) => selfFriendListIdSet.has(friend.id))
     .map((friend) => ({
       ...friend,
-      friendStatus: FriendStatus.IsFriend
+      friendStatus: FriendStatus.IS_FRIEND
     }))
 
   return {

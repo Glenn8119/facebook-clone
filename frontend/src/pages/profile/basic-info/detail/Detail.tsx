@@ -57,7 +57,7 @@ const Detail = () => {
   }
 
   const renderFriendDescription = () => {
-    if (friendStatus === FriendStatus.IsSelf) {
+    if (friendStatus === FriendStatus.IS_SELF) {
       return (
         <div
           className='hover:underline cursor-pointer'
@@ -68,7 +68,7 @@ const Detail = () => {
       )
     }
 
-    if (friendStatus === FriendStatus.IsFriend) {
+    if (friendStatus === FriendStatus.IS_FRIEND) {
       return (
         <div>
           <span
