@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from facebook_clone.response import to_json_response
 from typing import List
-from facebook_clone.schema.user import UserOverviewItem
+from facebook_clone.schema.user import UserOverview
 from facebook_clone.depend import depend_user
 from facebook_clone.business_model.friend import FriendBo
 
@@ -9,7 +9,7 @@ from facebook_clone.business_model.friend import FriendBo
 router = APIRouter()
 
 
-@router.get('/recommendation', response_model=List[UserOverviewItem])
+@router.get('/recommendation', response_model=List[UserOverview])
 async def get_recommendation_friend_list(user: depend_user):
     user_list = await FriendBo(user=user).get_recommendation_friend_list()
     return to_json_response(user_list)

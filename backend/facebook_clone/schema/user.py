@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from uuid import UUID
-from typing import List
+from typing import List, Optional
 
 
 class SignUpRequestBody(BaseModel):
@@ -24,7 +24,7 @@ class User(BaseModel):
     name: str
 
 
-class UserOverviewItem(User):
+class UserOverview(User):
     common_friend_list: List[User]
     is_friend: bool
 
@@ -33,6 +33,9 @@ class UserAuthDetail(User):
     account: str
 
 
-class UserDetailItem(UserOverviewItem):
-    # to be added
-    pass
+class UserDetail(UserOverview):
+    current_residence: Optional[str]
+    bio: Optional[str]
+    company: Optional[str]
+    avatar_image: Optional[str]
+    cover_image: Optional[str]

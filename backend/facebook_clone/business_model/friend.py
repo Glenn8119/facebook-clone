@@ -2,7 +2,7 @@ from typing import List
 from facebook_clone.business_model import get_facebook_clone_dao_factory
 from facebook_clone.data_access_object.friend import FriendDao
 from facebook_clone.schema.friend import Friend
-from facebook_clone.schema.user import UserOverviewItem
+from facebook_clone.schema.user import UserOverview
 from facebook_clone.business_model import BaseBo
 from facebook_clone.asyncpg import from_record_list_to_dict_list
 import asyncio
@@ -18,7 +18,7 @@ class FriendBo(BaseBo):
             recommendation_user_list = await asyncio.gather(
                 *[self.append_common_friend_list_to_dict_with_user_id(dict(recommendation_friend)) for
                   recommendation_friend in recommendation_user_list])
-            return [UserOverviewItem.model_validate(recommendation_user) for recommendation_user in recommendation_user_list]
+            return [UserOverview.model_validate(recommendation_user) for recommendation_user in recommendation_user_list]
 
     async def add_friend(self, target_user_id):
         async with get_facebook_clone_dao_factory().create_dao_list(FriendDao) as [friend_dao]:
