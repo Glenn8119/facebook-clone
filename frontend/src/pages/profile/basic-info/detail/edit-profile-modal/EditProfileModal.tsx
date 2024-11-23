@@ -1,60 +1,71 @@
 import Modal from '@/components/Modal'
 import { AnyFunction } from '@/types/common'
 import { FC } from 'react'
+import EditBlock, {
+  EditBlockType
+} from '@/pages/profile/basic-info/detail/edit-profile-modal/edit-block/EditBlock.tsx'
 
 type EditProfileModalProps = {
   onClose?: AnyFunction
 }
 
 const EditProfileModal: FC<EditProfileModalProps> = ({ onClose }) => {
+  const save = (value: string) => {
+    console.log(value)
+  }
+
   return (
     <Modal onCloseModal={onClose} modalClassName='w-175'>
       <div className='h-15 p-4 text-center font-medium text-xl border-b'>
         編輯個人檔案
       </div>
       <div className='p-4'>
-        <div className='mb-4'>
-          <div className='flex mb-2'>
-            <span className='mr-auto text-md font-medium'>大頭貼照</span>
-            <span className='cursor-pointer text-blue-500'>編輯/新增</span>
-          </div>
-          <div className='text-center'>頭貼</div>
-        </div>
-        <div className='mb-4'>
-          <div className='flex mb-2'>
-            <span className='mr-auto text-md font-medium'>封面相片</span>
-            <span className='cursor-pointer text-blue-500'>編輯/新增</span>
-          </div>
-          <div className='text-center'>封面相片</div>
-        </div>
-        <div className='mb-4'>
-          <div className='flex mb-2'>
-            <span className='mr-auto text-md font-medium'>個人簡介</span>
-            <span className='cursor-pointer text-blue-500'>編輯/新增</span>
-          </div>
-          <div className='text-center text-slate-400'>介紹一下你自己......</div>
-        </div>
-        <div className='mb-4'>
-          <div className='flex mb-2'>
-            <span className='mr-auto text-md font-medium'>工作地點</span>
-            <span className='cursor-pointer text-blue-500'>編輯/新增</span>
-          </div>
-          <div className='text-center text-slate-400'>你所屬的公司名稱</div>
-        </div>
-        <div className='mb-4'>
-          <div className='flex mb-2'>
-            <span className='mr-auto text-md font-medium'>現居城市</span>
-            <span className='cursor-pointer text-blue-500'>編輯/新增</span>
-          </div>
-          <div className='text-center text-slate-400'>你所居住的地方</div>
-        </div>
-        <div className='mb-4'>
-          <div className='flex mb-2'>
-            <span className='mr-auto text-md font-medium'>家鄉</span>
-            <span className='cursor-pointer text-blue-500'>編輯/新增</span>
-          </div>
-          <div className='text-center text-slate-400'>你的家鄉</div>
-        </div>
+        <EditBlock
+          label='大頭貼照'
+          hint='頭貼'
+          type={EditBlockType.PICTURE}
+          className='mb-4'
+          handleSave={save}
+        />
+        <EditBlock
+          label='封面相片'
+          hint='封面相片'
+          type={EditBlockType.PICTURE}
+          className='mb-4'
+          handleSave={save}
+        />
+        <EditBlock
+          label='個人簡介'
+          hint='介紹一下你自己......'
+          placeholder='介紹你自己'
+          type={EditBlockType.TEXTAREA}
+          className='mb-4'
+          handleSave={save}
+        />
+        <EditBlock
+          label='工作地點'
+          hint='你所屬的公司名稱'
+          placeholder='公司名稱'
+          type={EditBlockType.INPUT}
+          className='mb-4'
+          handleSave={save}
+        />
+        <EditBlock
+          label='現居城市'
+          hint='你所居住的地方'
+          placeholder='城市'
+          type={EditBlockType.INPUT}
+          className='mb-4'
+          handleSave={save}
+        />
+        <EditBlock
+          label='家鄉'
+          hint='你的家鄉'
+          placeholder='城市'
+          type={EditBlockType.INPUT}
+          className='mb-4'
+          handleSave={save}
+        />
       </div>
     </Modal>
   )
