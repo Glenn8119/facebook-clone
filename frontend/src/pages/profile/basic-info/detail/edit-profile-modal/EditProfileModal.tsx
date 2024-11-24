@@ -1,9 +1,7 @@
 import Modal from '@/components/Modal'
 import { AnyFunction } from '@/types/common'
 import { FC } from 'react'
-import EditBlock, {
-  EditBlockType
-} from '@/pages/profile/basic-info/detail/edit-profile-modal/edit-block/EditBlock.tsx'
+import EditBlock, { EditBlockType } from '@/components/form/EditBlock'
 
 type EditProfileModalProps = {
   onClose?: AnyFunction

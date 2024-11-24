@@ -15,7 +15,7 @@ const TextArea: FC<TextAreaProps> = ({
   const errorClassName = error ? 'border border-red-500' : ''
 
   const cn = twMerge(
-    'p-2 resize-none w-full text-2xl flex-grow mb-2 rounded focus-visible:outline-none',
+    'p-2 resize-none w-full text-2xl flex-grow rounded focus-visible:outline-none',
     className,
     errorClassName
   )

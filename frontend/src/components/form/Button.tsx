@@ -27,7 +27,7 @@ const Button: FC<ButtonProps> = ({
   }
 
   const variantClass = getVariantClass()
-  const sizeClass = size === ButtonSize.NORMAL ? 'h-12' : 'h-8'
+  const sizeClass = size === ButtonSize.NORMAL ? 'h-12' : 'h-8 text-sm'
 
   const className = twMerge(
     'flex justify-center items-center w-full font-semibold rounded-md text-white disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed',
