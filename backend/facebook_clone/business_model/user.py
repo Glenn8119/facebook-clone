@@ -19,5 +19,5 @@ class UserBo(BaseBo):
     async def upsert_user_detail(self, detail: UpdateUserDetailRequestBody):
         user_dao: UserDao
         async with get_facebook_clone_dao_factory().create_dao_list(UserDao) as [user_dao]:
-            updated_user_detail = await user_dao.upsert_user_detail_by_id(user_id=self.user['id'], current_residence=detail.current_residence, bio=detail.bio, company=detail.company, avatar_image=detail.avatar_image, cover_image=detail.cover_image)
+            updated_user_detail = await user_dao.upsert_user_detail_by_id(user_id=self.user['id'], current_residence=detail.current_residence, hometown=detail.hometown, bio=detail.bio, company=detail.company, avatar_image=detail.avatar_image, cover_image=detail.cover_image)
             return UpdateUserDetailResponse.model_validate(dict(updated_user_detail))

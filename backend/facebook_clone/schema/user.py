@@ -35,6 +35,7 @@ class UserAuthDetail(User):
 
 class UserDetail(UserOverview):
     current_residence: Optional[str] = None
+    hometown: Optional[str] = None
     bio: Optional[str] = None
     company: Optional[str] = None
     avatar_image: Optional[str] = None
@@ -43,6 +44,7 @@ class UserDetail(UserOverview):
 
 class UpdateUserDetailRequestBody(BaseModel):
     current_residence: Optional[str] = None
+    hometown: Optional[str] = None
     bio: Optional[str] = None
     company: Optional[str] = None
     avatar_image: Optional[str] = None

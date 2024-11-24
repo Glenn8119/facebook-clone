@@ -37,7 +37,7 @@ class UserDao(BaseDao):
                     WHERE user_id = $1
                 ) 
                 
-                SELECT u.id, u.name, u.account, ud.current_residence, ud.bio, ud.company, ud.avatar_image, ud.cover_image,
+                SELECT u.id, u.name, u.account, ud.current_residence, ud.bio, ud.company, ud.avatar_image, ud.cover_image, ud.hometown,
                     CASE
                         WHEN id IN (SELECT * FROM friend_cte) THEN TRUE
                         ELSE FALSE
@@ -48,13 +48,13 @@ class UserDao(BaseDao):
             ''', current_user_id, user_id
         )
 
-    async def upsert_user_detail_by_id(self, user_id, current_residence, bio, company, avatar_image, cover_image):
+    async def upsert_user_detail_by_id(self, user_id, current_residence, hometown, bio, company, avatar_image, cover_image):
         return await self.connection.fetchrow(
             '''
-                INSERT INTO user_detail (user_id, current_residence, bio, company, avatar_image, cover_image)
+                INSERT INTO user_detail (user_id, current_residence, hometown, bio, company, avatar_image, cover_image)
                 VALUES ($1, $2, $3, $4, $5, $6)
                 ON CONFLICT(user_id) DO UPDATE
                 SET current_residence = $2, bio = $3, company = $4, avatar_image = $5, cover_image = $6
                 RETURNING *
-            ''', user_id, current_residence, bio, company, avatar_image, cover_image
+            ''', user_id, current_residence, hometown, bio, company, avatar_image, cover_image
         )

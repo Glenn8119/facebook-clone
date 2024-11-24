@@ -11,8 +11,9 @@ CREATE TABLE IF NOT EXISTS user_table (
 
 CREATE TABLE IF NOT EXISTS user_detail (
     user_id uuid NOT NULL UNIQUE,
-    current_residence VARCHAR(100),
-    bio VARCHAR(50),
+    bio VARCHAR(100),
+    current_residence VARCHAR(50),
+    hometown VARCHAR(50),
     company VARCHAR(50),
     avatar_image TEXT,
     cover_image TEXT,
