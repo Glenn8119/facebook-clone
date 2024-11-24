@@ -21,7 +21,7 @@ const useLogin = () => {
       }
 
       localStorage.setItem('user', JSON.stringify(userInfo))
-      const userDetail = await AuthApi.getUserDetail()
+      const userDetail = await AuthApi.getAuthInfo()
       userInfo.name = userDetail.name
       userInfo.id = userDetail.id
 

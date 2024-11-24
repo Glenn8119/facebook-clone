@@ -48,9 +48,9 @@ const AuthApi = {
     })
   },
 
-  async getUserDetail(): Promise<FEUserDetailResponseSchema> {
+  async getAuthInfo(): Promise<FEUserDetailResponseSchema> {
     const res = await _axios({
-      url: '/auth/detail',
+      url: '/auth/info',
       responseSchema: userDetailResponseSchema
     })
 
