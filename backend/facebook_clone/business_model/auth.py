@@ -59,10 +59,10 @@ class AuthBo(BaseBo):
 
         return jwt.encode(encode, self.secret_key, algorithm=self.algorithm)
 
-    async def get_user_info(self):
+    async def get_user_auth_info(self):
         user_dao: UserDao
         async with get_facebook_clone_dao_factory().create_dao_list(UserDao) as [user_dao]:
-            user = await user_dao.get_user_by_id(current_user_id=self.user['id'], user_id=self.user['id'])
+            user = await user_dao.get_user_auth_info_by_id(user_id=self.user['id'])
             return UserAuthDetail.model_validate(dict(user))
 
     async def refresh_token(self, refresh_token):

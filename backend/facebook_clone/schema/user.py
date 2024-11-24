@@ -34,8 +34,20 @@ class UserAuthDetail(User):
 
 
 class UserDetail(UserOverview):
-    current_residence: Optional[str]
-    bio: Optional[str]
-    company: Optional[str]
-    avatar_image: Optional[str]
-    cover_image: Optional[str]
+    current_residence: Optional[str] = None
+    bio: Optional[str] = None
+    company: Optional[str] = None
+    avatar_image: Optional[str] = None
+    cover_image: Optional[str] = None
+
+
+class UpdateUserDetailRequestBody(BaseModel):
+    current_residence: Optional[str] = None
+    bio: Optional[str] = None
+    company: Optional[str] = None
+    avatar_image: Optional[str] = None
+    cover_image: Optional[str] = None
+
+
+class UpdateUserDetailResponse(UpdateUserDetailRequestBody):
+    pass

@@ -9,6 +9,18 @@ CREATE TABLE IF NOT EXISTS user_table (
     updated_at timestamptz NOT NULL DEFAULT now()
 );
 
+CREATE TABLE IF NOT EXISTS user_detail (
+    user_id uuid NOT NULL UNIQUE,
+    current_residence VARCHAR(100),
+    bio VARCHAR(50),
+    company VARCHAR(50),
+    avatar_image TEXT,
+    cover_image TEXT,
+    created_at timestamptz NOT NULL DEFAULT now(),
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES user_table(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS group_table (
     id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(50) NOT NULL,
