@@ -18,6 +18,7 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ onClose }) => {
         編輯個人檔案
       </div>
       <div className='p-4'>
+        {/* TODO: 用 map */}
         <EditBlock
           label='大頭貼照'
           hint='頭貼'

@@ -12,7 +12,14 @@ export const userOverviewSchema = userSchema.extend({
 })
 
 // TODO: add additional user data
-export const userDetailSchema = userOverviewSchema
+export const userDetailSchema = userOverviewSchema.extend({
+  bio: z.string().nullable(),
+  current_residence: z.string().nullable(),
+  hometown: z.string().nullable(),
+  company: z.string().nullable(),
+  avatar_image: z.string().nullable(),
+  cover_image: z.string().nullable()
+})
 
 type UserDetailReponseType = z.infer<typeof userDetailSchema>
 type UserOverviewType = z.infer<typeof userOverviewSchema>
