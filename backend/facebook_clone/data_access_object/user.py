@@ -52,9 +52,9 @@ class UserDao(BaseDao):
         return await self.connection.fetchrow(
             '''
                 INSERT INTO user_detail (user_id, current_residence, hometown, bio, company, avatar_image, cover_image)
-                VALUES ($1, $2, $3, $4, $5, $6)
+                VALUES ($1, $2, $3, $4, $5, $6, $7)
                 ON CONFLICT(user_id) DO UPDATE
-                SET current_residence = $2, bio = $3, company = $4, avatar_image = $5, cover_image = $6
+                SET current_residence = $2, hometown = $3, bio = $4, company = $5, avatar_image = $6, cover_image = $7
                 RETURNING *
             ''', user_id, current_residence, hometown, bio, company, avatar_image, cover_image
         )
