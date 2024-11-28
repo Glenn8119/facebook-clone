@@ -7,11 +7,21 @@ type BioBlockProps = {
   className: string
   isSelf: boolean
   bio: string
+  userId: string
+  onUpdateBio: (bio: string) => Promise<void>
 }
 
-const BioBlock: FC<BioBlockProps> = ({ isSelf, bio, className }) => {
+const BioBlock: FC<BioBlockProps> = ({
+  isSelf,
+  bio,
+  className,
+  onUpdateBio
+}) => {
   const [isEditing, setEditing] = useState(false)
-  const save = () => {}
+  const handleSave = async (bio: string) => {
+    await onUpdateBio(bio)
+    setEditing(false)
+  }
 
   if (isSelf) {
     return (
@@ -21,7 +31,7 @@ const BioBlock: FC<BioBlockProps> = ({ isSelf, bio, className }) => {
             placeholder='介紹你自己'
             initialValue={bio}
             handleCancel={() => setEditing(false)}
-            handleSave={save}
+            handleSave={handleSave}
           />
         ) : (
           <div className='text-center mb-2'>{bio}</div>

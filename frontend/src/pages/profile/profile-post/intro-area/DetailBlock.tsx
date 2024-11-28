@@ -8,13 +8,15 @@ type DetailBlockProps = {
   currentResidence: string
   company: string
   hometown: string
+  onUpdateDetail: (key: string, value: string) => void
 }
 
 const DetailBlock: FC<DetailBlockProps> = ({
   isSelf,
   currentResidence,
   company,
-  hometown
+  hometown,
+  onUpdateDetail
 }) => {
   const isShowDetail = currentResidence || company || hometown
 

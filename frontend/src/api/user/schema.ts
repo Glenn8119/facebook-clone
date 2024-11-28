@@ -11,8 +11,7 @@ export const userOverviewSchema = userSchema.extend({
   common_friend_list: z.array(userSchema)
 })
 
-// TODO: add additional user data
-export const userDetailSchema = userOverviewSchema.extend({
+export const userProfileSchema = z.object({
   bio: z.string().nullable(),
   current_residence: z.string().nullable(),
   hometown: z.string().nullable(),
@@ -21,11 +20,17 @@ export const userDetailSchema = userOverviewSchema.extend({
   cover_image: z.string().nullable()
 })
 
+export const userDetailSchema = userOverviewSchema.merge(userProfileSchema)
+
 type UserDetailReponseType = z.infer<typeof userDetailSchema>
 type UserOverviewType = z.infer<typeof userOverviewSchema>
+type UserProfileSchema = z.infer<typeof userProfileSchema>
 
 export type FEUserDetailReponseType =
   TransformObjectKeyFromSnakeToCamel<UserDetailReponseType>
 
 export type FEUserOverviewType =
   TransformObjectKeyFromSnakeToCamel<UserOverviewType>
+
+export type FEUserProfileType =
+  TransformObjectKeyFromSnakeToCamel<UserProfileSchema>
