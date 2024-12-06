@@ -16,26 +16,37 @@ export enum EditBlockType {
 type EditBlockProps = {
   label: string
   hint: string
+  name: string
   type: EditBlockType
   placeholder?: string
   className?: string
-  content?: string
+  value: string
   handleSave: AnyFunction
+  handleCancel: AnyFunction
+  handleChange: (name: string, value: string) => void
 }
 
 const EditBlock: FC<EditBlockProps> = ({
   label,
   hint,
+  name,
   placeholder,
   type,
   className,
-  content,
-  handleSave
+  value,
+  handleChange,
+  handleSave,
+  handleCancel
 }) => {
   const [isEditing, setIsEditing] = useState(false)
 
-  const onSave = async (value: string) => {
-    await handleSave(value)
+  const onSave = async () => {
+    await handleSave()
+    setIsEditing(false)
+  }
+
+  const onCancel = () => {
+    handleCancel()
     setIsEditing(false)
   }
 
@@ -44,23 +55,33 @@ const EditBlock: FC<EditBlockProps> = ({
       case EditBlockType.INPUT:
         return (
           <InputEditBlock
+            name={name}
             placeholder={placeholder ?? ''}
-            initialValue={content}
-            handleCancel={() => setIsEditing(false)}
+            value={value ?? ''}
+            handleCancel={onCancel}
             handleSave={onSave}
+            handleChange={handleChange}
           />
         )
       case EditBlockType.TEXTAREA:
         return (
           <TextareaEditBlock
             placeholder={placeholder ?? ''}
-            initialValue={content}
+            initialValue={value}
             handleCancel={() => setIsEditing(false)}
             handleSave={onSave}
           />
         )
       case EditBlockType.PICTURE:
         return <PictureEditBlock />
+    }
+  }
+
+  const renderContent = () => {
+    if (value) {
+      return <div>{value}</div>
+    } else {
+      return <div className='text-center text-slate-400'>{hint}</div>
     }
   }
 
@@ -72,14 +93,10 @@ const EditBlock: FC<EditBlockProps> = ({
           className='cursor-pointer text-blue-500'
           onClick={() => setIsEditing(!isEditing)}
         >
-          {isEditing ? '取消' : content ? '編輯' : '新增'}
+          {isEditing ? '取消' : value ? '編輯' : '新增'}
         </span>
       </div>
-      {isEditing ? (
-        renderEditBlock()
-      ) : (
-        <div className='text-center text-slate-400'>{hint}</div>
-      )}
+      {isEditing ? renderEditBlock() : renderContent()}
     </div>
   )
 }

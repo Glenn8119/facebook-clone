@@ -8,33 +8,35 @@ type InputEditBlockProps = {
   placeholder: string
   handleCancel: AnyFunction
   handleSave: AnyFunction
-  initialValue?: string
+  value: string
+  name: string
+  handleChange: (name: string, value: string) => void
 }
 
 const InputEditBlock: FC<InputEditBlockProps> = ({
   placeholder,
   handleCancel,
   handleSave,
-  initialValue
+  name,
+  value,
+  handleChange
 }) => {
-  const [inputValue, setInputValue] = useState('')
+  const [initialValue, _] = useState(value)
 
   const onCancel = () => {
-    setInputValue(initialValue ?? '')
+    handleChange(name, initialValue)
     handleCancel()
   }
 
-  const onSave = async () => {
-    await handleSave(inputValue)
-  }
   return (
     <div>
       <Input
+        name={name}
         placeholder={placeholder}
         maxLength={50}
         className='mb-2'
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        value={value}
+        onChange={(e) => handleChange(e.target.name, e.target.value)}
       />
       <div className='flex'>
         <Button
@@ -46,10 +48,10 @@ const InputEditBlock: FC<InputEditBlockProps> = ({
           取消
         </Button>
         <Button
-          disabled={!inputValue}
+          disabled={!value}
           className='w-12'
           size={ButtonSize.SMALL}
-          onClick={onSave}
+          onClick={() => handleSave()}
         >
           儲存
         </Button>

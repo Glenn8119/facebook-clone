@@ -1,22 +1,16 @@
-import Button from '@/components/form/Button'
-import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { FC } from 'react'
 import { MdLocationOn, MdWorkOutline, MdHouse } from 'react-icons/md'
 
 type DetailBlockProps = {
-  isSelf: boolean
   currentResidence: string
   company: string
   hometown: string
-  onUpdateDetail: (key: string, value: string) => void
 }
 
 const DetailBlock: FC<DetailBlockProps> = ({
-  isSelf,
   currentResidence,
   company,
-  hometown,
-  onUpdateDetail
+  hometown
 }) => {
   const isShowDetail = currentResidence || company || hometown
 
@@ -45,16 +39,7 @@ const DetailBlock: FC<DetailBlockProps> = ({
     )
   }
 
-  return (
-    <>
-      {isShowDetail ? renderDetail() : null}
-      {isSelf ? (
-        <Button size={ButtonSize.SMALL} variant={ButtonVariant.AUXILIARY}>
-          {isShowDetail ? '編輯' : '新增'}詳細資料
-        </Button>
-      ) : null}
-    </>
-  )
+  return <>{isShowDetail ? renderDetail() : <div>尚無詳細資料</div>}</>
 }
 
 export default DetailBlock

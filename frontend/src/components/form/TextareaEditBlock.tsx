@@ -17,7 +17,7 @@ const TextareaEditBlock: FC<TextareaEditBlockProps> = ({
   handleSave,
   initialValue
 }) => {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState(initialValue)
 
   const onCancel = () => {
     setInputValue(initialValue ?? '')
