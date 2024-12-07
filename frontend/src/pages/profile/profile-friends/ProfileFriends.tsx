@@ -64,10 +64,6 @@ const ProfileFriends = () => {
     <Card className='p-4'>
       <div className='mb-4 flex'>
         <div className='font-semi-bold text-xl mr-auto'>朋友</div>
-        <Input
-          className='w-52 h-9 rounded-full bg-gray-100 border-none'
-          placeholder='搜尋'
-        />
       </div>
       <div className='grid grid-cols-2 gap-1'>{friendBoxList}</div>
     </Card>

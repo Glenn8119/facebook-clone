@@ -12,14 +12,10 @@ const Header = () => {
   return (
     <header className='py-2 px-4 flex items-center w-full fixed top-0 h-14 shadow-lg  bg-white z-header'>
       <MdFacebook
-        className='mr-2 cursor-pointer'
+        className='mr-auto cursor-pointer'
         size={40}
         color='#1E90FF'
         onClick={() => navigate({ pathname: ROUTES.HOME_PAGE })}
-      />
-      <Input
-        placeholder='搜尋 FaceLook'
-        className='mr-auto w-60 rounded-full h-10 bg-gray-100 border-none'
       />
       <Popover popOverElement={<UserPopover />}>
         <div className='relative cursor-pointer active:scale-95'>

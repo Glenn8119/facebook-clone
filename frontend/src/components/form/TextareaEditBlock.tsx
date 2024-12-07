@@ -5,36 +5,37 @@ import { ButtonSize, ButtonVariant } from '@/types/component/button'
 import { FC, useState } from 'react'
 
 type TextareaEditBlockProps = {
+  value: string
+  name: string
   placeholder: string
   handleCancel: AnyFunction
   handleSave: AnyFunction
-  initialValue?: string
+  handleChange: (name: string, value: string) => void
 }
 
 const TextareaEditBlock: FC<TextareaEditBlockProps> = ({
+  value,
+  name,
   placeholder,
   handleCancel,
   handleSave,
-  initialValue
+  handleChange
 }) => {
-  const [inputValue, setInputValue] = useState(initialValue)
+  const [initialValue, _] = useState(value)
 
   const onCancel = () => {
-    setInputValue(initialValue ?? '')
+    handleChange(name, initialValue)
     handleCancel()
-  }
-
-  const onSave = async () => {
-    await handleSave(inputValue)
   }
   return (
     <div>
       <TextArea
+        name={name}
         placeholder={placeholder}
         maxLength={50}
         className='text-sm border'
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        value={value}
+        onChange={(e) => handleChange(e.target.name, e.target.value)}
       />
       <div className='flex'>
         <Button
@@ -46,10 +47,10 @@ const TextareaEditBlock: FC<TextareaEditBlockProps> = ({
           取消
         </Button>
         <Button
-          disabled={!inputValue}
+          disabled={!value}
           className='w-12'
           size={ButtonSize.SMALL}
-          onClick={onSave}
+          onClick={handleSave}
         >
           儲存
         </Button>

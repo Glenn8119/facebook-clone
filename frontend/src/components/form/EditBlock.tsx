@@ -66,10 +66,12 @@ const EditBlock: FC<EditBlockProps> = ({
       case EditBlockType.TEXTAREA:
         return (
           <TextareaEditBlock
+            name={name}
             placeholder={placeholder ?? ''}
-            initialValue={value}
+            value={value ?? ''}
             handleCancel={() => setIsEditing(false)}
             handleSave={onSave}
+            handleChange={handleChange}
           />
         )
       case EditBlockType.PICTURE:
@@ -78,8 +80,19 @@ const EditBlock: FC<EditBlockProps> = ({
   }
 
   const renderContent = () => {
+    const renderByType = () => {
+      switch (type) {
+        case EditBlockType.INPUT:
+          return <div>{value}</div>
+        case EditBlockType.TEXTAREA:
+          return <div className='whitespace-pre-wrap'>{value}</div>
+        case EditBlockType.PICTURE:
+          return <img src={value} />
+      }
+    }
+
     if (value) {
-      return <div>{value}</div>
+      return renderByType()
     } else {
       return <div className='text-center text-slate-400'>{hint}</div>
     }

@@ -4,7 +4,6 @@ import { FC, useState } from 'react'
 import EditBlock, { EditBlockType } from '@/components/form/EditBlock'
 import { useSearchParams } from 'react-router-dom'
 import useGetUserDetail from '@/hooks/api/queries/useGetUserDetail'
-import cloneDeep from 'lodash/cloneDeep'
 import useUpdateUserDetail from '@/hooks/api/mutation/useUpdateUserDetail'
 
 type EditProfileModalProps = {
@@ -28,7 +27,6 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ onClose }) => {
   const { mutateAsync: updateUserDetail } = useUpdateUserDetail()
 
   const handleChange = (key: string, value: string) => {
-    console.log({ key, value })
     setFormData({
       ...formData,
       [key]: value
