@@ -2,10 +2,7 @@ import { FC, useState } from 'react'
 import { AnyFunction } from '@/types/common'
 import InputEditBlock from '@/components/form/InputEditBlock'
 import TextareaEditBlock from '@/components/form/TextareaEditBlock'
-
-const PictureEditBlock = () => {
-  return ''
-}
+import PictureEditBlock from '@/components/form/PictureEditBlock'
 
 export enum EditBlockType {
   PICTURE = 'Picture',
@@ -75,7 +72,7 @@ const EditBlock: FC<EditBlockProps> = ({
           />
         )
       case EditBlockType.PICTURE:
-        return <PictureEditBlock />
+        return <PictureEditBlock value={value} />
     }
   }
 
@@ -101,7 +98,7 @@ const EditBlock: FC<EditBlockProps> = ({
   return (
     <div className={className}>
       <div className='flex mb-2'>
-        <span className='mr-auto text-md font-medium'>{label}</span>
+        <span className='mr-auto text-lg font-bold'>{label}</span>
         <span
           className='cursor-pointer text-blue-500'
           onClick={() => setIsEditing(!isEditing)}

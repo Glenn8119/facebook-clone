@@ -1,11 +1,11 @@
-import { Post } from '@/types/api/post'
 import { getTimeFromNow } from '@/utils/formatter/dayjs'
 import Comment from '@/components/common/post-area/post-list/post/comment/Comment'
+import { FECommentType } from '@/api/post/schema'
 
 type CommentListProps = {
   postId: string
   selfId: string
-  commentList: Post['commentList']
+  commentList: FECommentType[]
   deletePostComment: (body: {
     postId: string
     commentId: string
@@ -24,7 +24,6 @@ const CommentList = ({
   deletePostComment,
   editPostComment
 }: CommentListProps) => {
-  // TODO: 留言分頁管理
   const renderCommentList = commentList.map((comment) => {
     const createTime = getTimeFromNow(new Date(comment.createdAt))
     return (

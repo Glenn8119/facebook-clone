@@ -1,6 +1,5 @@
 import Avatar from '@/components/Avatar'
 import Popover from '@/components/Popover'
-import Input from '@/components/form/Input'
 import { MdFacebook } from 'react-icons/md'
 import UserPopover from '@/components/layout/header/UserPopover'
 import useNavigateTo from '@/hooks/useNavigateTo'

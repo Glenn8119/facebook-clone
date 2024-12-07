@@ -2,7 +2,6 @@ import { useSearchParams } from 'react-router-dom'
 
 import Avatar from '@/components/Avatar'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
-import Input from '@/components/form/Input'
 import Card from '@/components/layout/Card'
 
 import { ROUTES } from '@/constants/common'
