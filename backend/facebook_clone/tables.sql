@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS user_table (
     id uuid PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
     account VARCHAR(50) NOT NULL UNIQUE,
     name VARCHAR(50) NOT NULL,
+    avatar_image TEXT,
     hashed_password VARCHAR(128) NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now()
@@ -15,7 +16,6 @@ CREATE TABLE IF NOT EXISTS user_detail (
     current_residence VARCHAR(50),
     hometown VARCHAR(50),
     company VARCHAR(50),
-    avatar_image TEXT,
     cover_image TEXT,
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now(),

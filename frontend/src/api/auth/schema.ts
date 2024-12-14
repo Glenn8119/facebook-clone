@@ -9,7 +9,8 @@ export const loginResponseSchema = z.object({
 
 export const signUpResponseSchema = z.object({
   account: z.string(),
-  name: z.string()
+  name: z.string(),
+  avatar_image: z.string()
 })
 
 export const userDetailResponseSchema = signUpResponseSchema.extend({

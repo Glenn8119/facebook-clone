@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from uuid import UUID
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 from facebook_clone.schema.user import User
 
 
@@ -24,6 +24,7 @@ class PutCommentRequestBody(BaseModel):
 class Comment(BaseModel):
     id: UUID
     poster: str
+    poster_avatar_image: Optional[str] = None
     poster_id: UUID
     content: str
     created_at: datetime
@@ -32,10 +33,12 @@ class Comment(BaseModel):
 
 class Liker(User):
     is_friend: bool
+    liker_avatar_image: Optional[str] = None
 
 
 class Post(BaseModel):
     liker_list: List[Liker]
+    poster_avatar_image: Optional[str] = None
     poster: str
     id: UUID
     content: str

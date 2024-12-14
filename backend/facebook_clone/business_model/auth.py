@@ -25,6 +25,7 @@ class AuthBo(BaseBo):
         return bcrypt_context.hash(password)
 
     async def create_account(self, account, name, password):
+        user_dao: UserDao
         hashed_password = self.hash_password(password)
         async with get_facebook_clone_dao_factory().create_dao_list(UserDao) as [user_dao]:
             return await user_dao.create_user(account, name, hashed_password)

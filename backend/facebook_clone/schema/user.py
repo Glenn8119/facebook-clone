@@ -22,6 +22,7 @@ class Token(BaseModel):
 class User(BaseModel):
     id: UUID
     name: str
+    avatar_image: Optional[str] = None
 
 
 class UserOverview(User):
@@ -38,7 +39,6 @@ class UserDetail(UserOverview):
     hometown: Optional[str] = None
     bio: Optional[str] = None
     company: Optional[str] = None
-    avatar_image: Optional[str] = None
     cover_image: Optional[str] = None
 
 

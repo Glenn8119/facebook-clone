@@ -10,6 +10,7 @@ export const commentSchema = z.object({
   updated_at: z.string(),
   content: z.string(),
   poster: z.string(),
+  poster_avatar_image: z.string().nullable(),
   poster_id: z.string().uuid()
 })
 
@@ -24,11 +25,13 @@ export const createPostResponseSchema = z.object({
 export const editPostResponseSchema = createPostResponseSchema
 
 const likerSchema = userSchema.extend({
+  liker_avatar_image: z.string().nullable(),
   is_friend: z.boolean()
 })
 
 export const getSinglePostResponseSchema = createPostResponseSchema.extend({
   liker_list: z.array(likerSchema),
+  poster_avatar_image: z.string().nullable(),
   poster: z.string()
 })
 

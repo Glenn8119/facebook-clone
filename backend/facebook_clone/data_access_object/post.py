@@ -11,7 +11,7 @@ class PostDao(BaseDao):
 
     async def get_post_list(self, user_id: UUID, offset: int, limit: int):
         return await self.connection.fetch('''
-            SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name AS poster, count(p.id) over() AS total
+            SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name AS poster, u.avatar_image AS poster_avatar_image, count(p.id) over() AS total
             FROM post AS p
             INNER JOIN user_table AS u ON p.user_id = u.id
             WHERE p.user_id = $1
@@ -21,7 +21,7 @@ class PostDao(BaseDao):
 
     async def get_self_and_friend_post_list(self, user_id: UUID, offset: int, limit: int):
         return await self.connection.fetch('''
-            SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name AS poster, count(p.id) over() AS total
+            SELECT p.id, p.content, p.user_id, p.created_at, p.updated_at, u.name AS poster, u.avatar_image AS poster_avatar_image, count(p.id) over() AS total
             FROM post AS p
             INNER JOIN user_table AS u ON u.id in (
                 select f.friend_id from friend_relation as f
@@ -70,7 +70,7 @@ class PostDao(BaseDao):
                 WHERE user_id = $1
             )
                      
-            SELECT pl.user_id AS id, u.name,
+            SELECT pl.user_id AS id, u.name, u.avatar_image AS liker_avatar_image,
                 CASE
                     WHEN pl.user_id in (SELECT * FROM friend_cte) THEN TRUE
                     ELSE FALSE
@@ -82,7 +82,7 @@ class PostDao(BaseDao):
 
     async def get_comment_list_from_post(self, post_id: UUID, offset: int, limit: int):
         return await self.connection.fetch('''
-            SELECT c.*, u.name AS poster, u.id AS poster_id, count(c.id) over() AS total
+            SELECT c.*, u.name AS poster, u.id AS poster_id, u.avatar_image as poster_avatar_image, count(c.id) over() AS total
             FROM comment AS c
             INNER JOIN user_table AS u ON c.user_id = u.id
             WHERE c.post_id = $1

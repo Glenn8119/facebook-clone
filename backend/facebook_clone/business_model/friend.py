@@ -10,6 +10,7 @@ import asyncio
 
 class FriendBo(BaseBo):
     async def get_recommendation_friend_list(self):
+        friend_dao: FriendDao
         async with get_facebook_clone_dao_factory().create_dao_list(FriendDao) as [friend_dao]:
             user_id = self.user['id']
             recommendation_user_list = await friend_dao.get_all_not_friend_list(user_id)
@@ -32,12 +33,14 @@ class FriendBo(BaseBo):
 
     @staticmethod
     async def get_common_friend_list(user_id, friend_id):
+        friend_dao: FriendDao
         async with get_facebook_clone_dao_factory().create_dao_list(FriendDao) as [friend_dao]:
             common_friend_list = await friend_dao.get_common_friend_list(user_id, friend_id)
             return [dict(friend) for friend in common_friend_list]
 
     # 對象是朋友或是自己 -> 拿所有好友, 對象是非好友 -> 僅拿共同好友
     async def get_friend_list(self, user_id):
+        friend_dao: FriendDao
         async with get_facebook_clone_dao_factory().create_dao_list(FriendDao) as [friend_dao]:
             is_friend = bool(await friend_dao.get_friend_relation(user_id=self.user['id'], friend_id=user_id))
             is_the_user = user_id == self.user['id']

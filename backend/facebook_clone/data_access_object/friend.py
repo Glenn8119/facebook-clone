@@ -5,7 +5,7 @@ class FriendDao(BaseDao):
     async def get_all_not_friend_list(self, user_id):
         return await self.connection.fetch(
             '''
-                SELECT id, name, account
+                SELECT id, name, account, avatar_image
                 FROM user_table
                 WHERE id NOT IN (
                     SELECT friend_id
@@ -36,7 +36,7 @@ class FriendDao(BaseDao):
 
     async def get_common_friend_list(self, user_id, friend_id):
         return await self.connection.fetch('''
-            SELECT u.name, u.account, u.id
+            SELECT u.name, u.account, u.id, u.avatar_image
             FROM user_table as u
             INNER JOIN friend_relation as f1 ON f1.friend_id = u.id
             INNER JOIN friend_relation as f2 ON f2.friend_id = f1.friend_id
@@ -51,7 +51,7 @@ class FriendDao(BaseDao):
                 WHERE user_id = $1
             )
             
-            SELECT u.name, u.account, u.id,
+            SELECT u.name, u.account, u.id, u.avatar_image,
                 CASE
                     WHEN u.id in (SELECT * FROM friend_cte) THEN TRUE
                     ELSE FALSE
