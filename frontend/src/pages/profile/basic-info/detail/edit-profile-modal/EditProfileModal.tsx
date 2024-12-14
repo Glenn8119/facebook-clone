@@ -64,11 +64,11 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ onClose }) => {
   }
 
   return (
-    <Modal onCloseModal={onClose} modalClassName='w-175'>
+    <Modal onCloseModal={onClose} modalClassName='w-175 h-125 flex flex-col'>
       <div className='h-15 p-4 text-center font-medium text-xl border-b'>
         編輯個人檔案
       </div>
-      <div className='p-4'>
+      <div className='p-4 h-full overflow-auto'>
         <EditBlock
           value={formData.avatarImage}
           name='avatarImage'

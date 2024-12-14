@@ -15,6 +15,7 @@ type EditBlockProps = {
   hint: string
   name: string
   type: EditBlockType
+  aspect?: number
   placeholder?: string
   className?: string
   value: string
@@ -24,6 +25,7 @@ type EditBlockProps = {
 }
 
 const EditBlock: FC<EditBlockProps> = ({
+  aspect,
   label,
   hint,
   name,
@@ -72,7 +74,17 @@ const EditBlock: FC<EditBlockProps> = ({
           />
         )
       case EditBlockType.PICTURE:
-        return <PictureEditBlock value={value} />
+        return (
+          <PictureEditBlock
+            aspect={aspect ?? 1}
+            name={name}
+            title={hint}
+            value={value}
+            handleChange={handleChange}
+            handleCancel={() => setIsEditing(false)}
+            handleSave={onSave}
+          />
+        )
     }
   }
 
