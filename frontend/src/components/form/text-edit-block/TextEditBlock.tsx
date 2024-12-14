@@ -1,11 +1,9 @@
 import { FC, useState } from 'react'
 import { AnyFunction } from '@/types/common'
-import InputEditBlock from '@/components/form/InputEditBlock'
-import TextareaEditBlock from '@/components/form/TextareaEditBlock'
-import PictureEditBlock from '@/components/form/PictureEditBlock'
+import InputEditBlock from '@/components/form/text-edit-block/InputEditBlock'
+import TextareaEditBlock from '@/components/form/text-edit-block/TextareaEditBlock'
 
-export enum EditBlockType {
-  PICTURE = 'Picture',
+export enum TextEditBlockType {
   INPUT = 'Input',
   TEXTAREA = 'Textarea'
 }
@@ -14,18 +12,16 @@ type EditBlockProps = {
   label: string
   hint: string
   name: string
-  type: EditBlockType
-  aspect?: number
-  placeholder?: string
+  type: TextEditBlockType
+  placeholder: string
   className?: string
   value: string
-  handleSave: AnyFunction
+  handleSave?: AnyFunction
   handleCancel: AnyFunction
   handleChange: (name: string, value: string) => void
 }
 
 const EditBlock: FC<EditBlockProps> = ({
-  aspect,
   label,
   hint,
   name,
@@ -40,7 +36,7 @@ const EditBlock: FC<EditBlockProps> = ({
   const [isEditing, setIsEditing] = useState(false)
 
   const onSave = async () => {
-    await handleSave()
+    handleSave && (await handleSave())
     setIsEditing(false)
   }
 
@@ -51,7 +47,7 @@ const EditBlock: FC<EditBlockProps> = ({
 
   const renderEditBlock = () => {
     switch (type) {
-      case EditBlockType.INPUT:
+      case TextEditBlockType.INPUT:
         return (
           <InputEditBlock
             name={name}
@@ -62,7 +58,7 @@ const EditBlock: FC<EditBlockProps> = ({
             handleChange={handleChange}
           />
         )
-      case EditBlockType.TEXTAREA:
+      case TextEditBlockType.TEXTAREA:
         return (
           <TextareaEditBlock
             name={name}
@@ -73,30 +69,16 @@ const EditBlock: FC<EditBlockProps> = ({
             handleChange={handleChange}
           />
         )
-      case EditBlockType.PICTURE:
-        return (
-          <PictureEditBlock
-            aspect={aspect ?? 1}
-            name={name}
-            title={hint}
-            value={value}
-            handleChange={handleChange}
-            handleCancel={() => setIsEditing(false)}
-            handleSave={onSave}
-          />
-        )
     }
   }
 
   const renderContent = () => {
     const renderByType = () => {
       switch (type) {
-        case EditBlockType.INPUT:
+        case TextEditBlockType.INPUT:
           return <div>{value}</div>
-        case EditBlockType.TEXTAREA:
+        case TextEditBlockType.TEXTAREA:
           return <div className='whitespace-pre-wrap'>{value}</div>
-        case EditBlockType.PICTURE:
-          return <img src={value} />
       }
     }
 

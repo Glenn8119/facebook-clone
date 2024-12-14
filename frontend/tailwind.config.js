@@ -7,6 +7,10 @@ export default {
     extend: {
       spacing: {
         15: '3.75rem',
+        42: '10.5rem',
+        46: '11.5rem',
+        49: '12.25rem',
+        55: '13.75rem',
         92: '23rem',
         100: '25rem',
         107: '26.75rem',

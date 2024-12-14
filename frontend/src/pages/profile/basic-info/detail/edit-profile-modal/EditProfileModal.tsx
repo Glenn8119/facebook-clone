@@ -1,10 +1,13 @@
 import Modal from '@/components/Modal'
 import { AnyFunction } from '@/types/common'
 import { FC, useState } from 'react'
-import EditBlock, { EditBlockType } from '@/components/form/EditBlock'
+import TextEditBlock, {
+  TextEditBlockType
+} from '@/components/form/text-edit-block/TextEditBlock'
 import { useSearchParams } from 'react-router-dom'
 import useGetUserDetail from '@/hooks/api/queries/useGetUserDetail'
 import useUpdateUserDetail from '@/hooks/api/mutation/useUpdateUserDetail'
+import PictureEditBlock from '@/components/form/PictureEditBlock'
 
 type EditProfileModalProps = {
   onClose?: AnyFunction
@@ -52,6 +55,27 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ onClose }) => {
     })
   }
 
+  const handleImageSave = async (key: string, value: string) => {
+    const clonedFormData = { ...formData }
+    clonedFormData[key as 'avatarImage' | 'coverImage'] = value
+    const {
+      currentResidence,
+      company,
+      hometown,
+      bio,
+      coverImage,
+      avatarImage
+    } = clonedFormData
+    await updateUserDetail({
+      bio,
+      cover_image: coverImage,
+      avatar_image: avatarImage,
+      hometown,
+      company,
+      current_residence: currentResidence
+    })
+  }
+
   const handleCancel = () => {
     setFormData({
       bio: bio ?? '',
@@ -69,71 +93,73 @@ const EditProfileModal: FC<EditProfileModalProps> = ({ onClose }) => {
         編輯個人檔案
       </div>
       <div className='p-4 h-full overflow-auto'>
-        <EditBlock
+        <PictureEditBlock
+          aspect={1}
           value={formData.avatarImage}
           name='avatarImage'
           label='大頭貼照'
           hint='頭貼'
-          type={EditBlockType.PICTURE}
           className='mb-4'
-          handleSave={handleSave}
+          imageHeight={168}
+          imageClassName='h-42'
+          handleSave={handleImageSave}
           handleChange={handleChange}
-          handleCancel={handleCancel}
         />
-        <EditBlock
+        <PictureEditBlock
+          aspect={2.7}
           value={formData.coverImage}
           name='coverImage'
           label='封面相片'
           hint='封面相片'
-          type={EditBlockType.PICTURE}
           className='mb-4'
-          handleSave={handleSave}
+          imageHeight={185}
+          imageClassName='h-46'
+          handleSave={handleImageSave}
           handleChange={handleChange}
-          handleCancel={handleCancel}
         />
-        <EditBlock
+        <TextEditBlock
           value={formData.bio}
           name='bio'
           label='個人簡介'
           hint='介紹一下你自己...'
           placeholder='介紹你自己'
-          type={EditBlockType.TEXTAREA}
+          type={TextEditBlockType.TEXTAREA}
           className='mb-4'
           handleSave={handleSave}
           handleChange={handleChange}
           handleCancel={handleCancel}
         />
-        <EditBlock
+        <TextEditBlock
           value={formData.company}
           name='company'
           label='工作地點'
           hint='你所屬的公司名稱'
           placeholder='公司名稱'
-          type={EditBlockType.INPUT}
+          type={TextEditBlockType.INPUT}
           className='mb-4'
           handleSave={handleSave}
           handleChange={handleChange}
           handleCancel={handleCancel}
         />
-        <EditBlock
+        <TextEditBlock
           value={formData.currentResidence}
           name='currentResidence'
           label='現居城市'
           hint='你所居住的地方'
           placeholder='城市'
-          type={EditBlockType.INPUT}
+          type={TextEditBlockType.INPUT}
           className='mb-4'
           handleSave={handleSave}
           handleChange={handleChange}
           handleCancel={handleCancel}
         />
-        <EditBlock
+        <TextEditBlock
           value={formData.hometown}
           name='hometown'
           label='家鄉'
           hint='你的家鄉'
           placeholder='城市'
-          type={EditBlockType.INPUT}
+          type={TextEditBlockType.INPUT}
           className='mb-4'
           handleSave={handleSave}
           handleChange={handleChange}
