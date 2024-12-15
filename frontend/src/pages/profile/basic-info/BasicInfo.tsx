@@ -8,10 +8,10 @@ interface BasicInfoProps {}
 const BasicInfo: FC<BasicInfoProps> = () => {
   return (
     <div className='w-full bg-white shadow'>
-      <div className='w-11/12 mx-auto'>
+      <div className='w-full max-w-312 mx-auto'>
         <Cover />
       </div>
-      <div className='w-10/12 mx-auto'>
+      <div className='w-9/12 mx-auto'>
         <Detail />
         <FunctionTabs />
       </div>

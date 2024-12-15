@@ -33,7 +33,7 @@ const ProfilePage: FC = () => {
   return (
     <div className='w-full'>
       <BasicInfo />
-      <div className='w-10/12 m-auto py-4'>{renderComponent()}</div>
+      <div className='w-9/12 m-auto py-4'>{renderComponent()}</div>
     </div>
   )
 }

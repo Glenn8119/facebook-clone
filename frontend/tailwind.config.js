@@ -19,7 +19,8 @@ export default {
         125: '31.25rem',
         135: '33.75rem',
         137: '34.25rem',
-        175: '43.75rem'
+        175: '43.75rem',
+        312: '78rem'
       },
       colors: {
         main: colors.slate[100]
@@ -37,6 +38,9 @@ export default {
       boxShadow: {
         popover:
           '0 1px 8px 1px rgb(0 0 0 / 0.1), 0 1px 8px 1px rgb(0 0 0 / 0.1);'
+      },
+      aspectRatio: {
+        cover: '27 / 10'
       },
       keyframes: {
         'fade-in': {

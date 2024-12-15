@@ -1,5 +1,6 @@
 import { TransformObjectKeyFromSnakeToCamel } from '@/utils/formatter/schema'
 import { z } from 'zod'
+import { userSchema } from '../user/schema'
 
 export const loginResponseSchema = z.object({
   access_token: z.string(),
@@ -9,12 +10,11 @@ export const loginResponseSchema = z.object({
 
 export const signUpResponseSchema = z.object({
   account: z.string(),
-  name: z.string(),
-  avatar_image: z.string()
+  name: z.string()
 })
 
-export const userDetailResponseSchema = signUpResponseSchema.extend({
-  id: z.string().uuid()
+export const userDetailResponseSchema = userSchema.extend({
+  avatar_image: z.string().nullable()
 })
 
 export const refreshTokenResponseSchema = loginResponseSchema

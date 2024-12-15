@@ -115,7 +115,7 @@ const Detail = () => {
           />
         </div>
         {userId === selfId ? (
-          <div className='flex-grow py-2'>
+          <div className='flex justify-end flex-grow py-2'>
             <Button
               size={ButtonSize.SMALL}
               className='w-auto px-4'
