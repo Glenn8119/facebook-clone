@@ -41,6 +41,8 @@ const PostList = ({ userId }: PostListProps) => {
     return <FullScreenLoading />
   }
 
+  console.log(postList)
+
   return (
     <div>
       {postList.map((post) => (

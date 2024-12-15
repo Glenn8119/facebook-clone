@@ -30,16 +30,21 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
   return (
     <div className={cn}>
       <UserOverviewPopover
+        avatarImage={recommendationFriend.avatarImage}
         userId={recommendationFriend.id}
         name={recommendationFriend.name}
         friendStatus={FriendStatus.IS_NOT_FRIEND}
         commonFriendList={commonFriendList}
       >
-        <Avatar className='mr-2 cursor-pointer' />
+        <Avatar
+          className='mr-2 cursor-pointer'
+          imgUrl={recommendationFriend.avatarImage}
+        />
       </UserOverviewPopover>
 
       <div className='mr-auto'>
         <UserOverviewPopover
+          avatarImage={recommendationFriend.avatarImage}
           userId={recommendationFriend.id}
           name={recommendationFriend.name}
           friendStatus={FriendStatus.IS_NOT_FRIEND}
@@ -54,7 +59,6 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
             <CollapsingAvatarList
               className='mr-1'
               avatarClassName='w-4 h-4'
-              // TODO: add imgUrl to user info
               avatarInfoList={commonFriendList}
             />
             <div className='text-slate-400 text-sm whitespace-nowrap'>

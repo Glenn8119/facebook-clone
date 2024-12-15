@@ -36,7 +36,7 @@ const PostActionModal: FC<PostActionModalProps> = ({
   }
 
   const {
-    value: { name }
+    value: { name, avatarImage }
   } = useUserContext()
 
   return (
@@ -46,7 +46,7 @@ const PostActionModal: FC<PostActionModalProps> = ({
       </div>
       <div className='flex flex-col p-4 h-92'>
         <div className='flex mb-2'>
-          <Avatar className='mr-2' />
+          <Avatar className='mr-2' imgUrl={avatarImage} />
           <span>{name}</span>
         </div>
         <TextArea

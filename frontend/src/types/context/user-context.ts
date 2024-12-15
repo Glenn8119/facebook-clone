@@ -3,6 +3,7 @@ export type UserContextType = {
   accessToken: string
   refreshToken: string
   name: string
+  avatarImage: string
   id: string
 }
 

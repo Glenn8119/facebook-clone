@@ -28,6 +28,7 @@ const LazyLoadUserOverviewPopover: FC<LazyLoadUserOverviewPopoverProps> = ({
 
   return (
     <UserOverviewPopover
+      avatarImage={userDetail.avatarImage}
       userId={userId}
       name={name}
       friendStatus={getFriendStatus({

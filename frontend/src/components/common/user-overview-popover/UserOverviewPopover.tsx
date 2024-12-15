@@ -3,7 +3,7 @@ import Popover from '@/components/Popover'
 import { PopoverType } from '@/types/component/popover'
 import React, { FC } from 'react'
 import UserOverviewCard from '@/components/common/user-overview-popover/UserOverviewCard'
-import { FriendStatus } from '@/types/common'
+import { FriendStatus, Nullable } from '@/types/common'
 import useNavigateTo from '@/hooks/useNavigateTo'
 import { ROUTES } from '@/constants/common'
 
@@ -11,6 +11,7 @@ type UserOverviewPopoverProps = {
   children: React.ReactNode
   userId: string
   name: string
+  avatarImage: Nullable<string>
   friendStatus: FriendStatus
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
 }
@@ -19,6 +20,7 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
   children,
   userId,
   name,
+  avatarImage,
   friendStatus,
   commonFriendList
 }) => {
@@ -35,6 +37,7 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
       type={PopoverType.HOVER}
       popOverElement={
         <UserOverviewCard
+          avatarImage={avatarImage}
           userId={userId}
           name={name}
           friendStatus={friendStatus}

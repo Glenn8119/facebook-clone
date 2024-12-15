@@ -16,12 +16,14 @@ const useLogin = () => {
         account: formData.account,
         accessToken: loginResponse.accessToken,
         refreshToken: loginResponse.refreshToken,
+        avatarImage: '',
         name: '',
         id: ''
       }
 
       localStorage.setItem('user', JSON.stringify(userInfo))
       const userDetail = await AuthApi.getAuthInfo()
+      userInfo.avatarImage = userDetail.avatarImage
       userInfo.name = userDetail.name
       userInfo.id = userDetail.id
 

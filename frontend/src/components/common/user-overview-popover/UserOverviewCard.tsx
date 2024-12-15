@@ -9,7 +9,7 @@ import { ROUTES } from '@/constants/common'
 import useAddFriend from '@/hooks/api/mutation/useAddFriend'
 import useNavigateTo from '@/hooks/useNavigateTo'
 
-import { FriendStatus, SetStateType } from '@/types/common'
+import { FriendStatus, Nullable, SetStateType } from '@/types/common'
 import { ButtonSize } from '@/types/component/button'
 
 import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
@@ -18,6 +18,7 @@ import useDeleteFriend from '@/hooks/api/mutation/useDeleteFriend'
 type UserOverviewCardProps = {
   userId: string
   name: string
+  avatarImage: Nullable<string>
   friendStatus: FriendStatus
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
 }
@@ -103,6 +104,7 @@ const CommonFriendListDescription = ({
 const UserOverviewCard: FC<UserOverviewCardProps> = ({
   userId,
   name,
+  avatarImage,
   friendStatus,
   commonFriendList
 }) => {
@@ -128,6 +130,7 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
         <div className='flex mb-3'>
           <Avatar
             className='mr-2 w-24 h-24 cursor-pointer'
+            imgUrl={avatarImage}
             onClick={(e) => {
               e.stopPropagation()
               navigateToProfilePage(userId)

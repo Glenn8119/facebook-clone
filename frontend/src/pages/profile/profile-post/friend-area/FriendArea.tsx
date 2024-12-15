@@ -14,14 +14,19 @@ const FriendArea = () => {
   const friendBoxList = friendList.map((friend) => (
     <div className='flex flex-col px-2' key={friend.id}>
       <UserOverviewPopover
+        avatarImage={friend.avatarImage}
         userId={friend.id}
         name={friend.name}
         friendStatus={friend.friendStatus}
         commonFriendList={friend.commonFriendList}
       >
-        <Avatar className='mr-4 rounded w-20 h-20 cursor-pointer' />
+        <Avatar
+          className='mr-4 rounded w-20 h-20 cursor-pointer'
+          imgUrl={friend.avatarImage}
+        />
       </UserOverviewPopover>
       <UserOverviewPopover
+        avatarImage={friend.avatarImage}
         userId={friend.id}
         name={friend.name}
         friendStatus={friend.friendStatus}

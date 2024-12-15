@@ -103,7 +103,7 @@ const Detail = () => {
     <>
       <div className='flex items-end h-36 relative pb-4 border-b border-slate-300'>
         <div className='absolute bottom-4 left-0 border-white border-4 rounded-full'>
-          <Avatar className='w-40 h-40' />
+          <Avatar className='w-40 h-40' imgUrl={userDetail.avatarImage} />
         </div>
         <div className='basis-44' />
         <div className='flex-grow py-2'>

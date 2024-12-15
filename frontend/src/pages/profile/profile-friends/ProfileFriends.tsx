@@ -25,16 +25,21 @@ const ProfileFriends = () => {
       className='flex items-center h-28 p-4 border border-main rounded-lg'
     >
       <UserOverviewPopover
+        avatarImage={friend.avatarImage}
         userId={friend.id}
         name={friend.name}
         friendStatus={friend.friendStatus}
         commonFriendList={friend.commonFriendList}
       >
-        <Avatar className='mr-4 rounded w-20 h-20 cursor-pointer' />
+        <Avatar
+          className='mr-4 rounded w-20 h-20 cursor-pointer'
+          imgUrl={friend.avatarImage}
+        />
       </UserOverviewPopover>
 
       <div className='flex flex-col justify-center'>
         <UserOverviewPopover
+          avatarImage={friend.avatarImage}
           userId={friend.id}
           name={friend.name}
           friendStatus={friend.friendStatus}

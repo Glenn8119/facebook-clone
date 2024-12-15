@@ -7,8 +7,12 @@ export type AvatarInfo = {
   friendStatus: FriendStatus
   id: string
   name: string
-  commonFriendList?: { name: string; id: string }[]
-  imgUrl?: string
+  commonFriendList?: {
+    name: string
+    id: string
+    avatarImage: Nullable<string>
+  }[]
+  avatarImage: Nullable<string>
 }
 
 export enum FriendStatus {

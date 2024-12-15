@@ -3,7 +3,8 @@ import { z } from 'zod'
 
 export const userSchema = z.object({
   name: z.string(),
-  id: z.string().uuid()
+  id: z.string().uuid(),
+  avatar_image: z.string().nullable()
 })
 
 export const userOverviewSchema = userSchema.extend({
@@ -16,7 +17,6 @@ export const userProfileSchema = z.object({
   current_residence: z.string().nullable(),
   hometown: z.string().nullable(),
   company: z.string().nullable(),
-  avatar_image: z.string().nullable(),
   cover_image: z.string().nullable()
 })
 

@@ -14,7 +14,7 @@ interface FunctionListProps {
 const FunctionList: FC<FunctionListProps> = ({ className }) => {
   const cn = twMerge('h-[calc(100dvh-56px)] p-4', className)
   const {
-    value: { name, id }
+    value: { name, id, avatarImage }
   } = useUserContext()
   const navigate = useNavigateTo()
 
@@ -29,7 +29,7 @@ const FunctionList: FC<FunctionListProps> = ({ className }) => {
           })
         }
       >
-        <Avatar className='mr-3' />
+        <Avatar className='mr-3' imgUrl={avatarImage} />
         <span>{name}</span>
       </li>
       <li

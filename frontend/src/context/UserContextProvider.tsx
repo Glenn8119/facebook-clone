@@ -3,7 +3,15 @@ import {
   UserContextType,
   UserReducerActionType
 } from '@/types/context/user-context'
-import { userContextInitialValue } from '@/constants/userContext'
+
+const userContextInitialValue = {
+  account: '',
+  accessToken: '',
+  refreshToken: '',
+  name: '',
+  avatarImage: '',
+  id: ''
+}
 
 export const UserContext = createContext<{
   value: UserContextType

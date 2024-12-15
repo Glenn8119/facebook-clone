@@ -35,6 +35,7 @@ const Liker = ({
       >
         <Avatar
           className='mr-2 hover:underline cursor-pointer'
+          imgUrl={liker.likerAvatarImage}
           onMouseEnter={() => setEnableLoadPopover(true)}
         />
       </LazyLoadUserOverviewPopover>

@@ -1,6 +1,6 @@
 import FunctionList from '@/pages/home-page/FunctionList'
 import PostArea from '@/components/common/post-area/PostArea'
-import RecommendationFriendList from './recommendation-friend-list/RecommendationFriendList'
+import RecommendationFriendList from '@/pages/home-page/recommendation-friend-list/RecommendationFriendList.tsx'
 
 const HomePage = () => {
   return (

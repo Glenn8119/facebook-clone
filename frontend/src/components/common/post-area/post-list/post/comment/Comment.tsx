@@ -10,9 +10,11 @@ import MoreAction from '@/components/common/post-area/post-list/post/comment/Mor
 import Input, { ForwardedInputRefType } from '@/components/form/Input'
 import ConfirmModal from '@/components/common/ConfirmModal'
 import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover'
+import { Nullable } from '@/types/common'
 
 type CommentProps = {
   userId: string
+  avatarImage: Nullable<string>
   isHoverShowDots: boolean
   content: string
   name: string
@@ -25,6 +27,7 @@ type CommentProps = {
 
 const Comment: FC<CommentProps> = ({
   userId,
+  avatarImage,
   isHoverShowDots,
   hasEdited,
   className,
@@ -104,6 +107,7 @@ const Comment: FC<CommentProps> = ({
       >
         <Avatar
           className='mr-2 cursor-pointer'
+          imgUrl={avatarImage}
           onMouseEnter={() => setEnableLoadPopover(true)}
         />
       </LazyLoadUserOverviewPopover>

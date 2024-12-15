@@ -1,5 +1,6 @@
 import Avatar from '@/components/Avatar'
 import Input, { ForwardedInputRefType } from '@/components/form/Input'
+import useUserContext from '@/hooks/useUserContext'
 import { SetStateType } from '@/types/common'
 import scrollCenterElement from '@/utils/scrollCenterElement'
 import { KeyboardEvent, forwardRef, useImperativeHandle, useRef } from 'react'
@@ -17,6 +18,10 @@ const CommentAction = forwardRef<
   { scrollAndFocusInput: () => void },
   CommentActionProps
 >(({ inputValue, setInputValue, handleEnterKey }, ref) => {
+  const {
+    value: { avatarImage }
+  } = useUserContext()
+
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleEnterKey()
@@ -41,7 +46,7 @@ const CommentAction = forwardRef<
 
   return (
     <div className='flex items-center'>
-      <Avatar className='mr-2' />
+      <Avatar className='mr-2' imgUrl={avatarImage} />
       <Input
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

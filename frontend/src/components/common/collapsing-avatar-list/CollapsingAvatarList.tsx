@@ -42,6 +42,7 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
 
         return (
           <UserOverviewPopover
+            avatarImage={avatarInfo.avatarImage}
             key={avatarInfo.id}
             userId={avatarInfo.id}
             name={avatarInfo.name}
@@ -50,7 +51,7 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
           >
             <Avatar
               style={zIndexStyle}
-              imgUrl={avatarInfo.imgUrl}
+              imgUrl={avatarInfo.avatarImage}
               className={cn}
             />
           </UserOverviewPopover>

@@ -32,6 +32,7 @@ const CommentList = ({
         userId={comment.posterId}
         className='mb-2'
         isHoverShowDots={comment.posterId === selfId}
+        avatarImage={comment.posterAvatarImage}
         content={comment.content}
         createAt={createTime}
         hasEdited={comment.createdAt !== comment.updatedAt}

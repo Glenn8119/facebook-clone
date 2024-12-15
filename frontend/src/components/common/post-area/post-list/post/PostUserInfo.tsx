@@ -12,7 +12,6 @@ type PostUserInfoProps = {
 
 const PostUserInfo: FC<PostUserInfoProps> = ({ post, createAt }) => {
   const [isEnableLoadPopover, setEnableLoadPopover] = useState(false)
-
   return (
     <div className='flex'>
       <LazyLoadUserOverviewPopover
@@ -22,6 +21,7 @@ const PostUserInfo: FC<PostUserInfoProps> = ({ post, createAt }) => {
       >
         <Avatar
           className='mr-2 cursor-pointer'
+          imgUrl={post.posterAvatarImage}
           onMouseEnter={() => setEnableLoadPopover(true)}
         />
       </LazyLoadUserOverviewPopover>
