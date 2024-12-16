@@ -38,7 +38,6 @@ const Comment: FC<CommentProps> = ({
   onEditPostComment
 }) => {
   const [isHovered, setHoverState] = useState(false)
-  const [isEnableLoadPopover, setEnableLoadPopover] = useState(false)
   const [showConfirmModal, setShowConfirmModal] = useState(false)
   const [isEditing, setEditing] = useState(false)
   const [editInput, setEditInput] = useState(content)
@@ -100,16 +99,8 @@ const Comment: FC<CommentProps> = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <LazyLoadUserOverviewPopover
-        isEnableQuery={isEnableLoadPopover}
-        userId={userId}
-        name={name}
-      >
-        <Avatar
-          className='mr-2 cursor-pointer'
-          imgUrl={avatarImage}
-          onMouseEnter={() => setEnableLoadPopover(true)}
-        />
+      <LazyLoadUserOverviewPopover userId={userId}>
+        <Avatar className='mr-2 cursor-pointer' imgUrl={avatarImage} />
       </LazyLoadUserOverviewPopover>
       <div className={`flex flex-col mr-2 ${isEditing && 'flex-grow'}`}>
         {isEditing ? (
@@ -137,15 +128,8 @@ const Comment: FC<CommentProps> = ({
         ) : (
           <div className='flex items-center'>
             <div className='bg-main rounded-2xl py-2 px-3 mr-2 text-15 max-w-72 break-words'>
-              <LazyLoadUserOverviewPopover
-                isEnableQuery={isEnableLoadPopover}
-                userId={userId}
-                name={name}
-              >
-                <div
-                  className='cursor-pointer font-bold hover:underline'
-                  onMouseEnter={() => setEnableLoadPopover(true)}
-                >
+              <LazyLoadUserOverviewPopover userId={userId}>
+                <div className='cursor-pointer font-bold hover:underline'>
                   {name}
                 </div>
               </LazyLoadUserOverviewPopover>

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
 import useUserContext from '@/hooks/useUserContext'
 import getFriendStatus from '@/utils/freindsStatus'
@@ -7,30 +7,28 @@ import useGetUserDetail from '@/hooks/api/queries/useGetUserDetail'
 type LazyLoadUserOverviewPopoverProps = {
   children: React.ReactNode
   userId: string
-  name: string
-  isEnableQuery: boolean
 }
 
 const LazyLoadUserOverviewPopover: FC<LazyLoadUserOverviewPopoverProps> = ({
   children,
-  userId,
-  name,
-  isEnableQuery
+  userId
 }) => {
+  const [isEnableQuery, setEnableQuery] = useState(false)
   const {
     value: { id: selfId }
   } = useUserContext()
   const { userDetail } = useGetUserDetail(userId, isEnableQuery)
 
   if (!userDetail) {
-    return children
+    return <div onMouseEnter={() => setEnableQuery(true)}>{children}</div>
   }
 
   return (
     <UserOverviewPopover
       avatarImage={userDetail.avatarImage}
+      company={userDetail.company}
       userId={userId}
-      name={name}
+      name={userDetail.name}
       friendStatus={getFriendStatus({
         selfId,
         userId,

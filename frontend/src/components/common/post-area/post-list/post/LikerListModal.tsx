@@ -6,7 +6,7 @@ import useAddFriend from '@/hooks/api/mutation/useAddFriend'
 import { Post } from '@/types/api/post'
 import { FriendStatus } from '@/types/common'
 import { ButtonSize, ButtonVariant } from '@/types/component/button'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 type LikerListModalProps = {
@@ -24,30 +24,17 @@ const Liker = ({
   addFriend: () => void
 }) => {
   const cn = twMerge('flex items-center', className)
-  const [isEnableLoadPopover, setEnableLoadPopover] = useState(false)
 
   return (
     <div className={cn}>
-      <LazyLoadUserOverviewPopover
-        userId={liker.id}
-        name={liker.name}
-        isEnableQuery={isEnableLoadPopover}
-      >
+      <LazyLoadUserOverviewPopover userId={liker.id}>
         <Avatar
           className='mr-2 hover:underline cursor-pointer'
           imgUrl={liker.likerAvatarImage}
-          onMouseEnter={() => setEnableLoadPopover(true)}
         />
       </LazyLoadUserOverviewPopover>
-      <LazyLoadUserOverviewPopover
-        userId={liker.id}
-        name={liker.name}
-        isEnableQuery={isEnableLoadPopover}
-      >
-        <span
-          className='mr-auto hover:underline cursor-pointer'
-          onMouseEnter={() => setEnableLoadPopover(true)}
-        >
+      <LazyLoadUserOverviewPopover userId={liker.id}>
+        <span className='mr-auto hover:underline cursor-pointer'>
           {liker.name}
         </span>
       </LazyLoadUserOverviewPopover>

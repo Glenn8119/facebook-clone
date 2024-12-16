@@ -1,7 +1,7 @@
 import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 import Avatar from '@/components/Avatar'
 import CollapsingAvatarList from '@/components/common/collapsing-avatar-list/CollapsingAvatarList'
-import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
+import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover'
 import Button from '@/components/form/Button'
 import useAddFriend from '@/hooks/api/mutation/useAddFriend'
 import { FriendStatus } from '@/types/common'
@@ -29,31 +29,19 @@ const RecommendationFriendItem: FC<FriendItemProps> = ({
 
   return (
     <div className={cn}>
-      <UserOverviewPopover
-        avatarImage={recommendationFriend.avatarImage}
-        userId={recommendationFriend.id}
-        name={recommendationFriend.name}
-        friendStatus={FriendStatus.IS_NOT_FRIEND}
-        commonFriendList={commonFriendList}
-      >
+      <LazyLoadUserOverviewPopover userId={recommendationFriend.id}>
         <Avatar
           className='mr-2 cursor-pointer'
           imgUrl={recommendationFriend.avatarImage}
         />
-      </UserOverviewPopover>
+      </LazyLoadUserOverviewPopover>
 
       <div className='mr-auto'>
-        <UserOverviewPopover
-          avatarImage={recommendationFriend.avatarImage}
-          userId={recommendationFriend.id}
-          name={recommendationFriend.name}
-          friendStatus={FriendStatus.IS_NOT_FRIEND}
-          commonFriendList={commonFriendList}
-        >
+        <LazyLoadUserOverviewPopover userId={recommendationFriend.id}>
           <div className='cursor-pointer hover:underline'>
             {recommendationFriend.name}
           </div>
-        </UserOverviewPopover>
+        </LazyLoadUserOverviewPopover>
         {commonFriendList.length ? (
           <div className='flex flex-nowrap items-center min-w-28'>
             <CollapsingAvatarList

@@ -2,7 +2,7 @@ import Avatar from '@/components/Avatar'
 import { AnyFunction, AvatarInfo } from '@/types/common'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
-import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
+import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover.tsx'
 
 type CollapsingAvatarListProps = {
   avatarInfoList: AvatarInfo[]
@@ -41,20 +41,16 @@ const CollapsingAvatarList: FC<CollapsingAvatarListProps> = ({
         )
 
         return (
-          <UserOverviewPopover
-            avatarImage={avatarInfo.avatarImage}
+          <LazyLoadUserOverviewPopover
             key={avatarInfo.id}
             userId={avatarInfo.id}
-            name={avatarInfo.name}
-            friendStatus={avatarInfo.friendStatus}
-            commonFriendList={avatarInfo.commonFriendList}
           >
             <Avatar
               style={zIndexStyle}
               imgUrl={avatarInfo.avatarImage}
               className={cn}
             />
-          </UserOverviewPopover>
+          </LazyLoadUserOverviewPopover>
         )
       })}
     </div>

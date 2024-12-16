@@ -14,10 +14,12 @@ import { ButtonSize } from '@/types/component/button'
 
 import { FERecommendationFriendSingleResponseType } from '@/api/friend/schema'
 import useDeleteFriend from '@/hooks/api/mutation/useDeleteFriend'
+import { MdWorkOutline, MdGroup } from 'react-icons/md'
 
 type UserOverviewCardProps = {
   userId: string
   name: string
+  company: Nullable<string>
   avatarImage: Nullable<string>
   friendStatus: FriendStatus
   commonFriendList?: FERecommendationFriendSingleResponseType['commonFriendList']
@@ -104,6 +106,7 @@ const CommonFriendListDescription = ({
 const UserOverviewCard: FC<UserOverviewCardProps> = ({
   userId,
   name,
+  company,
   avatarImage,
   friendStatus,
   commonFriendList
@@ -148,15 +151,24 @@ const UserOverviewCard: FC<UserOverviewCardProps> = ({
                 {name}
               </span>
             </div>
-            {commonFriendList ? (
-              <CommonFriendListDescription
-                friendStatus={friendStatus}
-                commonFriendList={commonFriendList}
-                navigateToProfilePage={navigateToProfilePage}
-              />
-            ) : null}
-            {/* TODO: basic info */}
-            <div>曾在 Mock 公司工作</div>
+            <div className='text-sm'>
+              {commonFriendList?.length ? (
+                <div className='flex mb-2'>
+                  <MdGroup className='mr-2 text-slate-400' size={20} />
+                  <CommonFriendListDescription
+                    friendStatus={friendStatus}
+                    commonFriendList={commonFriendList}
+                    navigateToProfilePage={navigateToProfilePage}
+                  />
+                </div>
+              ) : null}
+              {company ? (
+                <div className='flex items-center'>
+                  <MdWorkOutline className='mr-2 text-slate-400' size={20} />
+                  <div>於 {company} 工作</div>
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
         <FunctionButtons

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 import Avatar from '@/components/Avatar'
 import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover'
@@ -11,30 +11,17 @@ type PostUserInfoProps = {
 }
 
 const PostUserInfo: FC<PostUserInfoProps> = ({ post, createAt }) => {
-  const [isEnableLoadPopover, setEnableLoadPopover] = useState(false)
   return (
     <div className='flex'>
-      <LazyLoadUserOverviewPopover
-        isEnableQuery={isEnableLoadPopover}
-        userId={post.userId}
-        name={post.poster}
-      >
+      <LazyLoadUserOverviewPopover userId={post.userId}>
         <Avatar
           className='mr-2 cursor-pointer'
           imgUrl={post.posterAvatarImage}
-          onMouseEnter={() => setEnableLoadPopover(true)}
         />
       </LazyLoadUserOverviewPopover>
       <div>
-        <LazyLoadUserOverviewPopover
-          isEnableQuery={isEnableLoadPopover}
-          userId={post.userId}
-          name={post.poster}
-        >
-          <div
-            className='font-bold cursor-pointer hover:underline'
-            onMouseEnter={() => setEnableLoadPopover(true)}
-          >
+        <LazyLoadUserOverviewPopover userId={post.userId}>
+          <div className='font-bold cursor-pointer hover:underline'>
             {post.poster}
           </div>
         </LazyLoadUserOverviewPopover>

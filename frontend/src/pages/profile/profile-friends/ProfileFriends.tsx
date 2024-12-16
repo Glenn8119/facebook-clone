@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom'
 
 import Avatar from '@/components/Avatar'
-import UserOverviewPopover from '@/components/common/user-overview-popover/UserOverviewPopover'
+import LazyLoadUserOverviewPopover from '@/components/common/user-overview-popover/LazyLoadUserOverviewPopover'
 import Card from '@/components/layout/Card'
 
 import { ROUTES } from '@/constants/common'
@@ -24,29 +24,17 @@ const ProfileFriends = () => {
       key={friend.id}
       className='flex items-center h-28 p-4 border border-main rounded-lg'
     >
-      <UserOverviewPopover
-        avatarImage={friend.avatarImage}
-        userId={friend.id}
-        name={friend.name}
-        friendStatus={friend.friendStatus}
-        commonFriendList={friend.commonFriendList}
-      >
+      <LazyLoadUserOverviewPopover userId={friend.id}>
         <Avatar
           className='mr-4 rounded w-20 h-20 cursor-pointer'
           imgUrl={friend.avatarImage}
         />
-      </UserOverviewPopover>
+      </LazyLoadUserOverviewPopover>
 
       <div className='flex flex-col justify-center'>
-        <UserOverviewPopover
-          avatarImage={friend.avatarImage}
-          userId={friend.id}
-          name={friend.name}
-          friendStatus={friend.friendStatus}
-          commonFriendList={friend.commonFriendList}
-        >
+        <LazyLoadUserOverviewPopover userId={friend.id}>
           <div className='cursor-pointer hover:underline'>{friend.name}</div>
-        </UserOverviewPopover>
+        </LazyLoadUserOverviewPopover>
         {friend.commonFriendList.length > 0 ? (
           <div
             className='text-sm text-slate-400 cursor-pointer'

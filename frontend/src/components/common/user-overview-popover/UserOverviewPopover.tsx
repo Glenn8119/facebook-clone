@@ -9,6 +9,7 @@ import { ROUTES } from '@/constants/common'
 
 type UserOverviewPopoverProps = {
   children: React.ReactNode
+  company: Nullable<string>
   userId: string
   name: string
   avatarImage: Nullable<string>
@@ -20,6 +21,7 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
   children,
   userId,
   name,
+  company,
   avatarImage,
   friendStatus,
   commonFriendList
@@ -39,6 +41,7 @@ const UserOverviewPopover: FC<UserOverviewPopoverProps> = ({
         <UserOverviewCard
           avatarImage={avatarImage}
           userId={userId}
+          company={company}
           name={name}
           friendStatus={friendStatus}
           commonFriendList={commonFriendList}
